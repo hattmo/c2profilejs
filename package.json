@@ -1,12 +1,11 @@
 {
   "name": "c2profilejs",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
-    "test": "mocha",
-    "build": "node ./scripts/build"
+    "test": "mocha"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

@@ -8,7 +8,8 @@ cache:
   - node_modules
 before_deploy:
 - docker login -u hattmo -p $DOCKERHUB_PW
-- docker build -t hattmo/c2profilejs:latest -t hattmo/c2profilejs:$TRAVIS_COMMIT .
+- VERSION="$(node getversion)"
+- docker build -t hattmo/c2profilejs:latest -t hattmo/c2profilejs:$VERSION .
 deploy:
   provider: script
   skip_cleanup: true
