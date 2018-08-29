@@ -1,3 +1,9 @@
 test
 dockerfile
 scripts
+.vscode
+node_modules
+.gitignore
+.travis.yml
+build.sh
+readme.md
