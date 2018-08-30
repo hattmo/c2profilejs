@@ -7,3 +7,5 @@ node_modules
 .travis.yml
 build.sh
 readme.md
+temp
+CA
