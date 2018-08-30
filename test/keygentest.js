@@ -12,10 +12,28 @@ describe('keygentest', () => {
                 cb()
             }, (err) => {
                 if (!err) {
-                    done()
+                    fs.exists('CA/CA.jks', (exists) => {
+                        if (!exists) {
+                            keygen.genkeypair({
+                                cn: 'CA',
+                                ou: 'hattmo',
+                                o: 'universe',
+                                password: 'password'
+                            }, () => {
+                                fs.copyFile('temp/CA.jks', 'CA/CA.jks', (err) => {
+                                    fs.unlink('temp/CA.jks', (err) => {
+                                        if (!err) {
+                                            done()
+                                        }
+                                    })
+                                })
+                            })
+                        }
+                    })
                 }
             })
         })
+
     })
     describe('genkeypair', () => {
         it('should generate a keypair', (done) => {
