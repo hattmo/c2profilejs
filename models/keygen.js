@@ -120,8 +120,7 @@ let keygen = {
             })
     },
     importcert: (opt, cb) => {
-        exec(`
-        "keytool -importcert\
+        exec(`keytool -importcert\
         -noprompt -trustcacerts\
         -alias temp/${opt.alias}\
         -file temp/${opt.file}\
