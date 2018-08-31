@@ -20,9 +20,7 @@ let keygen = {
     //         password:
     //     }
     generateKeyStore: (opt, cb) => {
-        console.log('started')
-        console.log(opt)
-        
+
         keygen.genkeypair({
             cn: opt.cn,
             ou: opt.ou,
@@ -66,8 +64,8 @@ let keygen = {
                                     cb(err)
                                 }
                                 fs.readFile(`temp/${opt.cn}.jks`, (err, contents) => {
+                                    console.log('readfile')
                                     cb(err, contents)
-                                    
                                 })
                             })
                         })
@@ -78,6 +76,8 @@ let keygen = {
     },
 
     genkeypair: (opt, cb) => {
+        console.log('in genkeypair')
+        console.log(opt)
         console.log('called gen key pair')
         exec(`keytool -genkeypair \
         -alias mykey \
@@ -87,8 +87,8 @@ let keygen = {
         -validity 365 \
         -keypass ${opt.password} \
         -storepass ${opt.password} \
-        -keystore temp/${opt.cn}.jks`, (error, stdout, stderr) => {  
-            cb(error)
+        -keystore temp/${opt.cn}.jks`, (error, stdout, stderr) => {
+                cb(error)
             })
     },
     certreq: (opt, cb) => {
