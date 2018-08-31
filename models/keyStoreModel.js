@@ -3,8 +3,11 @@ const fs = require('fs')
 if (!fs.existsSync('./temp')) {
     fs.mkdirSync('./temp')
 }
-if (!fs.existsSync('./CA')) {
-    fs.mkdirSync('./CA')
+if (!fs.existsSync('./cas')) {
+    fs.mkdirSync('./cas')
+}
+if (!fs.existsSync('./certs')) {
+    fs.mkdirSync('./certs')
 }
 
 let keygen = {
@@ -17,6 +20,9 @@ let keygen = {
     //         password:
     //     }
     generateKeyStore: (opt, cb) => {
+        console.log('started')
+        console.log(opt)
+        
         keygen.genkeypair({
             cn: opt.cn,
             ou: opt.ou,
@@ -61,6 +67,7 @@ let keygen = {
                                 }
                                 fs.readFile(`temp/${opt.cn}.jks`, (err, contents) => {
                                     cb(err, contents)
+                                    
                                 })
                             })
                         })
@@ -71,6 +78,7 @@ let keygen = {
     },
 
     genkeypair: (opt, cb) => {
+        console.log('called gen key pair')
         exec(`keytool -genkeypair \
         -alias mykey \
         -keyalg RSA \
@@ -80,22 +88,22 @@ let keygen = {
         -keypass ${opt.password} \
         -storepass ${opt.password} \
         -keystore temp/${opt.cn}.jks`, (error, stdout, stderr) => {
-                console.log(stderr)
                 cb(error)
             })
     },
     certreq: (opt, cb) => {
+        console.log('called cert req')
         exec(`keytool -certreq \
         -alias mykey \
         -file temp/temp.csr \
         -keypass ${opt.password} \
         -storepass  ${opt.password}\
         -keystore temp/${opt.keystore}`, (error, stdout, stderr) => {
-                console.log(stderr)
                 cb(error)
             })
     },
     gencert: (cb) => {
+        console.log('called gencert')
         exec(`keytool -gencert\
         -alias mykey\
         -infile temp/temp.csr\
@@ -104,22 +112,22 @@ let keygen = {
         -storepass password\
         -keystore CA/CA.jks\
         -rfc`, (error, stdout, stderr) => {
-                console.log(stderr)
                 cb(error)
             })
     },
     exportcert: (cb) => {
+        console.log('called export cert')
         exec(`keytool -exportcert\
         -alias mykey\
         -file temp/CA.crt\
         -storepass password\
         -keystore CA/CA.jks\
         -rfc`, (error, stdout, stderr) => {
-                console.log(stderr)
                 cb(error)
             })
     },
     importcert: (opt, cb) => {
+        console.log('called import cert')
         exec(`keytool -importcert\
         -noprompt -trustcacerts\
         -alias temp/${opt.alias}\
@@ -127,7 +135,6 @@ let keygen = {
         -keypass ${opt.password}\
         -storepass ${opt.password}\
         -keystore temp/${opt.keystore}`, (error, stdout, stderr) => {
-                console.log(stderr)
                 cb(error)
             })
     }

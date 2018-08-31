@@ -1,5 +1,5 @@
 const assert = require('assert')
-const keygen = require('../models/keygen')
+const keygen = require('../models/keyStoreModel')
 const fs = require('fs')
 const { each } = require('async')
 describe('keygentest', () => {
@@ -28,6 +28,8 @@ describe('keygentest', () => {
                                     })
                                 })
                             })
+                        }else{
+                            done()
                         }
                     })
                 }
