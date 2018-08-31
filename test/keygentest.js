@@ -5,38 +5,45 @@ const { each } = require('async')
 describe('keygentest', () => {
     var testUri = 'test.com'
     var testPassword = 'password'
-    
+    var uniquepath = 'mytestpath'
+
     before((done) => {
-        fs.readdir('./temp', (err, files) => {
+        fs.mkdir(`temp/${uniquepath}`, (err) => {
             if (err) {
                 done(err)
             } else {
-                each(files, (file, cb) => {
-                    fs.unlinkSync(`./temp/${file}`)
-                    cb()
-                }, (err) => {
-                    if (!err) {
-                        fs.exists('cas/CA.jks', (exists) => {
-                            if (exists) {
-                                done()
-                            } else {
-                                keygen.genkeypair({
-                                    cn: 'CA',
-                                    ou: 'hattmo',
-                                    o: 'universe',
-                                    password: 'password'
-                                }, (err) => {
-                                    fs.copyFile('temp/CA.jks', 'cas/CA.jks', (err) => {
+                fs.exists('cas/CA.jks', (exists) => {
+                    if (exists) {
+                        done()
+                    } else {
+                        fs.mkdir('temp/tempCA', (err) => {
+                            keygen.genkeypair({
+                                cn: 'CA',
+                                ou: 'hattmo',
+                                o: 'universe',
+                                password: 'password',
+                                uniquepath: 'tempCA'
+                            }, (err) => {
+                                if (err) {
+                                    done(err)
+                                } else {
+                                    fs.copyFile('temp/tempCA/CA.jks', 'cas/CA.jks', (err) => {
                                         if (err) {
                                             done(err)
                                         } else {
-                                            fs.unlink('temp/CA.jks', (err) => {
-                                                done(err)
+                                            fs.unlink('temp/tempCA/CA.jks', (err) => {
+                                                if (err) {
+                                                    done(err)
+                                                } else {
+                                                    fs.rmdir('temp/tempCA', (err) => {
+                                                        done(err)
+                                                    })
+                                                }
                                             })
                                         }
                                     })
-                                })
-                            }
+                                }
+                            })
                         })
                     }
                 })
@@ -47,12 +54,13 @@ describe('keygentest', () => {
         it('should generate a keypair', (done) => {
             var options = {
                 cn: testUri,
-                ou: 'test',
-                o: 'world',
-                password: testPassword
+                ou: 'hattmo',
+                o: 'universe',
+                password: testPassword,
+                uniquepath: uniquepath
             }
             keygen.genkeypair(options, (err) => {
-                fs.exists(`./temp/${testUri}.jks`, (exists) => {
+                fs.exists(`./temp/${uniquepath}/${testUri}.jks`, (exists) => {
                     assert.ok(exists)
                     done(err)
                 })
@@ -63,10 +71,11 @@ describe('keygentest', () => {
         it('should generate a certreq', (done) => {
             var options = {
                 keystore: `${testUri}.jks`,
-                password: testPassword
+                password: testPassword,
+                uniquepath: uniquepath
             }
             keygen.certreq(options, (err) => {
-                fs.exists(`./temp/temp.csr`, (exists) => {
+                fs.exists(`./temp/${uniquepath}/temp.csr`, (exists) => {
                     assert.ok(exists)
                     done(err)
                 })
@@ -76,8 +85,10 @@ describe('keygentest', () => {
     })
     describe('gencert', () => {
         it('should generate a signed cert', (done) => {
-            keygen.gencert((err) => {
-                fs.exists(`./temp/temp.crt`, (exists) => {
+            keygen.gencert({
+                uniquepath: uniquepath
+            }, (err) => {
+                fs.exists(`./temp/${uniquepath}/temp.crt`, (exists) => {
                     assert.ok(exists)
                     done(err)
                 })
@@ -86,8 +97,10 @@ describe('keygentest', () => {
     })
     describe('exportcert', () => {
         it('should export the CA cert', (done) => {
-            keygen.exportcert((err) => {
-                fs.exists(`./temp/CA.crt`, (exists) => {
+            keygen.exportcert({
+                uniquepath: uniquepath
+            }, (err) => {
+                fs.exists(`./temp/${uniquepath}/CA.crt`, (exists) => {
                     assert.ok(exists)
                     done(err)
                 })
@@ -95,43 +108,71 @@ describe('keygentest', () => {
         })
     })
     describe('importcert', () => {
-        it('should import a signed cert', (done) => {
-            var options = {
-                keystore: `${testUri}.jks`,
-                password: testPassword,
-                file: 'temp.crt',
-                alias: 'mykey'
-            }
-            keygen.importcert(options, (err) => {
-                done(err)
-            })
-        })
         it('should import a CA cert', (done) => {
             var options = {
                 keystore: `${testUri}.jks`,
                 password: testPassword,
                 file: 'CA.crt',
-                alias: 'cacert'
+                alias: 'cacert',
+                uniquepath: uniquepath
             }
             keygen.importcert(options, (err) => {
                 done(err)
             })
         })
+        it('should import a signed cert', (done) => {
+            var options = {
+                keystore: `${testUri}.jks`,
+                password: testPassword,
+                file: 'temp.crt',
+                alias: 'mykey',
+                uniquepath: uniquepath
+            }
+            keygen.importcert(options, (err) => {
+                done(err)
+            })
+        })
+
     })
     describe('generateKeyStore', () => {
         it('should generate a keystore with a signed cert', (done) => {
             var options = {
-                cn: 'pooba.com',
+                cn: 'fulltest.com',
                 ou: 'hattmo',
                 o: 'universe',
                 password: 'blahblah'
             }
-            keygen.generateKeyStore(options, (err, keystore) => {
-                if (!err) {
-                    assert.ok(keystore)
-                }
+            keygen.generateKeyStore(options, (err) => {
                 done(err)
             })
         }).timeout(0)
+    })
+
+    after((done) => {
+        fs.readdir(`temp/${uniquepath}`, (err, files) => {
+            if (err) {
+                done(err)
+            } else {
+                each(files, (file, cb) => {
+                    fs.unlink(`temp/${uniquepath}/${file}`, (err) => {
+                        cb(err)
+                    })
+                }, (err) => {
+                    if (!err) {
+                        fs.rmdir(`temp/${uniquepath}`, (err) => {
+                            if (err) {
+                                done(err)
+                            } else {
+                                fs.unlink('certs/fulltest.com.jks', (err) => {
+                                    done(err)
+                                })
+                            }
+                        })
+                    } else {
+                        done(err)
+                    }
+                })
+            }
+        })
     })
 }).timeout(0)
