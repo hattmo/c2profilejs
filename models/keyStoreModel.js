@@ -87,8 +87,8 @@ let keygen = {
         -validity 365 \
         -keypass ${opt.password} \
         -storepass ${opt.password} \
-        -keystore temp/${opt.cn}.jks`, (error, stdout, stderr) => {
-                cb(error)
+        -keystore temp/${opt.cn}.jks`, (error, stdout, stderr) => {  
+            cb(error)
             })
     },
     certreq: (opt, cb) => {
@@ -110,7 +110,7 @@ let keygen = {
         -outfile temp/temp.crt\
         -keypass password\
         -storepass password\
-        -keystore CA/CA.jks\
+        -keystore cas/CA.jks\
         -rfc`, (error, stdout, stderr) => {
                 cb(error)
             })
@@ -121,7 +121,7 @@ let keygen = {
         -alias mykey\
         -file temp/CA.crt\
         -storepass password\
-        -keystore CA/CA.jks\
+        -keystore cas/CA.jks\
         -rfc`, (error, stdout, stderr) => {
                 cb(error)
             })

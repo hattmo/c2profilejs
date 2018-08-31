@@ -5,37 +5,43 @@ const { each } = require('async')
 describe('keygentest', () => {
     var testUri = 'test.com'
     var testPassword = 'password'
+    
     before((done) => {
         fs.readdir('./temp', (err, files) => {
-            each(files, (file, cb) => {
-                fs.unlinkSync(`./temp/${file}`)
-                cb()
-            }, (err) => {
-                if (!err) {
-                    fs.exists('CA/CA.jks', (exists) => {
-                        if (!exists) {
-                            keygen.genkeypair({
-                                cn: 'CA',
-                                ou: 'hattmo',
-                                o: 'universe',
-                                password: 'password'
-                            }, () => {
-                                fs.copyFile('temp/CA.jks', 'CA/CA.jks', (err) => {
-                                    fs.unlink('temp/CA.jks', (err) => {
-                                        if (!err) {
-                                            done()
+            if (err) {
+                done(err)
+            } else {
+                each(files, (file, cb) => {
+                    fs.unlinkSync(`./temp/${file}`)
+                    cb()
+                }, (err) => {
+                    if (!err) {
+                        fs.exists('cas/CA.jks', (exists) => {
+                            if (exists) {
+                                done()
+                            } else {
+                                keygen.genkeypair({
+                                    cn: 'CA',
+                                    ou: 'hattmo',
+                                    o: 'universe',
+                                    password: 'password'
+                                }, (err) => {
+                                    fs.copyFile('temp/CA.jks', 'cas/CA.jks', (err) => {
+                                        if (err) {
+                                            done(err)
+                                        } else {
+                                            fs.unlink('temp/CA.jks', (err) => {
+                                                done(err)
+                                            })
                                         }
                                     })
                                 })
-                            })
-                        }else{
-                            done()
-                        }
-                    })
-                }
-            })
+                            }
+                        })
+                    }
+                })
+            }
         })
-
     })
     describe('genkeypair', () => {
         it('should generate a keypair', (done) => {

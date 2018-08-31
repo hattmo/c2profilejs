@@ -15,7 +15,7 @@ C2 Profile is best used through the docker container hattmo/c2profilejs.
 docker run -d -p 3000:80 --name c2profilejs hattmo/c2profilejs
 ~~~
 
-then navigate to http://localhost:80 to begin using the tool.
+then navigate to http://localhost:3000 to begin using the tool.
 
 ___
 
