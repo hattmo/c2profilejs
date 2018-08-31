@@ -42,7 +42,7 @@ describe('keygentest', () => {
                 })
             }
         })
-    }).timeout(0)
+    })
     describe('genkeypair', () => {
         it('should generate a keypair', (done) => {
             var options = {
@@ -134,4 +134,4 @@ describe('keygentest', () => {
             })
         }).timeout(0)
     })
-})
+}).timeout(0)
