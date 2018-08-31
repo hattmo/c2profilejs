@@ -3,23 +3,26 @@
 <head>
   <title>C2 Profile JS</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
+  <script src="/javascripts/jquery-3.3.1.js"></script>
   <script src="/javascripts/index.js"></script>
 </head>
 
 <body>
   <h1>Key Store Generator</h1>
-  <form>
+  <div>
     Common Name<br>
-    <input name="cn" type="text"><br> Organizational Unit<br>
-    <input name="ou" type="text"><br> Organizational
+    <input name="cn" id="cn" type="text"><br> Organizational Unit<br>
+    <input name="ou" id="ou" type="text"><br> Organizational
     <br>
-    <input name="o" type="text"><br>
+    <input name="o" id="o" type="text"><br>
     <br><br> Password
     <br>
-    <input name="password" type="text">
+    <input name="password" id="password" type="text">
     <br><br>
-    <input type="submit" value="Submit">
-  </form>
+    <input type="button" id="generateBtn" value="Generate">
+  </div>
+  <div id="keystores">
+  </div>
 </body>
 
 </html>

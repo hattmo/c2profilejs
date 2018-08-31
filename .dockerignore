@@ -10,3 +10,5 @@ readme.md
 temp
 cas
 certs
+getversion.js
+deploy.sh

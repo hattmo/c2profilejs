@@ -1,5 +1,8 @@
 const { exec } = require('child_process')
 const fs = require('fs')
+const uuid = require('uuid/v4')
+const { each } = require('async')
+
 if (!fs.existsSync('./temp')) {
     fs.mkdirSync('./temp')
 }
@@ -20,54 +23,93 @@ let keygen = {
     //         password:
     //     }
     generateKeyStore: (opt, cb) => {
-        console.log('started')
-        console.log(opt)
-        
-        keygen.genkeypair({
-            cn: opt.cn,
-            ou: opt.ou,
-            o: opt.o,
-            password: opt.password
-        }, (err) => {
+        var uniquepath = uuid()
+        fs.mkdir(`temp/${uniquepath}`, (err) => {
             if (err) {
                 cb(err)
+                return
             }
-            keygen.certreq({
-                keystore: `${opt.cn}.jks`,
-                password: opt.password
+            keygen.genkeypair({
+                cn: opt.cn,
+                ou: opt.ou,
+                o: opt.o,
+                password: opt.password,
+                uniquepath: uniquepath
             }, (err) => {
                 if (err) {
                     cb(err)
+                    return
                 }
-                keygen.gencert((err) => {
+                keygen.certreq({
+                    keystore: `${opt.cn}.jks`,
+                    password: opt.password,
+                    uniquepath: uniquepath
+                }, (err) => {
                     if (err) {
                         cb(err)
+                        return
                     }
-                    keygen.exportcert((err) => {
+                    keygen.gencert({
+                        uniquepath: uniquepath
+                    }, (err) => {
                         if (err) {
                             cb(err)
+                            return
                         }
-                        keygen.importcert({
-                            keystore: `${opt.cn}.jks`,
-                            password: opt.password,
-                            file: 'temp.crt',
-                            alias: 'mykey'
+                        keygen.exportcert({
+                            uniquepath: uniquepath
                         }, (err) => {
                             if (err) {
                                 cb(err)
+                                return
                             }
                             keygen.importcert({
                                 keystore: `${opt.cn}.jks`,
                                 password: opt.password,
                                 file: 'CA.crt',
-                                alias: 'cacert'
+                                alias: 'cacert',
+                                uniquepath: uniquepath
                             }, (err) => {
                                 if (err) {
                                     cb(err)
+                                    return
                                 }
-                                fs.readFile(`temp/${opt.cn}.jks`, (err, contents) => {
-                                    cb(err, contents)
-                                    
+                                keygen.importcert({
+                                    keystore: `${opt.cn}.jks`,
+                                    password: opt.password,
+                                    file: 'temp.crt',
+                                    alias: 'mykey',
+                                    uniquepath: uniquepath
+                                }, (err) => {
+                                    if (err) {
+                                        cb(err)
+                                        return
+                                    }
+                                    fs.copyFile(`temp/${uniquepath}/${opt.cn}.jks`, `certs/${opt.cn}.jks`, (err, contents) => {
+                                        console.log('copied')
+                                        cb(err)
+                                        fs.readdir(`temp/${uniquepath}`, (err, files) => {
+                                            if (err) {
+                                                console.log(err)
+                                                return
+                                            }
+                                            each(files, (file, cb) => {
+                                                fs.unlink(`temp/${uniquepath}/${file}`, (err) => {
+                                                    cb(err)
+                                                })
+                                            }, (err) => {
+                                                if (!err) {
+                                                    fs.rmdir(`temp/${uniquepath}`, (err) => {
+                                                        console.log(err)
+                                                        return
+                                                    })
+                                                } else {
+                                                    console.log(err)
+                                                    return
+                                                }
+                                            })
+                                        })
+                                    })
                                 })
                             })
                         })
@@ -78,6 +120,8 @@ let keygen = {
     },
 
     genkeypair: (opt, cb) => {
+        console.log('in genkeypair')
+        console.log(opt)
         console.log('called gen key pair')
         exec(`keytool -genkeypair \
         -alias mykey \
@@ -87,27 +131,27 @@ let keygen = {
         -validity 365 \
         -keypass ${opt.password} \
         -storepass ${opt.password} \
-        -keystore temp/${opt.cn}.jks`, (error, stdout, stderr) => {  
-            cb(error)
+        -keystore temp/${opt.uniquepath}/${opt.cn}.jks`, (error, stdout, stderr) => {
+                cb(error)
             })
     },
     certreq: (opt, cb) => {
         console.log('called cert req')
         exec(`keytool -certreq \
         -alias mykey \
-        -file temp/temp.csr \
+        -file temp/${opt.uniquepath}/temp.csr \
         -keypass ${opt.password} \
         -storepass  ${opt.password}\
-        -keystore temp/${opt.keystore}`, (error, stdout, stderr) => {
+        -keystore temp/${opt.uniquepath}/${opt.keystore}`, (error, stdout, stderr) => {
                 cb(error)
             })
     },
-    gencert: (cb) => {
+    gencert: (opt, cb) => {
         console.log('called gencert')
         exec(`keytool -gencert\
         -alias mykey\
-        -infile temp/temp.csr\
-        -outfile temp/temp.crt\
+        -infile temp/${opt.uniquepath}/temp.csr\
+        -outfile temp/${opt.uniquepath}/temp.crt\
         -keypass password\
         -storepass password\
         -keystore cas/CA.jks\
@@ -115,11 +159,11 @@ let keygen = {
                 cb(error)
             })
     },
-    exportcert: (cb) => {
+    exportcert: (opt, cb) => {
         console.log('called export cert')
         exec(`keytool -exportcert\
         -alias mykey\
-        -file temp/CA.crt\
+        -file temp/${opt.uniquepath}/CA.crt\
         -storepass password\
         -keystore cas/CA.jks\
         -rfc`, (error, stdout, stderr) => {
@@ -130,11 +174,11 @@ let keygen = {
         console.log('called import cert')
         exec(`keytool -importcert\
         -noprompt -trustcacerts\
-        -alias temp/${opt.alias}\
-        -file temp/${opt.file}\
+        -alias ${opt.alias}\
+        -file temp/${opt.uniquepath}/${opt.file}\
         -keypass ${opt.password}\
         -storepass ${opt.password}\
-        -keystore temp/${opt.keystore}`, (error, stdout, stderr) => {
+        -keystore temp/${opt.uniquepath}/${opt.keystore}`, (error, stdout, stderr) => {
                 cb(error)
             })
     }

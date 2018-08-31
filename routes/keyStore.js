@@ -1,23 +1,40 @@
 var route = require('express').Router()
 var keygen = require('../models/keyStoreModel')
+var fs = require('fs')
 
 route.post('/', (req, res, next) => {
-    var reqData = req.body
     console.log(req.body)
+    var reqData = req.body
     keygen.generateKeyStore({
         cn: reqData.cn,
         ou: reqData.ou,
         o: reqData.o,
         password: reqData.password
-    }, (err) => {
+    }, (err, contents) => {
+        console.log(err)
+        console.log('done')
         if (!err) {
-            res.status('200')
+            console.log('responded')
+            res.sendStatus('200')
         } else {
-            res.status('500')
+            res.sendStatus('500')
         }
     })
 })
 
-rout
+route.get('/', (req, res, next) => {
+    var out = {
+        value: []
+    }
+    fs.readdir('certs/', (err, files) => {
+        if (err) {
+            res.sendStatus('500')
+        }
+        files.forEach(file => {
+            out.value.push(file)
+        });
+        res.json(out)
+    })
+})
 
 module.exports = route
