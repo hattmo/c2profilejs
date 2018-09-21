@@ -24,8 +24,10 @@
     <input type="button" id="generateBtn" value="Generate">
   </div>
   <div id="uploadca">
-    <input type="file" id="cafile"><br>
-    <input type="button" id='uploadCABtn' value="Upload"><br>
+    <form ref='caForm' id='caForm'>
+      <input type="file" name="myFile" />
+      <input type='button' id='caBtn' value='Upload!' />
+    </form>
   </div>
 
   <div id="keystores">
