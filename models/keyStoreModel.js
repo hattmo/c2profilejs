@@ -9,8 +9,8 @@ if (!fs.existsSync('./temp')) {
 if (!fs.existsSync('./cas')) {
     fs.mkdirSync('./cas')
 }
-if (!fs.existsSync('./certs')) {
-    fs.mkdirSync('./certs')
+if (!fs.existsSync('./keystores')) {
+    fs.mkdirSync('./keystores')
 }
 
 let keygen = {
@@ -85,7 +85,7 @@ let keygen = {
                                         cb(err)
                                         return
                                     }
-                                    fs.copyFile(`temp/${uniquepath}/${opt.cn}.jks`, `certs/${opt.cn}.jks`, (err, contents) => {
+                                    fs.copyFile(`temp/${uniquepath}/${opt.cn}.jks`, `keystores/${opt.cn}.jks`, (err, contents) => {
                                         console.log('copied')
                                         cb(err)
                                         fs.readdir(`temp/${uniquepath}`, (err, files) => {

@@ -163,7 +163,7 @@ describe('keygentest', () => {
                             if (err) {
                                 done(err)
                             } else {
-                                fs.unlink('certs/fulltest.com.jks', (err) => {
+                                fs.unlink('keystores/fulltest.com.jks', (err) => {
                                     done(err)
                                 })
                             }

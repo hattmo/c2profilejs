@@ -26,7 +26,7 @@ route.get('/', (req, res, next) => {
     var out = {
         value: []
     }
-    fs.readdir('certs/', (err, files) => {
+    fs.readdir('keystores/', (err, files) => {
         if (err) {
             res.sendStatus('500')
         }

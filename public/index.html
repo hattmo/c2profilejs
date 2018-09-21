@@ -8,19 +8,26 @@
 </head>
 
 <body>
-  <h1>Key Store Generator</h1>
-  <div>
+  <input type="button" id="show" value="show"><br>
+  <div id="keystoregen">
+    <h1>Key Store Generator</h1>
     Common Name<br>
-    <input name="cn" id="cn" type="text"><br> Organizational Unit<br>
-    <input name="ou" id="ou" type="text"><br> Organizational
+    <input id="cn" type="text"><br>
+    Organizational Unit<br>
+    <input id="ou" type="text"><br>
+    Organizational<br>
+    <input id="o" type="text"><br>
     <br>
-    <input name="o" id="o" type="text"><br>
-    <br><br> Password
+    Password<br>
+    <input name="password" id="password" type="text"><br>
     <br>
-    <input name="password" id="password" type="text">
-    <br><br>
     <input type="button" id="generateBtn" value="Generate">
   </div>
+  <div id="uploadca">
+    <input type="file" id="cafile"><br>
+    <input type="button" id='uploadCABtn' value="Upload"><br>
+  </div>
+
   <div id="keystores">
   </div>
 </body>
