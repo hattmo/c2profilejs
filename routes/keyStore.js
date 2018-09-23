@@ -10,15 +10,11 @@ route.post('/', (req, res, next) => {
         ou: reqData.ou,
         o: reqData.o,
         password: reqData.password
-    }, (err, contents) => {
-        console.log(err)
-        console.log('done')
-        if (!err) {
-            console.log('responded')
-            res.sendStatus('200')
-        } else {
-            res.sendStatus('500')
-        }
+    }).then(() => {
+        res.sendStatus('200')
+    }).catch((err) => {
+        console.error(err)
+        res.sendStatus('500')
     })
 })
 
