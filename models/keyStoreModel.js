@@ -91,9 +91,8 @@ const keygen = {
         -validity 365 \
         -keypass ${opt.password} \
         -storepass ${opt.password} \
-        -keystore temp/${opt.uniquepath}/${opt.cn}.jks`, (error, stdout, stderr) => {
+        -keystore temp/${opt.uniquepath}/${opt.cn}.jks`, (error) => {
       if (error) {
-        console.error(stderr);
         reject(error);
       } else {
         resolve();
@@ -106,9 +105,8 @@ const keygen = {
         -file temp/${opt.uniquepath}/temp.csr \
         -keypass ${opt.password} \
         -storepass  ${opt.password}\
-        -keystore temp/${opt.uniquepath}/${opt.keystore}`, (error, stdout, stderr) => {
+        -keystore temp/${opt.uniquepath}/${opt.keystore}`, (error) => {
       if (error) {
-        console.error(stderr);
         reject(error);
       } else {
         resolve();

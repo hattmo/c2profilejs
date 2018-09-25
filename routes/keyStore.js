@@ -3,7 +3,6 @@ const fs = require('fs');
 const keygen = require('../models/keyStoreModel');
 
 route.post('/', (req, res) => {
-  console.log(req.body);
   const reqData = req.body;
   keygen.generateKeyStore({
     cn: reqData.cn,
