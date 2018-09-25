@@ -12,3 +12,5 @@ cas
 keystores
 getversion.js
 deploy.sh
+.eslintignore
+.eslintrc.json

@@ -1,36 +1,36 @@
-var route = require('express').Router()
-var keygen = require('../models/keyStoreModel')
-var fs = require('fs')
+const route = require('express').Router();
+const fs = require('fs');
+const keygen = require('../models/keyStoreModel');
 
-route.post('/', (req, res, next) => {
-    console.log(req.body)
-    var reqData = req.body
-    keygen.generateKeyStore({
-        cn: reqData.cn,
-        ou: reqData.ou,
-        o: reqData.o,
-        password: reqData.password
-    }).then(() => {
-        res.sendStatus('200')
-    }).catch((err) => {
-        console.error(err)
-        res.sendStatus('500')
-    })
-})
+route.post('/', (req, res) => {
+  console.log(req.body);
+  const reqData = req.body;
+  keygen.generateKeyStore({
+    cn: reqData.cn,
+    ou: reqData.ou,
+    o: reqData.o,
+    password: reqData.password,
+  }).then(() => {
+    res.sendStatus('200');
+  }).catch((err) => {
+    console.error(err);
+    res.sendStatus('500');
+  });
+});
 
-route.get('/', (req, res, next) => {
-    var out = {
-        value: []
+route.get('/', (req, res) => {
+  const out = {
+    value: [],
+  };
+  fs.readdir('keystores/', (err, files) => {
+    if (err) {
+      res.sendStatus('500');
     }
-    fs.readdir('keystores/', (err, files) => {
-        if (err) {
-            res.sendStatus('500')
-        }
-        files.forEach(file => {
-            out.value.push(file)
-        });
-        res.json(out)
-    })
-})
+    files.forEach((file) => {
+      out.value.push(file);
+    });
+    res.json(out);
+  });
+});
 
-module.exports = route
+module.exports = route;
