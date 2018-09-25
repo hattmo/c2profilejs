@@ -2,8 +2,8 @@
 
 ## About
 
-C2 Profile JS is a web server designed to ease the generation of c2 profiles for the implant tool [Cobalt Strike][1].  C2 profiles are not overly complex but when red teams need to adapt to bluefor on the fly, time is a critical factor.  C2 Profile JS can improve turnaround time for C2 profiles and reduce chances of error.
-## Requirements
+C2 Profile JS is a web server designed to ease the generation of C2 profiles for the implant tool [Cobalt Strike][1].  C2 profiles are not overly complex but when red teams need to adapt to BLUEFOR on the fly, time is a critical factor.  C2 Profile JS can improve turnaround time for C2 profiles and reduce chances of error.
+## Dependencies
 
 * Nodejs
 * Java

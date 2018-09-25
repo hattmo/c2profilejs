@@ -1,1 +1,1 @@
-console.log(require('./package.json').version)
+console.log(require('./package.json').version);

@@ -9,6 +9,8 @@ build.sh
 readme.md
 temp
 cas
-certs
+keystores
 getversion.js
 deploy.sh
+.eslintignore
+.eslintrc.json
