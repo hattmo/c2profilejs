@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -11,8 +12,7 @@
   <input type="button" id="show" value="show"><br>
   <div id="keystoregen">
     <h1>Key Store Generator</h1>
-    Save as CA <input type="checkbox"><br>
-    Self Sign <input type="checkbox"><br>
+    Self Sign <input id="selfsign" type="checkbox" value="true"><br>
 
     Common Name<br>
     <input id="cn" type="text"><br>
@@ -24,16 +24,19 @@
     Password<br>
     <input name="password" id="password" type="text"><br>
     <br>
-    <input type="button" id="generateBtn" value="Generate">
+    <input id="generateBtn" type="button" value="Generate">
   </div>
-  <div id="uploadca">
-    <form ref='caForm' id='caForm'>
-      <input type="file" name="myFile">
-      <input type='button' id='caBtn' value='Upload!'>
+  <div id="uploadkeystore">
+    <h1>Upload Key Store</h1>
+    <form ref="caForm" id="caForm">
+      <input name="myFile" type="file">
+      <input name="password" type="text">
+      <input name="certname" type="text">
+      <input id="caBtn" type="button" value="Upload!">
     </form>
   </div>
 
-  <div id=CA>
+  <div id="CA">
 
   </div>
   <div id="keystores">

@@ -21,6 +21,7 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-google": "^0.10.0",
     "eslint-plugin-import": "^2.14.0",
+    "htmlhint": "^0.10.1",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.3"
   }
