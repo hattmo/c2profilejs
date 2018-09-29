@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
     "pretest": "./node_modules/.bin/eslint ./",
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "./node_modules/.bin/eslint --fix ./"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

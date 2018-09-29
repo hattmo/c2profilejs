@@ -7,6 +7,26 @@
             "type": "npm",
             "script": "devstart",
             "problemMatcher": []
-        }
+        },
+        {
+            "type": "npm",
+            "script": "install",
+            "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "lint",
+            "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "test",
+            "problemMatcher": []
+        },
     ]
 }
