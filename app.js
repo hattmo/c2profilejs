@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 // var cookieParser = require('cookie-parser')
 const logger = require('morgan');
-const keyStore = require('./routes/keyStore');
+const keystores = require('./routes/keystores');
 const ca = require('./routes/ca');
 
 
@@ -16,7 +16,7 @@ app.use(express.json());
 // app.use(express.urlencoded({ extended: false }))
 // app.use(cookieParser())
 
-app.use('/keystores', keyStore);
+app.use('/keystores', keystores);
 app.use('/cas', ca);
 
 

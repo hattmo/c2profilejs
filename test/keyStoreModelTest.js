@@ -3,7 +3,7 @@ const fsp = require('fs').promises;
 const fs = require('fs');
 const keygen = require('../models/keyStoreModel');
 
-describe('Keygenmodel Test', () => {
+describe('keyStoreModel Test', () => {
 
   const uniquepath = 'mytestpath';
 
@@ -37,7 +37,7 @@ describe('Keygenmodel Test', () => {
               assert.ok(exists);
             });
           });
-        }).timeout(0);
+        })
       });
 
       after(() => fsp.copyFile(`temp/${uniquepath}/${caOptions.keystore}.jks`, `keystores/${caOptions.keystore}.jks`))
@@ -50,7 +50,7 @@ describe('Keygenmodel Test', () => {
             assert.ok(exists);
           });
         });
-      }).timeout(0);
+      })
     })
 
     describe('certreq', () => {
@@ -118,8 +118,8 @@ describe('Keygenmodel Test', () => {
       keystore: 'signedfulltestkeystore',
     };
     describe('generateKeyStore', () => {
-      it('Should generate a keystore with a unsiqned cert', () => keygen.generateKeyStore(fulloptionsUn)).timeout(0);
-      it('Should generate a keystore with a signed cert', () => keygen.generateKeyStore(fulloptions, caOptions)).timeout(0);
+      it('Should generate a keystore with a unsiqned cert', () => keygen.generateKeyStore(fulloptionsUn)).timeout(0)
+      it('Should generate a keystore with a signed cert', () => keygen.generateKeyStore(fulloptions, caOptions)).timeout(0)
     });
 
     after(() => fsp.unlink(`keystores/${fulloptionsUn.keystore}.jks`)

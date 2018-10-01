@@ -3,13 +3,8 @@ const fs = require('fs');
 const keygen = require('../models/keyStoreModel');
 
 route.post('/', (req, res) => {
-  const reqData = req.body;
-  keygen.generateKeyStore({
-    cn: reqData.cn,
-    ou: reqData.ou,
-    o: reqData.o,
-    password: reqData.password,
-  }).then(() => {
+  console.log(req.body);
+  keygen.generateKeyStore(req.body.opt, req.body.ca).then(() => {
     res.sendStatus('200');
   }).catch((err) => {
     console.error(err);
