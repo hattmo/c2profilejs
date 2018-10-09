@@ -1,42 +1,44 @@
+<!DOCTYPE html>
 <html>
 
 <head>
   <title>C2 Profile JS</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
-  <script src="/javascripts/jquery-3.3.1.js"></script>
   <script src="/javascripts/index.js"></script>
 </head>
 
 <body>
-  <input type="button" id="show" value="show"><br>
+  <input type="button" id="showgenerate" value="generate">
+  <input type="button" id="showdownload" value="download">
+  <input type="button" id="showupload" value="upload">
+  <br>
   <div id="keystoregen">
     <h1>Key Store Generator</h1>
-    Save as CA <input type="checkbox"><br>
-    Self Sign <input type="checkbox"><br>
-
     Common Name<br>
     <input id="cn" type="text"><br>
     Organizational Unit<br>
     <input id="ou" type="text"><br>
     Organization<br>
     <input id="o" type="text"><br>
-    <br>
+    Keystore<br>
+    <input id="id" type="text"><br>
     Password<br>
-    <input name="password" id="password" type="text"><br>
+    <input id="password" type="text"><br>
     <br>
-    <input type="button" id="generateBtn" value="Generate">
+    Sign <input id="sign" type="checkbox" value="true">
+    <select id="signKeystores" disabled>
+    </select>
+    <br>
+    <input id="generateBtn" type="button" value="Generate">
   </div>
-  <div id="uploadca">
-    <form ref='caForm' id='caForm'>
-      <input type="file" name="myFile">
-      <input type='button' id='caBtn' value='Upload!'>
-    </form>
-  </div>
-
-  <div id=CA>
-
-  </div>
-  <div id="keystores">
+  <div id="uploadkeystore">
+    <!-- <h1>Upload Key Store</h1>
+    <form ref="caForm" id="caForm">
+      <input name="myFile" type="file" value="Select File">
+      <input name="password" type="text">
+      <input name="certname" type="text">
+      <input id="caBtn" type="button" value="Upload!">
+    </form> -->
   </div>
 </body>
 

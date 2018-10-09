@@ -6,13 +6,15 @@
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
     "pretest": "./node_modules/.bin/eslint ./",
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "./node_modules/.bin/eslint --fix ./"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "express-fileupload": "^0.4.0",
+    "express-json-validator-middleware": "^1.2.3",
     "morgan": "~1.9.0",
     "uuid": "^3.3.2"
   },
@@ -21,6 +23,7 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-google": "^0.10.0",
     "eslint-plugin-import": "^2.14.0",
+    "htmlhint": "^0.10.1",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.3"
   }
