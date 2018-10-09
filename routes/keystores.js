@@ -1,10 +1,22 @@
 const route = require('express').Router();
-const fs = require('fs');
+const { Validator, ValidationError } = require('express-json-validator-middleware');
 const keygen = require('../models/keyStoreModel');
+const keymanager = require('../models/keyStoreManager');
+const postKeystoresScema = require('../helpers/schemas/postKeystoresSchema');
 
-route.post('/', (req, res) => {
-  console.log(req.body);
-  keygen.generateKeyStore(req.body.opt, req.body.ca).then(() => {
+const validator = new Validator({ allErrors: true });
+
+route.post('/', validator.validate({ body: postKeystoresScema }), (req, res) => {
+  let ca;
+  if (req.body.ca) {
+    ca = keymanager.getKeystore(req.body.ca);
+    if (!ca) {
+      res.sendStatus('500');
+      return;
+    }
+  }
+  keygen.generateKeyStore(req.body.keystore, req.body.opt, ca).then(() => {
+    keymanager.addKeystore(req.body.keystore);
     res.sendStatus('200');
   }).catch((err) => {
     console.error(err);
@@ -12,19 +24,20 @@ route.post('/', (req, res) => {
   });
 });
 
+route.use((err, req, res, next) => {
+  if (err instanceof ValidationError) {
+    console.error('invalid json');
+    res.sendStatus('400');
+  } else {
+    next(err);
+  }
+});
+
 route.get('/', (req, res) => {
-  const out = {
-    value: [],
+  const output = {
+    keystores: keymanager.stores,
   };
-  fs.readdir('keystores/', (err, files) => {
-    if (err) {
-      res.sendStatus('500');
-    }
-    files.forEach((file) => {
-      out.value.push(file);
-    });
-    res.json(out);
-  });
+  res.json(output);
 });
 
 module.exports = route;

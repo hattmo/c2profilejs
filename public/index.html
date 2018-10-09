@@ -8,33 +8,35 @@
 </head>
 
 <body>
-  <input type="button" id="show" value="show"><br>
+  <input type="button" id="showgenerate" value="generate">
+  <input type="button" id="showdownload" value="download">
+  <input type="button" id="showupload" value="upload">
+  <br>
   <div id="keystoregen">
     <h1>Key Store Generator</h1>
-    Self Sign <input id="selfsign" type="checkbox" value="true"><br>
-
     Common Name<br>
     <input id="cn" type="text"><br>
     Organizational Unit<br>
     <input id="ou" type="text"><br>
     Organization<br>
     <input id="o" type="text"><br>
-    <br>
     Password<br>
-    <input name="password" id="password" type="text"><br>
+    <input id="password" type="text"><br>
+    <br>
+    Sign <input id="sign" type="checkbox" value="true">
+    <select id="signKeystores" disabled>
+    </select>
     <br>
     <input id="generateBtn" type="button" value="Generate">
   </div>
   <div id="uploadkeystore">
-    <h1>Upload Key Store</h1>
+    <!-- <h1>Upload Key Store</h1>
     <form ref="caForm" id="caForm">
       <input name="myFile" type="file" value="Select File">
       <input name="password" type="text">
       <input name="certname" type="text">
       <input id="caBtn" type="button" value="Upload!">
-    </form>
-  </div>
-  <div id="keystores">
+    </form> -->
   </div>
 </body>
 

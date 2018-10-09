@@ -34,27 +34,27 @@ const keygen = {
   }),
 
   /**
-   * @param {Object} opt
-   * @param {String} opt.alias
-   * @param {String} opt.password
-   * @param {String} opt.keystore
-   * @param {String} uniquepath
+   * @param {Object} keystore
+   * @param {String} keystore.alias
+   * @param {String} keystore.password
+   * @param {String} keystore.id
    * @param {Object} ca
    * @param {String} ca.alias
    * @param {String} ca.password
-   * @param {String} ca.keystore
+   * @param {String} ca.id
+   * @param {String} uniquepath
    */
 
-  signKeyStore: (opt, uniquepath, ca) => new Promise((resolve, reject) => {
-    keygen.certreq(opt, uniquepath)
+  signKeyStore: (keystore, ca, uniquepath) => new Promise((resolve, reject) => {
+    keygen.certreq(keystore, uniquepath)
       .then(() => keygen.gencert(ca, uniquepath))
       .then(() => keygen.exportcert(ca, uniquepath, 'CA.crt'))
       .then(() => keygen.importcert({
         alias: 'CA',
-        password: opt.password,
-        keystore: opt.keystore,
+        password: keystore.password,
+        id: keystore.id,
       }, uniquepath, 'CA.crt'))
-      .then(() => keygen.importcert(opt, uniquepath, 'temp.crt'))
+      .then(() => keygen.importcert(keystore, uniquepath, 'temp.crt'))
       .then(() => {
         resolve();
       })
@@ -63,29 +63,28 @@ const keygen = {
       });
   }),
   /**
+   * @param {Object} keystore
+   * @param {String} keystore.alias
+   * @param {String} keystore.password
+   * @param {String} keystore.id
    * @param {Object} opt
-   * @param {String} opt.cn
-   * @param {String} opt.ou
-   * @param {String} opt.o
-   * @param {String} opt.alias
-   * @param {String} opt.password
-   * @param {String} opt.keystore
+   * @param {String} opt.dname
    * @param {Object} [ca]
    * @param {String} [ca.alias]
    * @param {String} [ca.password]
-   * @param {String} [ca.keystore]
+   * @param {String} [ca.id]
    */
-  generateKeyStore: (opt, ca) => new Promise((resolve, reject) => {
+  generateKeyStore: (keystore, opt, ca) => new Promise((resolve, reject) => {
     const uniquepath = uuid();
     fsp.mkdir(`temp/${uniquepath}`)
-      .then(() => keygen.genkeypair(opt, uniquepath))
+      .then(() => keygen.genkeypair(keystore, opt, uniquepath))
       .then(() => {
         if (ca) {
-          return keygen.signKeyStore(opt, uniquepath, ca);
+          return keygen.signKeyStore(keystore, ca, uniquepath);
         }
         return false;
       })
-      .then(() => fsp.copyFile(`temp/${uniquepath}/${opt.keystore}.jks`, `keystores/${opt.keystore}.jks`))
+      .then(() => fsp.copyFile(`temp/${uniquepath}/${keystore.id}.jks`, `keystores/${keystore.id}.jks`))
       .then(() => {
         resolve();
       })
@@ -107,25 +106,24 @@ const keygen = {
 
   /**
    * Creates a keystore at the unique path described in opt.
+   * @param {Object} keystore
+   * @param {String} keystore.alias
+   * @param {String} keystore.password
+   * @param {String} keystore.id
    * @param {Object} opt
-   * @param {String} opt.cn
-   * @param {String} opt.ou
-   * @param {String} opt.o
-   * @param {String} opt.alias
-   * @param {String} opt.password
-   * @param {String} opt.keystore
+   * @param {String} opt.dname
    * @param {String} uniquepath
    */
-  genkeypair: (opt, uniquepath) => new Promise((resolve, reject) => {
+  genkeypair: (keystore, opt, uniquepath) => new Promise((resolve, reject) => {
     exec(`keytool -genkeypair \
-        -alias ${opt.alias} \
+        -alias ${keystore.alias} \
         -keyalg RSA \
         -keysize 2048 \
-        -dname "cn=${opt.cn}, ou=${opt.ou}, o=${opt.o}" \
+        -dname "${opt.dname}" \
         -validity 365 \
-        -keypass ${opt.password} \
-        -storepass ${opt.password} \
-        -keystore temp/${uniquepath}/${opt.keystore}.jks`, (error) => {
+        -keypass ${keystore.password} \
+        -storepass ${keystore.password} \
+        -keystore temp/${uniquepath}/${keystore.id}.jks`, (error) => {
       if (error) {
         reject(error);
       } else {
@@ -136,19 +134,19 @@ const keygen = {
   /**
    * Generates a file called temp.csr at the unique path from the
    * keystore described in opt. The keystore must also be in the unique path.
-   * @param {Object} opt
-   * @param {String} opt.alias
-   * @param {String} opt.password
-   * @param {String} opt.keystore
+   * @param {Object} keystore
+   * @param {String} keystore.alias
+   * @param {String} keystore.password
+   * @param {String} keystore.id
    * @param {String} uniquepath
    */
-  certreq: (opt, uniquepath) => new Promise((resolve, reject) => {
+  certreq: (keystore, uniquepath) => new Promise((resolve, reject) => {
     exec(`keytool -certreq \
-        -alias ${opt.alias} \
+        -alias ${keystore.alias} \
         -file temp/${uniquepath}/temp.csr \
-        -keypass ${opt.password} \
-        -storepass  ${opt.password}\
-        -keystore temp/${uniquepath}/${opt.keystore}.jks`, (error) => {
+        -keypass ${keystore.password} \
+        -storepass  ${keystore.password}\
+        -keystore temp/${uniquepath}/${keystore.id}.jks`, (error) => {
       if (error) {
         reject(error);
       } else {
@@ -161,20 +159,20 @@ const keygen = {
    * Signs temp.csr in the unique path with another certificate from keystores.
    * Outputs a cert named temp.crt in the unique path.
    *
-   * @param {Object} opt
-   * @param {String} opt.alias - alias of the signing key
-   * @param {String} opt.password - signing keystore password
-   * @param {String} opt.keystore - signing keystore
+   * @param {Object} keystore
+   * @param {String} keystore.alias - alias of the signing key
+   * @param {String} keystore.password - signing keystore password
+   * @param {String} keystore.id - signing keystore
    * @param {String} uniquepath
    */
-  gencert: (opt, uniquepath) => new Promise((resolve, reject) => {
+  gencert: (keystore, uniquepath) => new Promise((resolve, reject) => {
     exec(`keytool -gencert\
-        -alias ${opt.alias}\
+        -alias ${keystore.alias}\
         -infile temp/${uniquepath}/temp.csr\
         -outfile temp/${uniquepath}/temp.crt\
-        -keypass ${opt.password}\
-        -storepass ${opt.password}\
-        -keystore keystores/${opt.keystore}.jks\
+        -keypass ${keystore.password}\
+        -storepass ${keystore.password}\
+        -keystore keystores/${keystore.id}.jks\
         -rfc`, (error) => {
       if (error) {
         reject(error);
@@ -185,19 +183,19 @@ const keygen = {
   }),
   /**
    * Exports a cert at alias from keystore to a file named opt.file in the unique path.
-   * @param {Object} opt
-   * @param {String} opt.alias
-   * @param {String} opt.password
-   * @param {String} opt.keystore
+   * @param {Object} keystore
+   * @param {String} keystore.alias
+   * @param {String} keystore.password
+   * @param {String} keystore.id
    * @param {String} uniquepath
    * @param {String} file
    */
-  exportcert: (opt, uniquepath, file) => new Promise((resolve, reject) => {
+  exportcert: (keystore, uniquepath, file) => new Promise((resolve, reject) => {
     exec(`keytool -exportcert\
-        -alias ${opt.alias}\
+        -alias ${keystore.alias}\
         -file temp/${uniquepath}/${file}\
-        -storepass ${opt.password}\
-        -keystore keystores/${opt.keystore}.jks\
+        -storepass ${keystore.password}\
+        -keystore keystores/${keystore.id}.jks\
         -rfc`, (error) => {
       if (error) {
         reject(error);
@@ -210,23 +208,26 @@ const keygen = {
    * Imports a certificate with the file name defined in "opt.file" into
    * the keystore 'opt.keystore'.
    * file and keystore must be in the unique path.
-   * @param {Object} opt
-   * @param {String} opt.alias
-   * @param {String} opt.password
-   * @param {String} opt.keystore
+   * @param {Object} keystore
+   * @param {String} keystore.alias
+   * @param {String} keystore.password
+   * @param {String} keystore.keystore
    * @param {String} uniquepath
    * @param {String} file
    */
-  importcert: (opt, uniquepath, file) => new Promise((resolve, reject) => {
+  importcert: (keystore, uniquepath, file) => new Promise((resolve, reject) => {
     exec(`keytool -importcert\
-        -noprompt -trustcacerts\
-        -alias ${opt.alias}\
-        -file temp/${uniquepath}/${file}\
-        -keypass ${opt.password}\
-        -storepass ${opt.password}\
-        -keystore temp/${uniquepath}/${opt.keystore}.jks`, (error) => {
-      if (error) {
-        reject(error);
+            -noprompt -trustcacerts\
+            -alias ${keystore.alias}\
+            -file temp/${uniquepath}/${file}\
+            -keypass ${keystore.password}\
+            -storepass ${keystore.password}\
+            -keystore temp/${uniquepath}/${keystore.id}.jks`, (importerror, importstdout, importstderr) => {
+      if (importerror) {
+        console.log('IMHERE');
+        console.log(importstdout);
+        console.error(importstderr);
+        reject(importerror);
       } else {
         resolve();
       }

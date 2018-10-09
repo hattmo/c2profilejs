@@ -4,67 +4,58 @@ const fs = require('fs');
 const keygen = require('../models/keyStoreModel');
 
 describe('keyStoreModel Test', () => {
-
   const uniquepath = 'mytestpath';
 
-  const options = {
-    cn: 'test.com',
-    ou: 'hattmo',
-    o: 'universe',
+  const keystore = {
     alias: 'mykey',
     password: 'password',
-    keystore: 'testkeystore',
+    id: 'testkeystore',
   };
-  const caOptions = {
-    cn: 'ca.com',
-    ou: 'hattmo',
-    o: 'universe',
+  const cakeystore = {
     alias: 'ca',
     password: 'password',
-    keystore: 'testcakeystore',
-  }
+    id: 'testcakeystore',
+  };
+  const opt = {
+    dname: 'CN=test.com, OU=hattmo, O=universe',
+  };
+  const caopt = {
+    dname: 'CN=catest.com, OU=hattmo, O=universe',
+  };
 
-  before(() => {
-    return keygen.checkDirs()
-      .then(() => fsp.mkdir(`temp/${uniquepath}`))
-  });
+  before(() => keygen.checkDirs()
+    .then(() => fsp.mkdir(`temp/${uniquepath}`)));
   describe('Partial tests', () => {
     describe('CA test', () => {
       describe('genkeypair_CA', () => {
-        it('Should generate a keypair', () => {
-          return keygen.genkeypair(caOptions, uniquepath).then(() => {
-            fs.exists(`./temp/${uniquepath}/${caOptions.keystore}.jks`, (exists) => {
-              assert.ok(exists);
-            });
+        it('Should generate a keypair', () => keygen.genkeypair(cakeystore, caopt, uniquepath).then(() => {
+          fs.exists(`./temp/${uniquepath}/${cakeystore.id}.jks`, (exists) => {
+            assert.ok(exists);
           });
-        })
+        }));
       });
 
-      after(() => fsp.copyFile(`temp/${uniquepath}/${caOptions.keystore}.jks`, `keystores/${caOptions.keystore}.jks`))
-    })
+      after(() => fsp.copyFile(`temp/${uniquepath}/${cakeystore.id}.jks`, `keystores/${cakeystore.id}.jks`));
+    });
 
     describe('genkeypair', () => {
-      it('Should generate a keypair', () => {
-        return keygen.genkeypair(options, uniquepath).then(() => {
-          fs.exists(`./temp/${uniquepath}/${options.keystore}.jks`, (exists) => {
-            assert.ok(exists);
-          });
+      it('Should generate a keypair', () => keygen.genkeypair(keystore, opt, uniquepath).then(() => {
+        fs.exists(`./temp/${uniquepath}/${keystore.id}.jks`, (exists) => {
+          assert.ok(exists);
         });
-      })
-    })
+      }));
+    });
 
     describe('certreq', () => {
-      it('Should generate a certreq', () => {
-        return keygen.certreq(options, uniquepath).then(() => {
-          fs.exists(`./temp/${uniquepath}/temp.csr`, (exists) => {
-            assert.ok(exists);
-          });
+      it('Should generate a certreq', () => keygen.certreq(keystore, uniquepath).then(() => {
+        fs.exists(`./temp/${uniquepath}/temp.csr`, (exists) => {
+          assert.ok(exists);
         });
-      });
+      }));
     });
 
     describe('gencert', () => {
-      it('Should generate a signed cert', () => keygen.gencert(caOptions, uniquepath).then(() => {
+      it('Should generate a signed cert', () => keygen.gencert(cakeystore, uniquepath).then(() => {
         fs.exists(`./temp/${uniquepath}/temp.crt`, (exists) => {
           assert.ok(exists);
         });
@@ -72,7 +63,7 @@ describe('keyStoreModel Test', () => {
     });
 
     describe('exportcert', () => {
-      it('Should export the CA cert', () => keygen.exportcert(caOptions, uniquepath, 'CA.crt').then(() => {
+      it('Should export the CA cert', () => keygen.exportcert(cakeystore, uniquepath, 'CA.crt').then(() => {
         fs.exists(`./temp/${uniquepath}/CA.crt`, (exists) => {
           assert.ok(exists);
         });
@@ -82,48 +73,50 @@ describe('keyStoreModel Test', () => {
     describe('importcert', () => {
       it('Should import a CA cert', () => keygen.importcert({
         alias: 'CA',
-        password: options.password,
-        keystore: options.keystore,
+        password: keystore.password,
+        id: keystore.id,
       }, uniquepath, 'CA.crt'));
-      it('should import a signed cert', () => keygen.importcert(options, uniquepath, 'temp.crt'));
+      it('should import a signed cert', () => keygen.importcert(keystore, uniquepath, 'temp.crt'));
     });
 
     after(() => fsp.readdir(`temp/${uniquepath}`)
       .then((files) => {
-        filePromises = [];
+        const filePromises = [];
         files.forEach((file) => {
           filePromises.push(fsp.unlink(`temp/${uniquepath}/${file}`));
         });
         return Promise.all(filePromises);
       })
       .then(() => fsp.rmdir(`temp/${uniquepath}`)));
-  })
+  });
 
 
   describe('full tests', () => {
-    const fulloptionsUn = {
-      cn: 'unsignedfulltest.com',
-      ou: 'hattmo',
-      o: 'universe',
+    const fullkeystoreun = {
       alias: 'mykey',
       password: 'password',
-      keystore: 'unsignedfulltestkeystore',
+      id: 'unsignedfulltestkeystore',
     };
-    const fulloptions = {
-      cn: 'signedfulltest.com',
-      ou: 'hattmo',
-      o: 'universe',
+    const fullkeystore = {
       alias: 'mykey',
       password: 'password',
-      keystore: 'signedfulltestkeystore',
+      id: 'signedfulltestkeystore',
     };
+
+    const fulloptun = {
+      dname: 'CN=unsignedfulltest.com, OU=hattmo, O=universe',
+    };
+    const fullopt = {
+      dname: 'CN=signedfulltest.com, OU=hattmo, O=universe',
+    };
+
     describe('generateKeyStore', () => {
-      it('Should generate a keystore with a unsiqned cert', () => keygen.generateKeyStore(fulloptionsUn)).timeout(0)
-      it('Should generate a keystore with a signed cert', () => keygen.generateKeyStore(fulloptions, caOptions)).timeout(0)
+      it('Should generate a keystore with a unsiqned cert', () => keygen.generateKeyStore(fullkeystoreun, fulloptun)).timeout(0);
+      it('Should generate a keystore with a signed cert', () => keygen.generateKeyStore(fullkeystore, fullopt, cakeystore)).timeout(0);
     });
 
-    after(() => fsp.unlink(`keystores/${fulloptionsUn.keystore}.jks`)
-      .then(() => fsp.unlink(`keystores/${fulloptions.keystore}.jks`))
-      .then(() => fsp.unlink(`keystores/${caOptions.keystore}.jks`)));
-  })
-})
+    after(() => fsp.unlink(`keystores/${fullkeystoreun.id}.jks`)
+      .then(() => fsp.unlink(`keystores/${fullkeystore.id}.jks`))
+      .then(() => fsp.unlink(`keystores/${cakeystore.id}.jks`)));
+  });
+});

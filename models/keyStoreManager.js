@@ -1,32 +1,32 @@
 const keystores = {
   stores: [],
   /**
-   * @param {Object} opt
-   * @param {String} opt.alias
-   * @param {String} opt.password
-   * @param {String} opt.keystore
+   * @param {Object} keystore
+   * @param {String} keystore.alias
+   * @param {String} keystore.password
+   * @param {String} keystore.id
    */
-  addKeystore: (opt) => {
-    const index = keystores.stores.findIndex(ele => ele.keystore === opt.keystore);
+  addKeystore: (keystore) => {
+    const index = keystores.stores.findIndex(ele => ele.id === keystore.id);
     if (index !== -1) {
-      keystores.stores[index] = opt;
+      keystores.stores[index] = keystore;
     } else {
-      keystores.stores.push(opt);
+      keystores.stores.push(keystore);
     }
   },
   /**
-   * @param {string} opt keystore name to remove from the manager
-   * @param {object} opt keystore object with keystore name to remove from the manager
-   * @param {string} opt.keystore keystore name to remove from the manager
+   * @param {string} keystore keystore name to remove from the manager
+   * @param {object} keystore keystore object with keystore name to remove from the manager
+   * @param {string} keystore.id keystore name to remove from the manager
    */
-  removeKeystore: (opt) => {
+  removeKeystore: (keystore) => {
     let storename;
-    if (typeof opt !== 'string') {
-      storename = opt.keystore;
+    if (typeof keystore !== 'string') {
+      storename = keystore.id;
     } else {
-      storename = opt;
+      storename = keystore;
     }
-    const index = keystores.stores.findIndex(ele => ele.keystore === storename);
+    const index = keystores.stores.findIndex(ele => ele.id === storename);
     if (index !== -1) {
       keystores.stores.splice(index, 1);
     }
@@ -35,7 +35,7 @@ const keystores = {
    * Finds and returns a keystore object with the same keystore name ks otherwise returns undefined
    * @param {string} ks keystore name to get keystore object
    */
-  getKeystore: ks => keystores.stores.find(val => val.keystore === ks),
+  getKeystore: ks => keystores.stores.find(val => val.id === ks),
 
 };
 
