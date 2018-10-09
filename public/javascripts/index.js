@@ -15,11 +15,13 @@ function postKeyStores() {
     const cn = document.getElementById('cn').value;
     const ou = document.getElementById('ou').value;
     const o = document.getElementById('o').value;
+    const id = document.getElementById('id').value;
+    const password = document.getElementById('password').value;
     const output = {
       keystore: {
         alias: 'mykey',
-        password: document.getElementById('password').value,
-        id: document.getElementById('cn').value,
+        password,
+        id,
       },
       opt: {
         dname: `CN=${cn}, OU=${ou}, O=${o}`,

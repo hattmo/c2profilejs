@@ -28,7 +28,15 @@ const keygen = {
           reject(err);
         });
       } else {
-        resolve();
+        fsp.readdir(dir).then((files) => {
+          const filePromises = [];
+          files.forEach((file) => {
+            filePromises.push(fsp.unlink(`${dir}/${file}`));
+          });
+          return Promise.all(filePromises);
+        }).then(() => {
+          resolve();
+        });
       }
     });
   }),
