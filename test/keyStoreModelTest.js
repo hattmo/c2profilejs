@@ -111,8 +111,8 @@ describe('keyStoreModel Test', () => {
     };
 
     describe('generateKeyStore', () => {
-      it('Should generate a keystore with a unsiqned cert', () => keygen.generateKeyStore(fullkeystoreun, fulloptun)).timeout(0);
-      it('Should generate a keystore with a signed cert', () => keygen.generateKeyStore(fullkeystore, fullopt, cakeystore)).timeout(0);
+      it('Should generate a keystore with a unsiqned cert', () => keygen.generateKeyStore(fullkeystoreun, fulloptun));
+      it('Should generate a keystore with a signed cert', () => keygen.generateKeyStore(fullkeystore, fullopt, cakeystore));
     });
 
     after(() => fsp.unlink(`keystores/${fullkeystoreun.id}.jks`)
