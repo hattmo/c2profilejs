@@ -7,8 +7,9 @@ cache:
   directories:
   - node_modules
 before_deploy:
+- npm run build
 - docker login -u hattmo -p $DOCKERHUB_PW
-- VERSION="$(node getversion)"
+- VERSION="$(node -e "console.log(require('./package.json').version)")"
 - export VERSION
 - docker build -t hattmo/c2profilejs:latest -t hattmo/c2profilejs:$VERSION .
 deploy:
@@ -19,4 +20,5 @@ deploy:
     branch: master
 env:
   global:
+    - NODE_ENV=production
     secure: txNaNnsggpnCRgFH1fgo6HFXtqWRKfCWfo4EIdu3X7ogxmxvr6yk1bVK/zSJLINjDOtRuSYSXiYBrjrDHE3dugp4tvfZPcBSn+K+z4UEmvtKPfapCXEOhx8+Vo6lEm0TGzw9PwKp+FcybhcGtGaalb/Wx3YWBfqrkahslJfbzjUf3to9qfmtjymcMdYWQZUuMk2Y29qN6WZDurMsTM7HiADNmrX0h+MizU0v8ccv9PrlQjNNUPHa1yLS+mTgi2SuVhbpTan11/q3HbWmvJmg1dAmoTU/tNT6iJzg8GcxBox7a5HhlDqL85GEswCJIsRx6dYdQz+Vt4xij5Kfc1R7/NWemyy2ALlGPLhm4jU4djq9cg10Hdj1Qw5o4y6UlsQf/NFNuJYwnFkG4JMCkKbMClr90VuixxHyt5mKDEITdVygQttYpDxDXUCinKFGg2Bn93tVeE6hLyGlrpVc4bvHPnpl8tUNFMuH4J5b0G31yhOr9UH3Bpa5fkCAL4U4LegjWSxyEv+tCS/ijtoWCA2gPUVCZVra1rwz5xrAAXRSeRSGpXgd5Vp0xvlKZkJq/OCpbE3QHsPR+aLC4NcfLP5jRO+9PvUXUKjREi9Y3aAUyHrRLSs26/jn64tHzCI9T3rq5tc3YEBYtgYKyVh0muK7iCUclrNgHKJ/GJivnlJafX8=

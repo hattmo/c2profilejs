@@ -1,7 +1,4 @@
 const schema = {
-  $id: 'postKeystoresSchema',
-  title: 'postKeystoresSchema',
-  description: 'A post request to keystores',
   type: 'object',
   required: ['keystore', 'opt'],
   additionalProperties: false,

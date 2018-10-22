@@ -13,17 +13,26 @@ const termination = {
   pattern: '^(header ".+"|parameter ".+"|print|uri-append)$',
 };
 
-const headparam = {
+const options = {
   type: 'array',
   items: {
-    type: 'string',
-    pattern: '^".+" ".+"$',
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      key: {
+        type: 'string',
+      },
+      value: {
+        type: 'string',
+      },
+    },
   },
 };
 
 const mutation = {
   type: 'object',
   additionalProperties: false,
+  required: ['termination'],
   properties: {
     transform,
     termination,
@@ -33,7 +42,14 @@ const mutation = {
 const schema = {
   type: 'object',
   additionalProperties: false,
+  required: ['id'],
   properties: {
+    id: {
+      type: 'string',
+      pattern: '^\\w+$',
+      maxLength: 250,
+    },
+    globaloptions: options,
     httpget: {
       type: 'object',
       additionalProperties: false,
@@ -49,8 +65,8 @@ const schema = {
           type: 'object',
           additionalProperties: false,
           properties: {
-            header: headparam,
-            parameter: headparam,
+            header: options,
+            parameter: options,
             metadata: mutation,
           },
         },
@@ -58,8 +74,8 @@ const schema = {
           type: 'object',
           additionalProperties: false,
           properties: {
-            header: headparam,
-            parameter: headparam,
+            header: options,
+            parameter: options,
             output: mutation,
           },
         },
@@ -80,8 +96,8 @@ const schema = {
           type: 'object',
           additionalProperties: false,
           properties: {
-            header: headparam,
-            parameter: headparam,
+            header: options,
+            parameter: options,
             id: mutation,
             output: mutation,
           },
@@ -90,8 +106,8 @@ const schema = {
           type: 'object',
           additionalProperties: false,
           properties: {
-            header: headparam,
-            parameter: headparam,
+            header: options,
+            parameter: options,
             output: mutation,
           },
         },
@@ -111,8 +127,8 @@ const schema = {
           type: 'object',
           additionalProperties: false,
           properties: {
-            header: headparam,
-            parameter: headparam,
+            header: options,
+            parameter: options,
             output: mutation,
           },
         },

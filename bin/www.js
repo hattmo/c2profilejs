@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
-const debug = require('debug')('c2profilejs:server');
 const http = require('http');
-const app = require('../app');
-const keystoremodel = require('../models/keyStoreModel');
+const app = require('./app');
+const keystorefunc = require('../helpers/keyStoreFunctions');
 
 
 const port = 80;
@@ -16,17 +15,13 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof port === 'string'
-    ? `Pipe ${port}`
-    : `Port ${port}`;
-
   switch (error.code) {
     case 'EACCES':
-      console.error(`${bind} requires elevated privileges`);
+      console.error(`Port ${port} requires elevated privileges`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(`${bind} is already in use`);
+      console.error(`Port ${port} is already in use`);
       process.exit(1);
       break;
     default:
@@ -36,16 +31,13 @@ function onError(error) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? `pipe ${addr}`
-    : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
+  console.log(`Listening on port ${addr.port}`);
 }
 
-keystoremodel.checkDirs().then(() => {
+keystorefunc.checkDirs().then(() => {
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
 }).catch(() => {
-  console.error('failed to create directories for certs');
+  console.error('Failed to create directories for certs');
 });
