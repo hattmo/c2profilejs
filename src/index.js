@@ -1,3 +1,8 @@
+/* eslint import/no-extraneous-dependencies: 0 */
+require('bootstrap');
+require('bootstrap/dist/css/bootstrap.min.css');
+require('./style.css');
+
 async function getKeyStores() {
   const response = await fetch('/keystores');
   return response.json();

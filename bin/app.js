@@ -8,7 +8,7 @@ const profiles = require('../routes/profiles');
 
 const app = express();
 app.use(logger(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, '../dist')));
 app.use(express.json());
 app.use('/keystores', keystores);
 app.use('/profiles', profiles);
