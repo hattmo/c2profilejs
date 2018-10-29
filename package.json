@@ -2,6 +2,11 @@
   "name": "c2profilejs",
   "version": "0.3.0",
   "private": true,
+  "author": {
+    "name": "Matthew Howard",
+    "email": "matthew@hattmo.com",
+    "url": "https://hattmo.com"
+  },
   "scripts": {
     "start": "cross-per-env",
     "start:production": "node --no-warnings ./bin/www",
@@ -18,14 +23,13 @@
   "dependencies": {
     "cross-per-env": "^1.0.5",
     "debug": "~2.6.9",
-    "express": "~4.16.0",
+    "express": "^4.16.4",
     "express-fileupload": "^0.4.0",
     "express-json-validator-middleware": "^1.2.3",
-    "morgan": "~1.9.0",
+    "morgan": "^1.9.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "ajv": "^6.5.4",
     "bootstrap": "^4.1.3",
     "chai": "^4.2.0",
     "css-loader": "^1.0.0",

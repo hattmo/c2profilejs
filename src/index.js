@@ -1,11 +1,14 @@
 /* eslint import/no-extraneous-dependencies: 0 */
 require('bootstrap');
 require('bootstrap/dist/css/bootstrap.min.css');
-require('./style.css');
+const $ = require('jquery');
 
 async function getKeyStores() {
-  const response = await fetch('/keystores');
-  return response.json();
+  return (await fetch('/keystores')).json();
+}
+
+async function getKeystore(store) {
+  return (await fetch(`/keystores/${store}`)).json();
 }
 
 async function postKeyStores() {
@@ -36,16 +39,46 @@ async function postKeyStores() {
 }
 
 function populateKeystores(data) {
-  const select = document.getElementById('signKeystores');
-  while (select.childNodes.length >= 1) {
-    select.removeChild(select.firstChild);
-  }
-  data.forEach((keystore) => {
-    const newOption = document.createElement('option');
-    newOption.value = keystore;
-    newOption.text = keystore;
-    select.appendChild(newOption);
+  $('#signKeystores').empty();
+  data.forEach((item) => {
+    $('<option>')
+      .val(item)
+      .html(item)
+      .appendTo($('#signKeystores'));
   });
+
+  Promise.all(data.map(i => getKeystore(i)))
+    .then((details) => {
+      $('#keystorelist').empty();
+      details.forEach((detail) => {
+        console.log('im here');
+        const collapse = $('<div>')
+          .addClass('collapse')
+          .attr({
+            id: `${detail.keystore.id}collapse`,
+          })
+          .append($('<p>').text(`dname: ${detail.opt.dname}`));
+        if (detail.ca) {
+          collapse.append($('<p>').text('Signed'));
+        } else {
+          collapse.append($('<p>').text('Self-Signed'));
+        }
+        collapse.append($('<a>')
+          .attr({
+            href: `/keystores/${detail.keystore.id}?download=true`,
+          })
+          .text('download'));
+        $('<div>')
+          .addClass('list-group-item list-group-item-action')
+          .attr({
+            'data-toggle': 'collapse',
+            href: `#${detail.keystore.id}collapse`,
+          })
+          .html(detail.keystore.id)
+          .append(collapse)
+          .appendTo($('#keystorelist'));
+      });
+    });
 }
 
 // function download(filename, text) {

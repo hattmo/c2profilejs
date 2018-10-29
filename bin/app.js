@@ -22,11 +22,10 @@ app.use((err, req, res, next) => {
     console.error('invalid json');
     res.sendStatus(400);
   } else if (err === 404) {
-    console.log('no match');
     res.sendStatus(404);
   } else {
-    console.log('error');
     res.sendStatus(500);
+    console.log(err);
   }
 });
 

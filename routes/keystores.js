@@ -1,4 +1,5 @@
 const route = require('express').Router();
+const path = require('path');
 const { Validator } = require('express-json-validator-middleware');
 const keystoremodel = require('../models/keyStoreModel');
 const postKeystoresScema = require('../helpers/schemas/postKeystoresSchema');
@@ -6,21 +7,14 @@ const postKeystoresScema = require('../helpers/schemas/postKeystoresSchema');
 const validator = new Validator({ allErrors: true });
 
 route.post('/', validator.validate({ body: postKeystoresScema }), async (req, res) => {
-  let ca;
-  if (req.body.ca) {
-    ca = keystoremodel.getKeystore(req.body.ca);
-    if (!ca) {
-      res.sendStatus(500);
-      return;
-    }
-  }
   try {
-    if (await keystoremodel.addKeystore(req.body.keystore, req.body.opt, ca)) {
+    if (await keystoremodel.addKeystore(req.body.keystore, req.body.opt, req.body.ca)) {
       res.sendStatus(200);
     } else {
       res.sendStatus(400);
     }
   } catch (err) {
+    console.error(err);
     res.sendStatus(500);
   }
 });
@@ -30,11 +24,19 @@ route.get('/', (req, res) => {
 });
 
 route.get('/:id', (req, res) => {
-  const keystore = keystoremodel.getKeystore(req.params.id);
-  if (keystore) {
-    res.json(keystore);
+  if (req.query.download) {
+    try {
+      res.download(path.join(__dirname, `../keystores/${req.params.id}.jks`), `${req.params.id}.jks`);
+    } catch (err) {
+      console.log(err);
+    }
   } else {
-    res.sendStatus(404);
+    const keystore = keystoremodel.getKeystore(req.params.id);
+    if (keystore) {
+      res.json(keystore);
+    } else {
+      res.sendStatus(404);
+    }
   }
 });
 

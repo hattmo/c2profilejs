@@ -1,5 +1,4 @@
 const path = require('path');
-// const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const pug = {
@@ -11,7 +10,6 @@ const css = {
   test: /\.css$/,
   use: ['style-loader', 'css-loader'],
 };
-
 
 const config = {
   entry: './src/index.js',
@@ -27,7 +25,7 @@ const config = {
       filename: 'index.html',
       template: './src/index.pug',
       inject: 'body',
-      minify: /staging|production/.test(process.env.NODE_ENV),
+      minify: /staging/.test(process.env.NODE_ENV),
     }),
   ],
 };

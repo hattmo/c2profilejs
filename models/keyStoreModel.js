@@ -10,9 +10,13 @@ const keystores = {
    * @param {string} keystore.id
    */
   addKeystore: async (keystore, opt, ca) => {
+    let caparams;
+    if (ca) {
+      caparams = keystores.getKeystore(ca).keystore;
+    }
     const index = keystores.store.findIndex(ele => ele.keystore.id === keystore.id);
     if (index === -1) {
-      await keygen.generateKeyStore(keystore, opt, ca);
+      await keygen.generateKeyStore(keystore, opt, caparams);
       const item = {
         keystore,
         opt,
@@ -27,16 +31,8 @@ const keystores = {
 
   /**
    * @param {string} keystore keystore name to remove from the manager
-   * @param {object} keystore keystore object with keystore name to remove from the manager
-   * @param {string} keystore.id keystore name to remove from the manager
    */
-  removeKeystore: async (keystore) => {
-    let storename;
-    if (typeof keystore !== 'string') {
-      storename = keystore.id;
-    } else {
-      storename = keystore;
-    }
+  removeKeystore: async (storename) => {
     const index = keystores.store.findIndex(ele => ele.keystore.id === storename);
     if (index !== -1) {
       const { id } = keystores.store[index].keystore;
