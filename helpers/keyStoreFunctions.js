@@ -20,12 +20,7 @@ const keygen = {
     try {
       await fsp.mkdir(dir);
     } catch (err) {
-      const files = await fsp.readdir(dir);
-      const filePromises = [];
-      files.forEach((file) => {
-        filePromises.push(fsp.unlink(`${dir}/${file}`));
-      });
-      await Promise.all(filePromises);
+      await Promise.all((await fsp.readdir(dir)).map(file => fsp.unlink(`${dir}/${file}`)));
     }
   },
 
@@ -76,11 +71,7 @@ const keygen = {
       await fsp.copyFile(`temp/${uniquepath}/${keystore.id}.jks`, `keystores/${keystore.id}.jks`);
     } finally {
       const files = await fsp.readdir(`temp/${uniquepath}`);
-      const filePromises = [];
-      files.forEach((file) => {
-        filePromises.push(fsp.unlink(`temp/${uniquepath}/${file}`));
-      });
-      await Promise.all(filePromises);
+      await Promise.all(files.map(file => fsp.unlink(`temp/${uniquepath}/${file}`)));
       await fsp.rmdir(`temp/${uniquepath}`);
     }
   },
@@ -95,7 +86,7 @@ const keygen = {
    * @param {String} opt.dname
    * @param {String} uniquepath
    */
-  genkeypair: async (keystore, opt, uniquepath) => execp(`keytool -genkeypair \
+  genkeypair: (keystore, opt, uniquepath) => execp(`keytool -genkeypair \
         -alias ${keystore.alias} \
         -keyalg RSA \
         -keysize 2048 \
@@ -113,7 +104,7 @@ const keygen = {
    * @param {String} keystore.id
    * @param {String} uniquepath
    */
-  certreq: async (keystore, uniquepath) => execp(`keytool -certreq \
+  certreq: (keystore, uniquepath) => execp(`keytool -certreq \
         -alias ${keystore.alias} \
         -file temp/${uniquepath}/temp.csr \
         -keypass ${keystore.password} \
@@ -130,7 +121,7 @@ const keygen = {
    * @param {String} keystore.id - signing keystore
    * @param {String} uniquepath
    */
-  gencert: async (keystore, uniquepath) => execp(`keytool -gencert\
+  gencert: (keystore, uniquepath) => execp(`keytool -gencert\
         -alias ${keystore.alias}\
         -infile temp/${uniquepath}/temp.csr\
         -outfile temp/${uniquepath}/temp.crt\
@@ -147,7 +138,7 @@ const keygen = {
    * @param {String} uniquepath
    * @param {String} file
    */
-  exportcert: async (keystore, uniquepath, file) => execp(`keytool -exportcert\
+  exportcert: (keystore, uniquepath, file) => execp(`keytool -exportcert\
         -alias ${keystore.alias}\
         -file temp/${uniquepath}/${file}\
         -storepass ${keystore.password}\
@@ -164,7 +155,7 @@ const keygen = {
    * @param {String} uniquepath
    * @param {String} file
    */
-  importcert: async (keystore, uniquepath, file) => execp(`keytool -importcert\
+  importcert: (keystore, uniquepath, file) => execp(`keytool -importcert\
             -noprompt -trustcacerts\
             -alias ${keystore.alias}\
             -file temp/${uniquepath}/${file}\

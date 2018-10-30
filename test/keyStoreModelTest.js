@@ -1,5 +1,7 @@
+/* eslint no-unused-expressions: 0 */
 const assert = require('assert');
 const fsp = require('fs').promises;
+const { expect } = require('chai');
 const keystoremanager = require('../models/keyStoreModel');
 
 describe('keyStoreManager Test', () => {
@@ -25,27 +27,27 @@ describe('keyStoreManager Test', () => {
 
   describe('addkeystore Test', () => {
     it('adds a keystore object to the keystore manager', async () => {
-      assert.strictEqual(await keystoremanager.addKeystore(keystoreObj1, opt), true);
+      expect(await keystoremanager.addKeystore(keystoreObj1, opt)).to.be.true;
       const found = keystoremanager.getKeystore(keystoreObj1.id);
-      assert.strictEqual(found.keystore, keystoreObj1);
+      expect(found.keystore).to.equal(keystoreObj1);
     });
     it('adds a keystore over another keystore', async () => {
-      assert.strictEqual(await keystoremanager.addKeystore(keystoreObj2, opt), false);
+      expect(await keystoremanager.addKeystore(keystoreObj2, opt)).to.be.false;
       const found = keystoremanager.getKeystore(keystoreObj2.id);
-      assert.notStrictEqual(found.keystore, keystoreObj2);
-      assert.strictEqual(found.keystore, keystoreObj1);
+      expect(found.keystore).to.not.equal(keystoreObj2);
+      expect(found.keystore).to.equal(keystoreObj1);
     });
   });
 
   describe('removeKeystore Test', () => {
     it('removes the keystore from the manager', async () => {
-      assert.strictEqual(await keystoremanager.removeKeystore(keystoreObj1), true);
-      assert.strictEqual(keystoremanager.getKeystore(keystoreObj1.id), undefined);
+      expect(await keystoremanager.removeKeystore(keystoreObj1.id)).to.be.true;
+      expect(keystoremanager.getKeystore(keystoreObj1.id)).to.be.undefined;
     });
     it('doesnt remove other keystores', async () => {
-      assert.strictEqual(await keystoremanager.addKeystore(keystoreObj1, opt), true);
-      assert.strictEqual(await keystoremanager.removeKeystore(notkeystoreObj1), false);
-      assert.strictEqual(keystoremanager.getKeystore(keystoreObj1.id).keystore, keystoreObj1);
+      expect(await keystoremanager.addKeystore(keystoreObj1, opt)).to.be.true;
+      expect(await keystoremanager.removeKeystore(notkeystoreObj1.id)).to.be.false;
+      expect(keystoremanager.getKeystore(keystoreObj1.id).keystore).to.equal(keystoreObj1);
     });
   });
   after(async () => {

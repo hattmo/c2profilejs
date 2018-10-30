@@ -1,0 +1,25 @@
+- let globaloptions = ['dns_idle','dns_max_txt','dns_sleep','dns_stager_prepend','dns_stager_subhost','dns_ttl','host_stage','jitter','maxdns','pipename','pipename_stager','sleeptime','spawnto_x86','spawnto_x64','useragent'];
+.container-fluid
+  .row
+    .col-sm-6
+      .container-fluid
+        .row
+          .col-sm-12
+            h4.text-center Global Options
+        .row
+          .col-sm-12
+            .container-fluid#globalOptionList
+        .row
+          .col-sm-12
+            .container-fluid
+              .row
+                .col-sm-3
+                  select.custom-select.form-control#globalOptionKey
+                    each val in globaloptions
+                      option(value=val)= val
+                .col-sm-6
+                  input.form-control#globalOptionValue(type="text")
+                .col-sm-3
+                  button.btn-block.btn#globalOptionAdd(type="button") Add
+    .col-sm-6
+      h4.text-center Profiles

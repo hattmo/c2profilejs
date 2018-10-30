@@ -12,11 +12,11 @@ async function getKeystore(store) {
 }
 
 async function postKeyStores() {
-  const cn = document.getElementById('cn').value;
-  const ou = document.getElementById('ou').value;
-  const o = document.getElementById('o').value;
-  const id = document.getElementById('id').value;
-  const password = document.getElementById('password').value;
+  const cn = $('#cn').val();
+  const ou = $('#ou').val();
+  const o = $('#o').val();
+  const id = $('#id').val();
+  const password = $('#password').val();
   const output = {
     keystore: {
       alias: 'mykey',
@@ -27,9 +27,8 @@ async function postKeyStores() {
       dname: `CN=${cn}, OU=${ou}, O=${o}`,
     },
   };
-  if (document.getElementById('sign').checked) {
-    const select = document.getElementById('signKeystores');
-    output.ca = select.options[select.selectedIndex].value;
+  if ($('#sign').is(':checked')) {
+    output.ca = $('#signKeystores').find(':selected').text();
   }
   await fetch('/keystores', {
     method: 'POST',
@@ -81,6 +80,31 @@ function populateKeystores(data) {
     });
 }
 
+function addGlobalOption(key, value) {
+  if ($(`#${key}`).length === 0) {
+    const newItem = $('<div>')
+      .addClass('row')
+      .attr('id', key)
+      .append($('<div>')
+        .addClass('col-md-3')
+        .append($('<p>')
+          .text(key)))
+      .append($('<div>')
+        .addClass('col-md-6')
+        .append($('<p>')
+          .text(value)))
+      .append($('<div>')
+        .addClass('col-md-3')
+        .append($('<button>')
+          .addClass('btn-danger btn-block btn')
+          .text('Delete')
+          .on('click', () => {
+            newItem.remove();
+          })));
+    $('#globalOptionList').append(newItem);
+  }
+}
+
 // function download(filename, text) {
 //   const element = document.createElement('a');
 //   element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`);
@@ -98,38 +122,24 @@ window.onload = async () => {
     console.error(reason);
   }
 
-  document.getElementById('generateBtn').addEventListener('click', async () => {
-    try {
-      document.getElementById('generateBtn').disabled = true;
-      await postKeyStores();
-      document.getElementById('generateBtn').disabled = false;
-      populateKeystores(await getKeyStores());
-    } catch (reason) {
-      console.error(reason);
+  $('#generateBtn').on('click', async () => {
+    $('#generateBtn').prop('disabled', true);
+    await postKeyStores();
+    $('#generateBtn').prop('disabled', false);
+    populateKeystores(await getKeyStores());
+  });
+
+  $('#sign').on('click', () => {
+    if ($('#sign').is(':checked')) {
+      $('#signKeystores').prop('disabled', false);
+    } else {
+      $('#signKeystores').prop('disabled', true);
     }
   });
 
-  document.getElementById('sign').addEventListener('click', () => {
-    if (document.getElementById('sign').checked === true) {
-      document.getElementById('signKeystores').disabled = false;
-    } else {
-      document.getElementById('signKeystores').disabled = true;
-    }
+  $('#globalOptionAdd').on('click', () => {
+    const key = $('#globalOptionKey').find(':selected').text();
+    const value = $('#globalOptionValue').val();
+    addGlobalOption(key, value);
   });
 };
-
-//     $('#show').click(() => {
-//         $('#keystoregen').toggle()
-//     })
-//   ('#keystoregen').hide()
-
-// function postCA() {
-//   const formData = new FormData($('#caForm')[0]);
-//   $.ajax('/cas', {
-//     url: '/cas',
-//     type: 'POST',
-//     processData: false,
-//     contentType: false,
-//     data: formData,
-//   });
-// }
