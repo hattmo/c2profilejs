@@ -50,9 +50,8 @@ function populateKeystores(data) {
     .then((details) => {
       $('#keystorelist').empty();
       details.forEach((detail) => {
-        console.log('im here');
         const collapse = $('<div>')
-          .addClass('collapse')
+          .addClass('collapse container-fluid')
           .attr({
             id: `${detail.keystore.id}collapse`,
           })
