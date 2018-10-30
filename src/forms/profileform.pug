@@ -1,0 +1,30 @@
+- const globaloptions = ['dns_idle','dns_max_txt','dns_sleep','dns_stager_prepend','dns_stager_subhost','dns_ttl','host_stage','jitter','maxdns','pipename','pipename_stager','sleeptime','spawnto_x86','spawnto_x64','useragent'];
+- const verbs = ['','GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+mixin headerparam(id)
+  .input-group.mb-3
+    .input-group-prepend
+      span.input-group-text Header
+    input.form-control(type='text')
+    input.form-control(type='text')
+    .input-group-append
+      button.btn.btn-primary(type='button') Add
+  .input-group.mb-3
+    .input-group-prepend
+      span.input-group-text Parameter
+    input.form-control(type='text')
+    input.form-control(type='text')
+    .input-group-append
+      button.btn.btn-primary(type='button') Add
+
+
+.container-fluid
+  .row
+    .col-md-9
+      .container-fluid
+        include cards/globaloptions
+        include cards/httpget
+        include cards/httppost
+        include cards/httpstager
+        button.btn.btn-success.btn-block(type='button') Build
+    .col-md-3.hidden-sm-down
+      h4.text-center Profiles
