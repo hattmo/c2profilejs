@@ -1,5 +1,4 @@
 /* eslint no-unused-expressions: 0 */
-const assert = require('assert');
 const fsp = require('fs').promises;
 const { expect } = require('chai');
 const keystoremanager = require('../models/keyStoreModel');
