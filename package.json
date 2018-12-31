@@ -42,7 +42,7 @@
     "htmlhint": "^0.10.1",
     "jquery": "^3.3.1",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.3",
+    "nodemon": "^1.18.9",
     "popper.js": "^1.14.4",
     "pug-html-loader": "^1.1.5",
     "style-loader": "^0.23.1",
