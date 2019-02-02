@@ -1,5 +1,8 @@
 - const globaloptions = ['dns_idle','dns_max_txt','dns_sleep','dns_stager_prepend','dns_stager_subhost','dns_ttl','host_stage','jitter','maxdns','pipename','pipename_stager','sleeptime','spawnto_x86','spawnto_x64','useragent'];
 - const verbs = ['','GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+- const transforms = ['append', 'base64', 'base64url', 'mask', 'netbios', 'netbiosu', 'prepend'];
+- const terminations = ['header', 'parameter', 'print', 'uri-append'];
+
 mixin headerparam(id)
   .input-group.mb-3
     .input-group-prepend
@@ -16,6 +19,21 @@ mixin headerparam(id)
     .input-group-append
       button.btn.btn-primary(type='button') Add
 
+mixin mutation(id)
+  .input-group.mb-3
+    .input-group-prepend
+      span.input-group-text Mutation
+    select.custom-select
+      option
+      option(disabled) ----Transform----
+      each val in transforms
+        option(value=val)=val
+      option(disabled) ----Termination----
+      each val in terminations
+        option(value=val)=val
+    input.form-control(type='text')
+    .input-group-append
+      button.btn.btn-primary(type='button') Add
 
 .container-fluid
   .row
