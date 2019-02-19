@@ -4,7 +4,8 @@ require('bootstrap/dist/css/bootstrap.min.css');
 const $ = require('jquery');
 const optdata = require('./js/optionsdata');
 
-const headparmsections = ['httpgetclientheader',
+const headparmsections = [
+  'httpgetclientheader',
   'httpgetserverheader',
   'httpgetclientparameter',
   'httpgetserverparameter',
@@ -14,6 +15,13 @@ const headparmsections = ['httpgetclientheader',
   'httppostserverparameter',
   'httpstagerheader',
   'httpstagerparameter'];
+const tranformsections = [
+  'httpgetclienttransform',
+  'httpgetservertransform',
+  'httppostclienttransform',
+  'httppostservertransform',
+  'httpstagertransform',
+];
 
 function addOption(value, parent, list, index) {
   const pill = $(`
@@ -29,7 +37,14 @@ function addOption(value, parent, list, index) {
   });
   parent.append(pill);
 }
-
+function addTransformEvent(section) {
+  $(`#${section}Add`).on('click', () => {
+    const key = $(`#${section}Key`).find(':selected').text();
+    const value = $(`#${section}Value`).val();
+    const id = optdata.add(`${section}List`, { key, value });
+    addOption(`${key} ${value}`, $(`#${section}List`), `${section}List`, id);
+  });
+}
 function addHeaderParamEvent(section) {
   $(`#${section}Add`).on('click', () => {
     const key = $(`#${section}Key`).val();
@@ -146,5 +161,8 @@ window.onload = async () => {
 
   headparmsections.forEach((val) => {
     addHeaderParamEvent(val);
+  });
+  tranformsections.forEach((val) => {
+    addTransformEvent(val);
   });
 };

@@ -21,21 +21,28 @@ mixin headerparam(id)
     .input-group-append
       button.btn.btn-primary(type='button',id=`${id}parameterAdd`) Add
 
-mixin mutation(id)
+mixin transform(id)
+  .card-body.container-fluid(id=`${id}transformList`)
   .input-group.mb-3
     .input-group-prepend
-      span.input-group-text Mutation
-    select.custom-select
+      span.input-group-text Transform
+    select.custom-select(id=`${id}transformKey`)
       option
-      option(disabled) ----Transform----
       each val in transforms
         option(value=val)=val
-      option(disabled) ----Termination----
+    input.form-control(type='text',  id=`${id}transformValue`)
+    .input-group-append
+      button.btn.btn-primary(type='button',id=`${id}transformAdd`) Add
+
+mixin termination(id)
+  .input-group.mb-3
+    .input-group-prepend
+      span.input-group-text Termination
+    select.custom-select
+      option
       each val in terminations
         option(value=val)=val
     input.form-control(type='text')
-    .input-group-append
-      button.btn.btn-primary(type='button') Add
 
 .container-fluid
   .row
