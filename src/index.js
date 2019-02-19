@@ -3,6 +3,7 @@ require('bootstrap');
 require('bootstrap/dist/css/bootstrap.min.css');
 const $ = require('jquery');
 const optdata = require('./js/optionsdata');
+const profilebuilder = require('./js/profilebuilder');
 
 const headparmsections = [
   'httpgetclientheader',
@@ -51,6 +52,15 @@ function addHeaderParamEvent(section) {
     const value = $(`#${section}Value`).val();
     const id = optdata.add(`${section}List`, { key, value });
     addOption(`${key} ${value}`, $(`#${section}List`), `${section}List`, id);
+  });
+}
+
+async function postProfiles() {
+  const output = profilebuilder.build(optdata, $);
+  await fetch('/profiles', {
+    method: 'POST',
+    body: JSON.stringify(output),
+    headers: new Headers({ 'content-type': 'application/json' }),
   });
 }
 
@@ -142,6 +152,13 @@ window.onload = async () => {
     await postKeyStores();
     $('#generateBtn').prop('disabled', false);
     populateKeystores(await getKeyStores());
+  });
+
+  $('#buildBtn').on('click', async () => {
+    $('#buildBtn').prop('disabled', true);
+    await postProfiles();
+    $('#buildBtn').prop('disabled', false);
+    //  populateProfile(await getProfiles());
   });
 
   $('#sign').on('click', () => {

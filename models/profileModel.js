@@ -7,6 +7,7 @@ const profiles = {
     const index = profiles.store.findIndex(ele => ele.profile.id === profile.id);
     if (index === -1) {
       const compiled = parser(profile);
+      console.log(compiled);
       const item = {
         compiled,
         profile,
@@ -40,3 +41,5 @@ const profiles = {
   getKeystores: () => profiles.store.map(item => item.profile.id),
 
 };
+
+module.exports = profiles;
