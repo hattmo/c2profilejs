@@ -1,23 +1,25 @@
-- const globaloptions = ['dns_idle','dns_max_txt','dns_sleep','dns_stager_prepend','dns_stager_subhost','dns_ttl','host_stage','jitter','maxdns','pipename','pipename_stager','sleeptime','spawnto_x86','spawnto_x64','useragent'];
+- const globaloption = ['dns_idle','dns_max_txt','dns_sleep','dns_stager_prepend','dns_stager_subhost','dns_ttl','host_stage','jitter','maxdns','pipename','pipename_stager','sleeptime','spawnto_x86','spawnto_x64','useragent'];
 - const verbs = ['','GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 - const transforms = ['append', 'base64', 'base64url', 'mask', 'netbios', 'netbiosu', 'prepend'];
 - const terminations = ['header', 'parameter', 'print', 'uri-append'];
 
 mixin headerparam(id)
+  .card-body.container-fluid(id=`${id}headerList`)
   .input-group.mb-3
     .input-group-prepend
       span.input-group-text Header
-    input.form-control(type='text')
-    input.form-control(type='text')
+    input.form-control(type='text', id=`${id}headerKey`)
+    input.form-control(type='text', id=`${id}headerValue`)
     .input-group-append
-      button.btn.btn-primary(type='button') Add
+      button.btn.btn-primary(type='button',id=`${id}headerAdd`) Add
+  .card-body.container-fluid(id=`${id}parameterList`)
   .input-group.mb-3
     .input-group-prepend
       span.input-group-text Parameter
-    input.form-control(type='text')
-    input.form-control(type='text')
+    input.form-control(type='text', id=`${id}parameterKey`)
+    input.form-control(type='text', id=`${id}parameterValue`)
     .input-group-append
-      button.btn.btn-primary(type='button') Add
+      button.btn.btn-primary(type='button',id=`${id}parameterAdd`) Add
 
 mixin mutation(id)
   .input-group.mb-3
@@ -39,7 +41,7 @@ mixin mutation(id)
   .row
     .col-md-9
       .container-fluid
-        include cards/globaloptions
+        include cards/globaloption
         include cards/httpget
         include cards/httppost
         include cards/httpstager

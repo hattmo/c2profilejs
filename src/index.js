@@ -2,6 +2,42 @@
 require('bootstrap');
 require('bootstrap/dist/css/bootstrap.min.css');
 const $ = require('jquery');
+const optdata = require('./js/optionsdata');
+
+const headparmsections = ['httpgetclientheader',
+  'httpgetserverheader',
+  'httpgetclientparameter',
+  'httpgetserverparameter',
+  'httppostclientheader',
+  'httppostserverheader',
+  'httppostclientparameter',
+  'httppostserverparameter',
+  'httpstagerheader',
+  'httpstagerparameter'];
+
+function addOption(value, parent, list, index) {
+  const pill = $(`
+  <a href='javascript:void(0);'>
+    <div class="badge badge-pill badge-primary">
+      ${value}  x
+    </div>
+  </a>
+  `);
+  pill.on('click', () => {
+    optdata.clear(list, index);
+    pill.remove();
+  });
+  parent.append(pill);
+}
+
+function addHeaderParamEvent(section) {
+  $(`#${section}Add`).on('click', () => {
+    const key = $(`#${section}Key`).val();
+    const value = $(`#${section}Value`).val();
+    const id = optdata.add(`${section}List`, { key, value });
+    addOption(`${key} ${value}`, $(`#${section}List`), `${section}List`, id);
+  });
+}
 
 async function getKeyStores() {
   return (await fetch('/keystores')).json();
@@ -79,41 +115,6 @@ function populateKeystores(data) {
     });
 }
 
-function addGlobalOption(key, value) {
-  if ($(`#${key}`).length === 0) {
-    const newItem = $('<div>')
-      .addClass('row')
-      .attr('id', key)
-      .append($('<div>')
-        .addClass('col-md-3')
-        .append($('<p>')
-          .text(key)))
-      .append($('<div>')
-        .addClass('col-md-6')
-        .append($('<p>')
-          .text(value)))
-      .append($('<div>')
-        .addClass('col-md-3')
-        .append($('<button>')
-          .addClass('btn-danger btn-block btn')
-          .text('Delete')
-          .on('click', () => {
-            newItem.remove();
-          })));
-    $('#globalOptionList').append(newItem);
-  }
-}
-
-// function download(filename, text) {
-//   const element = document.createElement('a');
-//   element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`);
-//   element.setAttribute('download', filename);
-//   element.style.display = 'none';
-//   document.body.appendChild(element);
-//   element.click();
-//   document.body.removeChild(element);
-// }
-
 window.onload = async () => {
   try {
     populateKeystores(await getKeyStores());
@@ -136,9 +137,14 @@ window.onload = async () => {
     }
   });
 
-  $('#globalOptionAdd').on('click', () => {
-    const key = $('#globalOptionKey').find(':selected').text();
-    const value = $('#globalOptionValue').val();
-    addGlobalOption(key, value);
+  $('#globaloptionAdd').on('click', () => {
+    const key = $('#globaloptionKey').find(':selected').text();
+    const value = $('#globaloptionValue').val();
+    const id = optdata.add('globaloptionList', { key, value });
+    addOption(`${key} ${value}`, $('#globaloptionList'), 'globaloptionList', id);
+  });
+
+  headparmsections.forEach((val) => {
+    addHeaderParamEvent(val);
   });
 };
