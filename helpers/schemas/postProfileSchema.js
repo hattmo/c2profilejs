@@ -42,9 +42,9 @@ const mutation = {
 const schema = {
   type: 'object',
   additionalProperties: false,
-  required: ['id'],
+  required: ['name'],
   properties: {
-    id: {
+    name: {
       type: 'string',
       pattern: '^\\w+$',
       maxLength: 250,

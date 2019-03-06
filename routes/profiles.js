@@ -5,11 +5,6 @@ const profilemodel = require('../models/profileModel');
 
 const validator = new Validator({ allErrors: true });
 
-route.post('/', validator.validate({ body: postProfileScema }), (req, res) => {
-  res.sendStatus(200);
-});
-
-
 route.post('/', validator.validate({ body: postProfileScema }), (req, res, next) => {
   try {
     if (profilemodel.addProfile(req.body)) {
