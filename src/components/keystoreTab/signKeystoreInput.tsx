@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ChangeEvent } from 'react';
 import { InputGroup, Form } from 'react-bootstrap';
 
 interface Props {
@@ -8,6 +8,20 @@ interface Props {
 
 
 export default class signKeystoreInput extends Component<Props> {
+    state = {
+        isChecked: false
+    }
+
+    constructor(props) {
+        super(props);
+        this.onChecked = this.onChecked.bind(this);
+    }
+    onChecked(event: ChangeEvent<HTMLInputElement>): void {
+        this.setState({
+            isChecked: event.target.checked
+        })
+    }
+
     render() {
         return (
             <InputGroup className='mb-2'>
@@ -15,9 +29,9 @@ export default class signKeystoreInput extends Component<Props> {
                     <InputGroup.Text>
                         Sign
                     </InputGroup.Text>
-                    <InputGroup.Checkbox />
+                    <InputGroup.Checkbox disabled={!this.props.keystores.length} onChange={this.onChecked} />
                 </InputGroup.Prepend>
-                <Form.Control as="select">
+                <Form.Control disabled={!this.state.isChecked} as="select">
                     {this.props.keystores.map((val) => {
                         return (<option key={val}>{val}</option>)
                     })}
