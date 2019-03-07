@@ -5,11 +5,6 @@
     "tasks": [
         {
             "type": "npm",
-            "script": "devstart",
-            "problemMatcher": []
-        },
-        {
-            "type": "npm",
             "script": "install",
             "problemMatcher": []
         },
