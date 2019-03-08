@@ -38,7 +38,7 @@ export default class KeystorePanel extends Component<Props, State> {
     render() {
         return (
             <Card className='mx-3'>
-                <Card.Header onClick={this.handleClick}><h5>{this.props.title}</h5></Card.Header>
+                <Card.Header onClick={this.handleClick}><h5 className='text-center' style={{ cursor: 'pointer' }}>{this.props.title}</h5></Card.Header>
                 {this.buildCardBody()}
             </Card>
         )

@@ -2,9 +2,10 @@ import * as React from 'react'
 import { Component } from 'react'
 import { Row, Col, Container } from 'react-bootstrap';
 import KeystoreForm from './keystoreForm';
-import KeystorePanel from './keystorePanel';
 import Keystore from '../../interfaces/keystore';
 import KeystoreList from './keystoreList';
+import CollapsablePanel from '../utility/collapsablePanel';
+import KeystoreData from './keystoreData';
 
 
 interface State {
@@ -37,7 +38,11 @@ export default class KeystoreTab extends Component<Props, State> {
     }
     buildPanels(): JSX.Element[] {
         return this.state.keystores.map((val) => {
-            return (<KeystorePanel ca={val.ca} dname={val.opt.dname} title={val.keystore.id} key={val.keystore.id} ></KeystorePanel>)
+            return (
+                <CollapsablePanel title={val.keystore.id} key={val.keystore.id} >
+                    <KeystoreData ca={val.ca} dname={val.opt.dname} title={val.keystore.id} />
+                </CollapsablePanel>
+            )
         })
     }
     render(): JSX.Element {
