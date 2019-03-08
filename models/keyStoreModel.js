@@ -51,7 +51,7 @@ const keystores = {
   /**
    * @returns {array}
    */
-  getKeystores: () => keystores.store.map(item => item.keystore.id),
+  getKeystores: () => keystores.store//.map(item => item.keystore.id),
 
 };
 

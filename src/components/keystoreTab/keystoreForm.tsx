@@ -1,23 +1,29 @@
 import * as React from 'react'
-import { Component } from 'react'
-import { Row, Col, Container, Button, FormControl } from 'react-bootstrap';
+import { Component, ChangeEvent } from 'react'
+import { Row, Col, Container, Button} from 'react-bootstrap';
 import TextInput from './textInput';
 import SignKeystoreInput from './signKeystoreInput';
-import Keystore from './keystore';
-
-
+import Keystore from '../../interfaces/keystore';
 
 
 interface Props {
-
-}
-interface State {
+    onKeyStoreChange: () => Promise<void>
     keystores: Keystore[]
-    waitingForPost: boolean
 }
+
+interface State {
+    isChecked: boolean,
+    waitingForPost: boolean,
+    selectedVal: string
+}
+
 interface TextInputDef {
     text: string
     ref: string
+}
+
+interface DName {
+    [keys: string]: string
 }
 
 const inputs: TextInputDef[] = [
@@ -42,16 +48,30 @@ const inputs: TextInputDef[] = [
         ref: 'O'
     }
 ]
+
 export default class KeystoreForm extends Component<Props, State> {
-    currentKeyStore: Keystore = new Keystore();
-    currentDNameVals: Object = {}
+    currentKeyStore: Keystore = {
+        keystore: {
+            alias: 'mykey',
+            password: '',
+            id: ''
+        },
+        opt: {
+            dname: ''
+        }
+    }
+    currentDNameVals: DName = {}
+
     constructor(props: Props) {
         super(props)
         this.handleBuild = this.handleBuild.bind(this);
         this.handleInput = this.handleInput.bind(this);
+        this.handleChecked = this.handleChecked.bind(this);
+        this.handleSelected = this.handleSelected.bind(this);
         this.state = {
-            keystores: [],
+            isChecked: false,
             waitingForPost: false,
+            selectedVal: undefined
         }
     }
 
@@ -59,17 +79,23 @@ export default class KeystoreForm extends Component<Props, State> {
         this.setState({
             waitingForPost: true
         })
-        console.log(this.currentKeyStore)
+        this.currentKeyStore.ca = this.state.selectedVal
         try {
-            await fetch('/keystores', {
+            const res = await fetch('/keystores', {
                 method: 'POST',
                 body: JSON.stringify(this.currentKeyStore),
                 headers: new Headers({ 'content-type': 'application/json' })
             })
+            if (res.status !== 200) {
+
+            }
+            await this.props.onKeyStoreChange()
         } catch (e) {
             console.error('invalid keystore')
         }
         this.setState({
+            selectedVal: undefined,
+            isChecked: false,
             waitingForPost: false
         })
     }
@@ -94,7 +120,20 @@ export default class KeystoreForm extends Component<Props, State> {
         }
     }
 
-    buildTextInput() {
+    handleChecked(event: ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            isChecked: event.target.checked,
+            selectedVal: undefined
+        })
+    }
+
+    handleSelected(e: React.FormEvent<HTMLInputElement>) {
+        this.setState({
+            selectedVal: e.currentTarget.value
+        })
+    }
+
+    buildTextInput(): JSX.Element[] {
         return (
             inputs.map((val) => {
                 return (
@@ -103,7 +142,7 @@ export default class KeystoreForm extends Component<Props, State> {
             })
         )
     }
-    render() {
+    render(): JSX.Element {
         return (
             <Container fluid>
                 <Row>
@@ -114,7 +153,7 @@ export default class KeystoreForm extends Component<Props, State> {
                 <Row>
                     <Col sm='12'>
                         {this.buildTextInput()}
-                        <SignKeystoreInput keystores={this.state.keystores.map((val => val.keystore.id))} />
+                        <SignKeystoreInput selectedVal={this.state.selectedVal ? this.state.selectedVal : ''} onSelected={this.handleSelected} onChecked={this.handleChecked} isChecked={this.state.isChecked} keystores={this.props.keystores.map((val => val.keystore.id))} />
                     </Col>
                 </Row>
                 <Row>

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Component, SyntheticEvent } from 'react';
-import { InputGroup, FormControl } from 'react-bootstrap';
+import { Component } from 'react';
+import { InputGroup, FormControl, } from 'react-bootstrap';
 
 interface Props {
     text: string,
     id: string,
-    onInput: (e: React.FormEvent<HTMLInputElement>, id: string) => any
+    onInput: (event: any, id: string) => any
 }
 export default class TextInput extends Component<Props> {
 
@@ -21,7 +21,7 @@ export default class TextInput extends Component<Props> {
                         {this.props.text}
                     </InputGroup.Text>
                 </InputGroup.Prepend>
-                <FormControl onChange={(e) => this.props.onInput(e, this.props.id)} />
+                <FormControl type='text' onChange={(e => this.props.onInput(e, this.props.id))} />
             </InputGroup>
         )
     }
