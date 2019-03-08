@@ -1,0 +1,14 @@
+.card.m-2
+  .card-body
+    div(data-toggle='collapse', href='#globaloptionCollapse')
+      h4.card-title.text-center Global Options
+    .collapse#globaloptionCollapse
+      .card-body.container-fluid#globaloptionList
+      .input-group.mb-3
+        .input-group-prepend
+          select.custom-select.form-control#globaloptionKey
+            each val in globaloption
+              option(value=val)= val
+        input.form-control#globaloptionValue(type="text")
+        .input-group-append
+          button.btn-primary.btn#globaloptionAdd(type="button") Add

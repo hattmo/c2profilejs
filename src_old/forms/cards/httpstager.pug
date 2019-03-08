@@ -1,0 +1,28 @@
+.card.m-2
+  .card-body
+    div(data-toggle='collapse', href='#httpStagerCollapse')
+      h4.card-title.text-center HTTP Stager
+    .collapse.container-fluid#httpStagerCollapse
+      .row
+        .col-sm-6
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text URI_x86
+            input.form-control(type='text')
+        .col-sm-6
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text URI_x64
+            input.form-control(type='text')
+      .row
+        .col-sm-12
+          h5.text-center Server
+      .row
+        .col-sm-12
+          +headerparam('httpstager')
+      .row
+        .col-sm-12
+          +transform('httpstager')
+      .row
+        .col-sm-12
+          +termination
