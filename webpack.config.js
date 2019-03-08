@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
-
 const css = {
   test: /\.css$/,
   use: ['style-loader', 'css-loader'],
@@ -15,12 +14,12 @@ const ts = {
       loader: 'ts-loader',
       options: {
         compilerOptions: {
-          jsx: 'react'
-        }
-      }
-    }
-  ]
-}
+          jsx: 'react',
+        },
+      },
+    },
+  ],
+};
 
 const config = {
   entry: './src/index.tsx',
@@ -42,7 +41,7 @@ const config = {
     }),
   ],
   resolve: {
-    extensions: [' ', '.js', '.jsx', '.ts', '.tsx']
-  }
+    extensions: [' ', '.js', '.jsx', '.ts', '.tsx'],
+  },
 };
 module.exports = config;

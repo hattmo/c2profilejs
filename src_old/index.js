@@ -1,7 +1,8 @@
 /* eslint import/no-extraneous-dependencies: 0 */
 require('bootstrap');
 require('bootstrap/dist/css/bootstrap.min.css');
-const $ = require('jquery');
+
+const $ = {};
 const optdata = require('./js/optionsdata');
 const profilebuilder = require('./js/profilebuilder');
 
