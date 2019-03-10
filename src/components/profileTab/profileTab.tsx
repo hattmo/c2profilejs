@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import ProfileForm from './profileForm';
 
 export default class ProfileTab extends Component {
-    render() {
+    render() : JSX.Element{
         return (
             <Container fluid>
                 <Row>

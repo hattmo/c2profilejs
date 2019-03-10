@@ -13,7 +13,7 @@ export default class TextInput extends Component<Props> {
         super(props);
 
     }
-    render() {
+    render(): JSX.Element {
         return (
             <InputGroup className='mb-2'>
                 <InputGroup.Prepend>

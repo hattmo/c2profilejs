@@ -13,7 +13,7 @@ export default class KeystorePanel extends Component<Props, State> {
     state = {
         opened: false
     }
-    constructor(props: Readonly<Props>) {
+    constructor(props: Props) {
         super(props);
         this.buildCardBody = this.buildCardBody.bind(this)
         this.handleClick = this.handleClick.bind(this)
@@ -35,7 +35,7 @@ export default class KeystorePanel extends Component<Props, State> {
         }
     }
 
-    render() {
+    render() : JSX.Element {
         return (
             <Card className='mx-3'>
                 <Card.Header onClick={this.handleClick}><h5 className='text-center' style={{ cursor: 'pointer' }}>{this.props.title}</h5></Card.Header>

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Component, ChangeEvent } from 'react'
-import { Row, Col, Container, Button} from 'react-bootstrap';
+import { Row, Col, Container, Button } from 'react-bootstrap';
 import TextInput from './textInput';
 import SignKeystoreInput from './signKeystoreInput';
 import Keystore from '../../interfaces/keystore';
@@ -75,7 +75,7 @@ export default class KeystoreForm extends Component<Props, State> {
         }
     }
 
-    async handleBuild() {
+    async handleBuild(): Promise<void> {
         this.setState({
             waitingForPost: true
         })
@@ -100,7 +100,7 @@ export default class KeystoreForm extends Component<Props, State> {
         })
     }
 
-    handleInput(e: React.FormEvent<HTMLInputElement>, id: string) {
+    handleInput(e: React.FormEvent<HTMLInputElement>, id: string): void {
         const value = e.currentTarget.value
         switch (id) {
             case 'id':
@@ -120,14 +120,14 @@ export default class KeystoreForm extends Component<Props, State> {
         }
     }
 
-    handleChecked(event: ChangeEvent<HTMLInputElement>) {
+    handleChecked(event: ChangeEvent<HTMLInputElement>): void {
         this.setState({
             isChecked: event.target.checked,
             selectedVal: undefined
         })
     }
 
-    handleSelected(e: React.FormEvent<HTMLInputElement>) {
+    handleSelected(e: React.FormEvent<HTMLInputElement>): void {
         this.setState({
             selectedVal: e.currentTarget.value
         })

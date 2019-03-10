@@ -12,7 +12,7 @@ interface Props {
 
 
 export default class signKeystoreInput extends Component<Props> {
-    render() {
+    render(): JSX.Element {
         return (
             <InputGroup className='mb-2'>
                 <InputGroup.Prepend>

@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { Component } from 'react'
-import { Container, Form, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import CollapsablePanel from '../utility/collapsablePanel';
 import GlobalOptionForm from './globalOptionForm';
 
 export default class ProfileForm extends Component {
-    render() {
+    render() : JSX.Element{
         return (
             <Container fluid>
                 <Row>

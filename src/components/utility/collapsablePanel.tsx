@@ -21,7 +21,7 @@ export default class CollapsablePanel extends Component<Props, State> {
         }))
     }
 
-    render() {
+    render() : JSX.Element{
         return (
             <Card className='m-3'>
                 <Card.Header onClick={this.handleClick}><h5 className='text-center' style={{ cursor: 'pointer' }}>{this.props.title}</h5></Card.Header>

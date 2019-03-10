@@ -16,7 +16,7 @@ interface Props {
 }
 export default class KeystoreTab extends Component<Props, State> {
 
-    constructor(props: Readonly<Props>) {
+    constructor(props: Props) {
         super(props)
         this.state = {
             keystores: []

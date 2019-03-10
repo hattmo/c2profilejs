@@ -3,7 +3,7 @@ import { Component } from 'react'
 import { Row, Col, Container } from 'react-bootstrap';
 
 export default class KeystoreList extends Component {
-    render() {
+    render() : JSX.Element{
         return (
             <Container fluid>
                 <Row>
