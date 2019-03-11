@@ -32,9 +32,24 @@ const schema = {
       additionalProperties: false,
       properties: {
         dname: {
-          type: 'string',
-          pattern: '^(((CN)|(OU)|O|L|S|C)=(\\w|\\.)+, )*(((CN)|(OU)|O|L|S|C)=(\\w|\\.)+)$',
-          maxLength: 250,
+          type: 'array',
+          items: {
+            type: 'object',
+            required: ['key', 'value'],
+            properties: {
+              additionalProperties: false,
+              key: {
+                type: 'string',
+                pattern: '^\\w+$',
+                maxLength: 250,
+              },
+              value: {
+                type: 'string',
+                pattern: '^\\w+$',
+                maxLength: 250,
+              },
+            },
+          },
         },
       },
     },

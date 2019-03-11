@@ -1,0 +1,19 @@
+.badInput {
+    background-color: lightcoral
+}
+
+.goodInput {
+    background-color: lightgreen
+}
+
+.badInput:focus {
+    background-color: lightcoral
+}
+
+.goodInput:focus {
+    background-color: lightgreen
+}
+
+.input-group-text {
+    font-weight: bolder
+}

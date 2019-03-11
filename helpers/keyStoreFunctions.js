@@ -75,7 +75,16 @@ const keygen = {
       await fsp.rmdir(`temp/${uniquepath}`);
     }
   },
-
+  /**
+  *@param {Object[]} dname
+  */
+  buildOptDName: (dname) => {
+    let out = '';
+    dname.forEach((val) => {
+      out += `${val.key}=${val.value}, `;
+    });
+    return out.slice(0, out.length - 2);
+  },
   /**
    * Creates a keystore at the unique path described in opt.
    * @param {Object} keystore
@@ -90,7 +99,7 @@ const keygen = {
         -alias ${keystore.alias} \
         -keyalg RSA \
         -keysize 2048 \
-        -dname "${opt.dname}" \
+        -dname "${this.buildOptDName(opt.dname)}" \
         -validity 365 \
         -keypass ${keystore.password} \
         -storepass ${keystore.password} \

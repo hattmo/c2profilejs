@@ -35,7 +35,7 @@ const config = {
       title: 'C2 Profile JS',
       filename: 'index.html',
       inject: 'body',
-      favicon: './src/favicon.png',
+      favicon: './src/images/favicon.png',
       meta: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' },
       minify: /staging/.test(process.env.NODE_ENV),
     }),

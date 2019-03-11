@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom'
 require('bootstrap/dist/css/bootstrap.min.css')
+require('./css/selectTextStyle.css')
 
 import Main from './components/main';
 

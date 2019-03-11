@@ -1,3 +1,8 @@
+export interface Option {
+    key: string
+    value: string
+}
+
 export default interface Keystore {
     keystore: {
         alias: string,
@@ -5,7 +10,7 @@ export default interface Keystore {
         id: string
     }
     opt: {
-        dname: string
+        dname: Option[]
     }
     ca?: string
 }
