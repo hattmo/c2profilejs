@@ -6,7 +6,7 @@ interface Props {
     path: string,
     label: string,
     selectedVal: string,
-    keystores: string[],
+    keystoreNames: string[],
     onChanged: (path: string, text: string) => void
 }
 
@@ -19,10 +19,12 @@ interface State {
 export default class InputSignKeystore extends Component<Props, State> {
 
     constructor(props) {
+
         super(props)
         this.state = {
             isChecked: false,
         }
+        this.onChecked = this.onChecked.bind(this)
     }
 
     onChecked(event: ChangeEvent<HTMLInputElement>): void {
@@ -32,21 +34,22 @@ export default class InputSignKeystore extends Component<Props, State> {
         this.props.onChanged(this.props.path, undefined)
     }
     onSelected(e: React.FormEvent<HTMLInputElement>): void {
+        console.log('im here')
         this.props.onChanged(this.props.path, e.currentTarget.value)
     }
 
     render(): JSX.Element {
         return (
-            <InputGroup className='mb-2'>
+            <InputGroup className='my-1'>
                 <InputGroup.Prepend>
                     <InputGroup.Text>
                         {this.props.label}
                     </InputGroup.Text>
-                    <InputGroup.Checkbox disabled={!this.props.keystores.length} onChange={this.onChecked} />
+                    <InputGroup.Checkbox disabled={!this.props.keystoreNames.length} onChange={this.onChecked} />
                 </InputGroup.Prepend>
                 <Form.Control value={this.props.selectedVal} onChange={(e) => this.onSelected} disabled={!this.state.isChecked} as="select">
                     <option key={''} value={''}></option>
-                    {this.props.keystores.map((val) => {
+                    {this.props.keystoreNames.map((val) => {
                         return (<option key={val} value={val}>{val}</option>)
                     })}
                 </Form.Control>

@@ -20,6 +20,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   if (err instanceof ValidationError) {
     console.error('invalid json');
+    console.log(err.validationErrors);
     res.sendStatus(400);
   } else if (err === 404) {
     res.sendStatus(404);

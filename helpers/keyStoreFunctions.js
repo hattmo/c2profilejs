@@ -53,7 +53,7 @@ const keygen = {
    * @param {String} keystore.password
    * @param {String} keystore.id
    * @param {Object} opt
-   * @param {String} opt.dname
+   * @param {String[]} opt.dname
    * @param {Object} [ca]
    * @param {String} [ca.alias]
    * @param {String} [ca.password]
@@ -99,7 +99,7 @@ const keygen = {
         -alias ${keystore.alias} \
         -keyalg RSA \
         -keysize 2048 \
-        -dname "${this.buildOptDName(opt.dname)}" \
+        -dname "${keygen.buildOptDName(opt.dname)}" \
         -validity 365 \
         -keypass ${keystore.password} \
         -storepass ${keystore.password} \

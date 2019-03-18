@@ -1,4 +1,4 @@
-import FormInf, { SectionTypes, OptionSelectText, InputTypes } from "../interfaces/FormInterfaces";
+import FormInf, { SectionTypes, OptionSelectText, InputTypes } from "../interfaces/formInterfaces";
 
 
 const dnameOptions: OptionSelectText[] = [
@@ -37,8 +37,13 @@ const defaultKeystoreForm: FormInf = {
                 {
                     type: InputTypes.FieldText,
                     path: 'keystore.id',
-                    label: 'Keystore',
+                    label: 'Keystore ID',
                     format: /^.*$/
+                },{
+                    type: InputTypes.FieldText,
+                    path: 'keystore.alias',
+                    label: 'Alias',
+                    format: /^\w*$/
                 }, {
                     type: InputTypes.FieldText,
                     path: 'keystore.password',

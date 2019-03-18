@@ -3,14 +3,14 @@ const fsp = require('fs').promises;
 const { expect } = require('chai');
 const keystoremanager = require('../models/keyStoreModel');
 
-describe('keyStoreManager Test', () => {
+describe('keyStoreModel Test', () => {
   const keystoreObj1 = {
     alias: 'mykey1',
     password: 'password1',
     id: 'testKeystore',
   };
   const opt = {
-    dname: 'CN=managertest1.com, OU=hattmo, O=universe',
+    dname: [{ key: 'CN', value: 'catest.com' }, { key: 'OU', value: 'hattmo' }, { key: 'O', value: 'universe' }],
   };
   const keystoreObj2 = {
     alias: 'mykey2',

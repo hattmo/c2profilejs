@@ -20,6 +20,9 @@ interface State {
 
 export default class InputSelectText extends Component<Props, State> {
 
+    static defaultProps = {
+        selectedOptions: [],
+    }
     constructor(props: Readonly<Props>) {
         super(props)
         this.state = {
@@ -33,22 +36,10 @@ export default class InputSelectText extends Component<Props, State> {
     }
 
     onAddClick(key: string, value: string) {
-        if (value === "") return;
-        let index = -1;
-        let tempArr
-        if (this.props.selectedOptions) {
-            tempArr = this.props.selectedOptions.slice();
-        } else {
-            tempArr = []
-        }
-        if (tempArr.find((item: Option, i: number) => {
-            if (item.key === key) {
-                index = i;
-                return true;
-            } else {
-                return false;
-            }
-        })) {
+        if (!value) return;
+        let tempArr = this.props.selectedOptions.slice();
+        let index = tempArr.map(val => val.key).indexOf(key);
+        if (index >= 0) {
             tempArr[index].value = value;
             this.props.onChanged(this.props.path, tempArr);
             this.setState({ value: '' });
@@ -62,17 +53,9 @@ export default class InputSelectText extends Component<Props, State> {
         }
     }
 
-    onRemoveClicked(optionID: string) {
-        let index = -1;
+    onRemoveClicked(label: string) {
         var tempArr = this.props.selectedOptions.slice();
-        tempArr.find((item: Option, i: number) => {
-            if (item.key === optionID) {
-                index = i;
-                return true;
-            } else {
-                return false;
-            }
-        })
+        let index = tempArr.map(val => val.key).indexOf(label);
         if (index !== -1) {
             tempArr.splice(index, 1)
         }
@@ -106,7 +89,7 @@ export default class InputSelectText extends Component<Props, State> {
         return (
             this.props.selectedOptions.map((val: Option) => {
                 return (
-                    <Pill key={val.key} onClick={() => this.onRemoveClicked(val.key)} optionID={val.key}>
+                    <Pill key={val.key} onClick={() => this.onRemoveClicked(val.key)} label={val.key}>
                         {val.key} {val.value}
                     </Pill>)
             })
@@ -124,14 +107,14 @@ export default class InputSelectText extends Component<Props, State> {
 
     render(): JSX.Element {
         return (
-            <Container fluid>
+            <Container fluid className='my-1'>
                 <Row>
                     {this.buildSelectedOptions()}
                 </Row>
                 <Row>
                     <InputGroup>
                         <InputGroup.Prepend>
-                            <FormControl value={this.state.selectedKey} onChange={(e: any) => this.onSelected(e)} as='select' >
+                            <FormControl className={'selectTextDropDown'} value={this.state.selectedKey} onChange={(e: any) => this.onSelected(e)} as='select' >
                                 {this.buildOptions()}
                             </FormControl>
                         </InputGroup.Prepend>

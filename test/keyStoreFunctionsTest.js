@@ -15,10 +15,10 @@ describe('keyStoreFunctions Test', () => {
     id: 'testcakeystore',
   };
   const opt = {
-    dname: 'CN=test.com, OU=hattmo, O=universe',
+    dname: [{ key: 'CN', value: 'catest.com' }, { key: 'OU', value: 'hattmo' }, { key: 'O', value: 'universe' }],
   };
   const caopt = {
-    dname: 'CN=catest.com, OU=hattmo, O=universe',
+    dname: [{ key: 'CN', value: 'catest.com' }, { key: 'OU', value: 'hattmo' }, { key: 'O', value: 'universe' }],
   };
 
   before(async () => {
@@ -84,10 +84,10 @@ describe('keyStoreFunctions Test', () => {
     };
 
     const fulloptun = {
-      dname: 'CN=unsignedfulltest.com, OU=hattmo, O=universe',
+      dname: [{ key: 'CN', value: 'catest.com' }, { key: 'OU', value: 'hattmo' }, { key: 'O', value: 'universe' }],
     };
     const fullopt = {
-      dname: 'CN=signedfulltest.com, OU=hattmo, O=universe',
+      dname: [{ key: 'CN', value: 'catest.com' }, { key: 'OU', value: 'hattmo' }, { key: 'O', value: 'universe' }],
     };
 
     describe('generateKeyStore', () => {

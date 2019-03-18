@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { Component } from 'react'
 import { Row, Col, Container, Button } from 'react-bootstrap';
-import Keystore from '../../interfaces/keystore';
-import FormInf, { InputTypes, Section, FieldText, FieldSelectText, FieldSignKeystore } from '../../interfaces/FormInterfaces';
+import FormInf, { InputTypes, Section, FieldText, FieldSelectText, FieldSignKeystore } from '../../interfaces/formInterfaces';
 import InputText from '../utility/inputText';
 import InputSelectText from '../utility/inputSelectText';
 import InputSignKeystore from '../utility/inputSignKeystore';
@@ -11,7 +10,7 @@ import InputSignKeystore from '../utility/inputSignKeystore';
 interface Props {
     formDef: FormInf
     onKeyStoreChange: () => Promise<void>
-    keystores: Keystore[]
+    keystoreNames: string[]
 }
 
 interface State {
@@ -27,37 +26,11 @@ export default class KeystoreForm extends Component<Props, State> {
             waitingForPost: false
         }
         this.handleData = this.handleData.bind(this)
-        this.componentWillMount = this.componentWillMount.bind(this)
+        this.handleBuild = this.handleBuild.bind(this)
     }
-
-    componentWillMount() {
-
-        this.props.formDef.sections.forEach(val => {
-            this.populateState(val)
-        })
-    }
-    populateState(section: Section) {
-        section.fields.forEach(val => {
-            if ((val.type === InputTypes.FieldPairText) || (val.type === InputTypes.FieldSelectText)) {
-                this.setState({
-                    [val.path]: []
-                })
-            } else {
-                this.setState({
-                    [val.path]: ''
-                })
-            }
-
-        })
-        if (section.sections) {
-            section.sections.forEach(val => {
-                this.populateState(val)
-            })
-        }
-    }
-
 
     handleData(path: string, data: any) {
+        console.log(path,data)
         this.setState({
             [path]: data
         })
@@ -73,10 +46,9 @@ export default class KeystoreForm extends Component<Props, State> {
         )
     }
 
-
     buildSignKeystoreField(field: FieldSignKeystore) {
         return (
-            <InputSignKeystore key={field.path} onChanged={this.handleData} path={field.path} label={field.label} keystores={this.props.keystores.map(v => v.keystore.id)} selectedVal={this.state[field.path]} ></InputSignKeystore>
+            <InputSignKeystore key={field.path} onChanged={this.handleData} path={field.path} label={field.label} keystoreNames={this.props.keystoreNames} selectedVal={this.state[field.path]} ></InputSignKeystore>
         )
     }
     buildFieldsInSection(section: Section): JSX.Element[] {
@@ -107,34 +79,46 @@ export default class KeystoreForm extends Component<Props, State> {
                     </Col>
                 </Row>
                 <Row>
-                    <Button disabled={this.state.waitingForPost} onClick={() => { }} className='mx-3' variant='primary' block>Generate</Button>
+                    <Button disabled={this.state.waitingForPost} onClick={this.handleBuild} className='mx-3' variant='primary' block>Generate</Button>
                 </Row>
             </Container>
         )
     }
 
-    // async handleBuild(): Promise<void> {
-    //     this.setState({
-    //         waitingForPost: true
-    //     })
-    //     this.currentKeyStore.ca = this.state.selectedVal
-    //     try {
-    //         const res = await fetch('/keystores', {
-    //             method: 'POST',
-    //             body: JSON.stringify(this.currentKeyStore),
-    //             headers: new Headers({ 'content-type': 'application/json' })
-    //         })
-    //         if (res.status !== 200) {
+    async handleBuild(): Promise<void> {
+        this.setState({
+            waitingForPost: true
+        })
+        let outObj = {};
+        Object.keys(this.state).forEach(key => {
+            if(key==='waitingForPost') return
+            let pointer = outObj;
+            key.split('.').forEach((item, i, arr) => {
+                if (i !== (arr.length - 1)) {
+                    if(pointer[item]===undefined){
+                        pointer[item] = {}
+                    }
+                    pointer = pointer[item]
+                } else {
+                    pointer[item] = this.state[key]
+                }
+            })
+        })
+        try {
+            const res = await fetch('/keystores', {
+                method: 'POST',
+                body: JSON.stringify(outObj),
+                headers: new Headers({ 'content-type': 'application/json' })
+            })
+            if (res.status !== 200) {
 
-    //         }
-    //         await this.props.onKeyStoreChange()
-    //     } catch (e) {
-    //         console.error('invalid keystore')
-    //     }
-    //     this.setState({
-    //         selectedVal: undefined,
-    //         isChecked: false,
-    //         waitingForPost: false
-    //     })
-    // }
+            }
+            await this.props.onKeyStoreChange()
+        } catch (e) {
+            console.error('error fetching data')
+        }
+        this.setState({
+            waitingForPost: false
+        })
+    }
 }

@@ -1,6 +1,6 @@
 const schema = {
   type: 'object',
-  required: ['keystore', 'opt'],
+  required: ['keystore'],
   additionalProperties: false,
   properties: {
     keystore: {
@@ -28,7 +28,6 @@ const schema = {
     },
     opt: {
       type: 'object',
-      required: ['dname'],
       additionalProperties: false,
       properties: {
         dname: {

@@ -9,7 +9,7 @@ class Main extends React.Component {
         return (
             <Tabs defaultActiveKey="profiles" id="mainTabs">
                 <Tab eventKey="profiles" title="Profiles">
-                    <ProfileTab/>
+                  <ProfileTab/>
                 </Tab>
                 <Tab eventKey="keystores" title="Keystores">
                     <KeystoreTab />

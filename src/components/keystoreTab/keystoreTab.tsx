@@ -19,10 +19,10 @@ export default class KeystoreTab extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            keystores: []
+            keystores: [{ keystore: { alias: 'mykey', id: 'mykeystore', password: 'password' }, opt: { dname: [{ key: 'cn', value: 'hattmo.com' }] } }]
         }
         this.checkForKeystores = this.checkForKeystores.bind(this);
-   //     this.buildPanels = this.buildPanels.bind(this);
+        this.buildPanels = this.buildPanels.bind(this);
     }
 
     async checkForKeystores(): Promise<void> {
@@ -34,28 +34,27 @@ export default class KeystoreTab extends Component<Props, State> {
         })
     }
     async componentDidMount(): Promise<void> {
-        await this.checkForKeystores()
+ //       await this.checkForKeystores()
     }
-    // buildPanels(): JSX.Element[] {
-    //     return this.state.keystores.map((val) => {
-    //         return (
-    //             <CollapsablePanel title={val.keystore.id} key={val.keystore.id} >
-    //                 <KeystoreData ca={val.ca} dname={val.opt.dname} title={val.keystore.id} />
-    //             </CollapsablePanel>
-    //         )
-    //     })
-    // }
+    buildPanels(): JSX.Element[] {
+        return this.state.keystores.map((val) => {
+            return (
+                <CollapsablePanel title={val.keystore.id} key={val.keystore.id} >
+                    <KeystoreData ca={val.ca} dname={val.opt.dname} title={val.keystore.id} />
+                </CollapsablePanel>
+            )
+        })
+    }
     render(): JSX.Element {
         return (
             <Container fluid>
                 <Row>
                     <Col md='9'>
-                        <KeystoreForm formDef={keystoreDesc} keystores={this.state.keystores} onKeyStoreChange={this.checkForKeystores} />
+                        <KeystoreForm formDef={keystoreDesc} keystoreNames={this.state.keystores.map(val => val.keystore.id)} onKeyStoreChange={this.checkForKeystores} />
                     </Col>
                     <Col md='3'>
                         <KeystoreList>
-                            {//this.buildPanels()
-                            }
+                            {this.buildPanels()}
                         </KeystoreList>
                     </Col>
                 </Row>

@@ -17,3 +17,19 @@
 .input-group-text {
     font-weight: bolder
 }
+
+.selectTextDropDown {
+    font-weight: bolder;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+.selectTextDropDown:focus {
+    font-weight: bolder;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
