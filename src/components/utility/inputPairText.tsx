@@ -21,6 +21,10 @@ interface State {
 
 export default class InputPairText extends Component<Props, State> {
 
+
+    static defaultProps = {
+        selectedOptions: [],
+    }
     constructor(props: Readonly<Props>) {
         super(props)
         this.state = {
@@ -30,6 +34,9 @@ export default class InputPairText extends Component<Props, State> {
         this.onAddClick = this.onAddClick.bind(this);
         this.onRemoveClicked = this.onRemoveClicked.bind(this);
         this.buildSelectedOptions = this.buildSelectedOptions.bind(this);
+        this.validateKey = this.validateKey.bind(this);
+        this.validateValue = this.validateValue.bind(this);
+
     }
 
     onAddClick(key: string, value: string) {
@@ -46,45 +53,44 @@ export default class InputPairText extends Component<Props, State> {
         })) {
             tempArr[index].value = value;
             this.props.onChanged(this.props.path, tempArr);
-            this.setState({ value: '' });
+            this.setState({
+                key: '',
+                value: ''
+            });
         } else {
             tempArr.push({
                 key,
                 value
             })
             this.props.onChanged(this.props.path, tempArr);
-            this.setState({ value: '' });
+            this.setState({
+                key: '',
+                value: ''
+            });
         }
     }
 
-    onRemoveClicked(optionID: string) {
-        let index = -1;
+    onRemoveClicked(label: string) {
         var tempArr = this.props.selectedOptions.slice();
-        tempArr.find((item: Option, i: number) => {
-            if (item.key === optionID) {
-                index = i;
-                return true;
-            } else {
-                return false;
-            }
-        })
+        let index = tempArr.map(val => val.key).indexOf(label);
         if (index !== -1) {
             tempArr.splice(index, 1)
         }
+        tempArr = tempArr.length > 0 ? tempArr : undefined
         this.props.onChanged(this.props.path, tempArr);
     }
 
     onTyped(e: React.FormEvent<HTMLInputElement>, left: boolean): void {
-        if(left){
+        if (left) {
             this.setState({
                 key: e.currentTarget.value
             })
-        }else{
+        } else {
             this.setState({
                 value: e.currentTarget.value
             })
         }
-       
+
     }
 
     buildSelectedOptions(): JSX.Element[] {
@@ -116,7 +122,7 @@ export default class InputPairText extends Component<Props, State> {
 
     render(): JSX.Element {
         return (
-            <Container fluid>
+            <Container fluid className='my-1'>
                 <Row>
                     {this.buildSelectedOptions()}
                 </Row>
@@ -127,7 +133,7 @@ export default class InputPairText extends Component<Props, State> {
                                 {this.props.label}
                             </InputGroup.Text>
                         </InputGroup.Prepend>
-                        <FormControl className={this.validateKey()} onChange={(e) => { this.onTyped(e, true) }} value={this.state.value} />
+                        <FormControl className={this.validateKey()} onChange={(e) => { this.onTyped(e, true) }} value={this.state.key} />
                         <FormControl className={this.validateValue()} onChange={(e) => { this.onTyped(e, false) }} value={this.state.value} />
                         <InputGroup.Append>
                             <Button onClick={() => this.onAddClick(this.state.key, this.state.value)}>

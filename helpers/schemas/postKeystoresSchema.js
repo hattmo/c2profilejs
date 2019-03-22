@@ -44,7 +44,7 @@ const schema = {
               },
               value: {
                 type: 'string',
-                pattern: '^\\w+$',
+                pattern: '^(\\w|\\.)+$',
                 maxLength: 250,
               },
             },

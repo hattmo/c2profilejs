@@ -18,6 +18,10 @@ interface State {
 
 export default class InputSignKeystore extends Component<Props, State> {
 
+    static defaultProps = {
+        selectedVal: ''
+    }
+
     constructor(props) {
 
         super(props)
@@ -34,8 +38,7 @@ export default class InputSignKeystore extends Component<Props, State> {
         this.props.onChanged(this.props.path, undefined)
     }
     onSelected(e: React.FormEvent<HTMLInputElement>): void {
-        console.log('im here')
-        this.props.onChanged(this.props.path, e.currentTarget.value)
+        this.props.onChanged(this.props.path, e.currentTarget.value || undefined)
     }
 
     render(): JSX.Element {
@@ -47,7 +50,7 @@ export default class InputSignKeystore extends Component<Props, State> {
                     </InputGroup.Text>
                     <InputGroup.Checkbox disabled={!this.props.keystoreNames.length} onChange={this.onChecked} />
                 </InputGroup.Prepend>
-                <Form.Control value={this.props.selectedVal} onChange={(e) => this.onSelected} disabled={!this.state.isChecked} as="select">
+                <Form.Control value={this.props.selectedVal} onChange={(e) => this.onSelected(e)} disabled={!this.state.isChecked} as="select">
                     <option key={''} value={''}></option>
                     {this.props.keystoreNames.map((val) => {
                         return (<option key={val} value={val}>{val}</option>)

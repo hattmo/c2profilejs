@@ -59,6 +59,7 @@ export default class InputSelectText extends Component<Props, State> {
         if (index !== -1) {
             tempArr.splice(index, 1)
         }
+        tempArr = tempArr.length > 0 ? tempArr : undefined
         this.props.onChanged(this.props.path, tempArr);
     }
 

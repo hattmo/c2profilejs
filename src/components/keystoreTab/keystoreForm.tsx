@@ -7,7 +7,7 @@ import InputSelectText from '../utility/inputSelectText';
 import InputSignKeystore from '../utility/inputSignKeystore';
 
 
-interface Props {
+interface Prop {
     formDef: FormInf
     onKeyStoreChange: () => Promise<void>
     keystoreNames: string[]
@@ -18,9 +18,9 @@ interface State {
     [x: string]: any
 }
 
-export default class KeystoreForm extends Component<Props, State> {
+export default class KeystoreForm extends Component<Prop, State> {
 
-    constructor(props: Props) {
+    constructor(props: Prop) {
         super(props)
         this.state = {
             waitingForPost: false
