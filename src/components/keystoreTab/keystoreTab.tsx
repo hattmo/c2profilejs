@@ -19,7 +19,7 @@ export default class KeystoreTab extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            keystores: [{ keystore: { alias: 'mykey', id: 'mykeystore', password: 'password' }, opt: { dname: [{ key: 'cn', value: 'hattmo.com' }] } }]
+            keystores: []
         }
         this.checkForKeystores = this.checkForKeystores.bind(this);
         this.buildPanels = this.buildPanels.bind(this);
