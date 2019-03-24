@@ -123,7 +123,7 @@ export default class InputSelectText extends Component<Props, State> {
                         <InputGroup.Append>
                             <Button onClick={() => this.onAddClick(this.state.selectedKey, this.state.value)}>
                                 Add
-                        </Button>
+                            </Button>
                         </InputGroup.Append>
                     </InputGroup>
                 </Row>

@@ -3,6 +3,11 @@ export interface Option {
     value: string
 }
 
+export interface Mutation{
+    transform?: string[],
+    termination: string
+}
+
 export default interface ProfileInf {
     name: string
     globaloptions?: Option[]
@@ -12,18 +17,12 @@ export default interface ProfileInf {
         client?: {
             header?: Option[]
             parameter?: Option[]
-            metadata?: {
-                transform?: string[]
-                termination?: string
-            }
+            metadata?: Mutation
         }
         server?: {
             header?: Option[]
             parameter?: Option[]
-            output?: {
-                transform?: string[]
-                termination?: string
-            }
+            output?: Mutation
         }
     }
     httppost?: {
@@ -32,22 +31,13 @@ export default interface ProfileInf {
         client?: {
             header?: Option[]
             parameter?: Option[]
-            id?: {
-                transform?: string[]
-                termination?: string
-            }
-            out?: {
-                transform?: string[]
-                termination?: string
-            }
+            id?: Mutation
+            out?: Mutation
         }
         server?: {
             header?: Option[]
             parameter?: Option[]
-            output?: {
-                transform?: string[]
-                termination?: string
-            }
+            output?: Mutation
         }
     }
     httpstager?: {
@@ -56,10 +46,7 @@ export default interface ProfileInf {
         server?: {
             header?: Option[]
             parameter?: Option[]
-            output?: {
-                transform?: string[]
-                termination?: string
-            }
+            output?: Mutation
         }
     }
 }
