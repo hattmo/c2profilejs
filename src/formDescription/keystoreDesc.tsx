@@ -4,27 +4,33 @@ import FormInf, { SectionTypes, OptionSelectText, InputTypes } from "../interfac
 const dnameOptions: OptionSelectText[] = [
     {
         text: 'CN',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'OU',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'O',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'L',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'S',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'C',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
 ]
 

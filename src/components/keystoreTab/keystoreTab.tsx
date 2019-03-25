@@ -3,7 +3,6 @@ import { Component } from 'react'
 import { Row, Col, Container } from 'react-bootstrap';
 import KeystoreForm from './keystoreForm';
 import Keystore from '../../interfaces/keystore';
-import KeystoreList from './keystoreList';
 import CollapsablePanel from '../utility/collapsablePanel';
 import KeystoreData from './keystoreData';
 import keystoreDesc from '../../formDescription/keystoreDesc'
@@ -34,7 +33,7 @@ export default class KeystoreTab extends Component<Props, State> {
         })
     }
     async componentDidMount(): Promise<void> {
- //       await this.checkForKeystores()
+        await this.checkForKeystores()
     }
     buildPanels(): JSX.Element[] {
         return this.state.keystores.map((val) => {
@@ -53,9 +52,18 @@ export default class KeystoreTab extends Component<Props, State> {
                         <KeystoreForm formDef={keystoreDesc} keystoreNames={this.state.keystores.map(val => val.keystore.id)} onKeyStoreChange={this.checkForKeystores} />
                     </Col>
                     <Col md='3'>
-                        <KeystoreList>
-                            {this.buildPanels()}
-                        </KeystoreList>
+                        <Container fluid>
+                            <Row>
+                                <Col sm='12'>
+                                    <h4 className='text-center'>Keystores</h4>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col sm='12'>
+                                    {this.buildPanels()}
+                                </Col>
+                            </Row>
+                        </Container>
                     </Col>
                 </Row>
             </Container>

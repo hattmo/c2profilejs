@@ -97,7 +97,7 @@ export default class InputPairText extends Component<Props, State> {
         return (
             this.props.selectedOptions.map((val: Option) => {
                 return (
-                    <Pill key={val.key} onClick={() => this.onRemoveClicked(val.key)} label={val.key}>
+                    <Pill key={val.key} onClick={() => this.onRemoveClicked(val.key)} id={val.key}>
                         {val.key} {val.value}
                     </Pill>)
             })

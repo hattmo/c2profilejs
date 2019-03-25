@@ -4,8 +4,8 @@ export interface Option {
 }
 
 export interface Mutation{
-    transform?: string[],
-    termination: string
+    transform?: Option[],
+    termination: Option
 }
 
 export default interface ProfileInf {

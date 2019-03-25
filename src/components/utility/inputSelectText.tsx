@@ -35,7 +35,9 @@ export default class InputSelectText extends Component<Props, State> {
         this.buildSelectedOptions = this.buildSelectedOptions.bind(this);
     }
 
-    onAddClick(key: string, value: string) {
+    onAddClick() {
+        let key = this.state.selectedKey;
+        let value =  this.state.value;
         if (!value) return;
         let tempArr = this.props.selectedOptions.slice();
         let index = tempArr.map(val => val.key).indexOf(key);
@@ -90,7 +92,7 @@ export default class InputSelectText extends Component<Props, State> {
         return (
             this.props.selectedOptions.map((val: Option) => {
                 return (
-                    <Pill key={val.key} onClick={() => this.onRemoveClicked(val.key)} label={val.key}>
+                    <Pill key={val.key} onClick={() => this.onRemoveClicked(val.key)} id={val.key}>
                         {val.key} {val.value}
                     </Pill>)
             })
@@ -121,7 +123,7 @@ export default class InputSelectText extends Component<Props, State> {
                         </InputGroup.Prepend>
                         <FormControl className={this.validateInput()} onChange={(e) => { this.onTyped(e) }} value={this.state.value} />
                         <InputGroup.Append>
-                            <Button onClick={() => this.onAddClick(this.state.selectedKey, this.state.value)}>
+                            <Button onClick={this.onAddClick}>
                                 Add
                             </Button>
                         </InputGroup.Append>

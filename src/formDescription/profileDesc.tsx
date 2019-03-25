@@ -4,65 +4,135 @@ import FormInf, { OptionSelectText, SectionTypes, InputTypes } from "../interfac
 const globalOptions: OptionSelectText[] = [
     {
         text: 'dns_idle',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'dns_max_txt',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'dns_sleep',
-        format: /^[0-9]*$/
+        format: /^[0-9]*$/,
+        hasInput: true
     },
     {
         text: 'dns_stager_prepend',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'dns_stager_subhost',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'dns_ttl',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'host_stage',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'jitter',
-        format: /^[0-9]*$/
+        format: /^[0-9]*$/,
+        hasInput: true
     },
     {
         text: 'maxdns',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'pipename',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'pipename_stager',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'sleeptime',
-        format: /^[0-9]*$/
+        format: /^[0-9]*$/,
+        hasInput: true
     },
     {
         text: 'spawnto_x86',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'spawnto_x64',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     },
     {
         text: 'useragent',
-        format: /^.*$/
+        format: /^.*$/,
+        hasInput: true
     }
 ]
+const transformOptions: OptionSelectText[] = [
+    {
+        text: 'append',
+        format: /^.*$/,
+        hasInput: true
+    }, {
+        text: 'prepend',
+        format: /^.*$/,
+        hasInput: true
+    }, {
+        text: 'base64',
+        format: /^$/,
+        hasInput: false
+    }, {
+        text: 'base64url',
+        format: /^$/,
+        hasInput: false
+    }, {
+        text: 'mask',
+        format: /^$/,
+        hasInput: false
+    }, {
+        text: 'netbios',
+        format: /^$/,
+        hasInput: false
+    }, {
+        text: 'netbiosu',
+        format: /^$/,
+        hasInput: false
+    },
+]
+const terminationOptions: OptionSelectText[] = [
+    {
+        text: '',
+        format: /^$/,
+        hasInput: false
+    }, {
+        text: 'header',
+        format: /^.*$/,
+        hasInput: true
+    }, {
+        text: 'parameter',
+        format: /^.*$/,
+        hasInput: true
+    }, {
+        text: 'print',
+        format: /^$/,
+        hasInput: false
+    }, {
+        text: 'uri-append',
+        format: /^$/,
+        hasInput: false
+    },
+]
+
 const cobaltStrikeProfile: FormInf = {
     sections: [
         {
@@ -121,7 +191,15 @@ const cobaltStrikeProfile: FormInf = {
                     sections: [
                         {
                             title: 'Metadata',
-                            type: SectionTypes.collapsable
+                            type: SectionTypes.collapsable,
+                            fields: [
+                                {
+                                    type: InputTypes.FieldMutation,
+                                    path: 'httpget.client.metadata',
+                                    transformOptions: transformOptions,
+                                    terminationOptions: terminationOptions
+                                }
+                            ]
                         }
                     ]
                 },
@@ -147,7 +225,15 @@ const cobaltStrikeProfile: FormInf = {
                     sections: [
                         {
                             title: 'Output',
-                            type: SectionTypes.collapsable
+                            type: SectionTypes.collapsable,
+                            fields: [
+                                {
+                                    type: InputTypes.FieldMutation,
+                                    path: 'httpget.server.output',
+                                    transformOptions: transformOptions,
+                                    terminationOptions: terminationOptions
+                                }
+                            ]
                         }
                     ]
                 }
@@ -155,28 +241,98 @@ const cobaltStrikeProfile: FormInf = {
         }, {
             title: 'HTTP-Post',
             type: SectionTypes.collapsable,
+            fields: [
+                {
+                    type: InputTypes.FieldText,
+                    path: 'httppost.uri',
+                    label: 'URI',
+                    format: /.*/
+                },
+                {
+                    type: InputTypes.FieldText,
+                    path: 'httppost.verb',
+                    label: 'Verb',
+                    format: /.*/
+                }
+            ],
             sections: [
                 {
                     title: 'Client',
                     type: SectionTypes.collapsable,
+                    fields: [
+                        {
+                            type: InputTypes.FieldPairText,
+                            path: 'httppost.client.header',
+                            label: 'Headers',
+                            formatKey: /.*/,
+                            formatValue: /.*/
+                        },
+                        {
+                            type: InputTypes.FieldPairText,
+                            path: 'httppost.client.paramer',
+                            label: 'Parameters',
+                            formatKey: /.*/,
+                            formatValue: /.*/
+                        }
+                    ],
                     sections: [
                         {
                             title: 'ID',
-                            type: SectionTypes.collapsable
+                            type: SectionTypes.collapsable,
+                            fields: [
+                                {
+                                    type: InputTypes.FieldMutation,
+                                    path: 'httppost.client.id',
+                                    transformOptions: transformOptions,
+                                    terminationOptions: terminationOptions
+                                }
+                            ]
                         },
                         {
                             title: 'Output',
-                            type: SectionTypes.collapsable
+                            type: SectionTypes.collapsable,
+                            fields: [
+                                {
+                                    type: InputTypes.FieldMutation,
+                                    path: 'httppost.client.output',
+                                    transformOptions: transformOptions,
+                                    terminationOptions: terminationOptions
+                                }
+                            ]
                         }
                     ]
                 },
                 {
                     title: 'Server',
                     type: SectionTypes.collapsable,
+                    fields: [
+                        {
+                            type: InputTypes.FieldPairText,
+                            path: 'httppost.server.header',
+                            label: 'Headers',
+                            formatKey: /.*/,
+                            formatValue: /.*/
+                        },
+                        {
+                            type: InputTypes.FieldPairText,
+                            path: 'httppost.server.paramer',
+                            label: 'Parameters',
+                            formatKey: /.*/,
+                            formatValue: /.*/
+                        }
+                    ],
                     sections: [
                         {
                             title: 'Output',
-                            type: SectionTypes.collapsable
+                            type: SectionTypes.collapsable,
+                            fields: [
+                                {
+                                    type: InputTypes.FieldMutation,
+                                    path: 'httppost.server.output',
+                                    transformOptions: transformOptions,
+                                    terminationOptions: terminationOptions
+                                }
+                            ]
                         }
                     ]
                 }
@@ -185,14 +341,51 @@ const cobaltStrikeProfile: FormInf = {
         }, {
             title: 'HTTP-Stager',
             type: SectionTypes.collapsable,
+            fields: [
+                {
+                    type: InputTypes.FieldText,
+                    path: 'httpstager.uri_x86',
+                    label: 'URI x86',
+                    format: /.*/
+                }, {
+                    type: InputTypes.FieldText,
+                    path: 'httpstager.uri_x64',
+                    label: 'URI x64',
+                    format: /.*/
+                }
+            ],
             sections: [
                 {
                     title: 'Server',
                     type: SectionTypes.collapsable,
+                    fields: [
+                        {
+                            type: InputTypes.FieldPairText,
+                            path: 'httpstager.server.header',
+                            label: 'Headers',
+                            formatKey: /.*/,
+                            formatValue: /.*/
+                        },
+                        {
+                            type: InputTypes.FieldPairText,
+                            path: 'httpstager.server.paramer',
+                            label: 'Parameters',
+                            formatKey: /.*/,
+                            formatValue: /.*/
+                        }
+                    ],
                     sections: [
                         {
                             title: 'Output',
-                            type: SectionTypes.collapsable
+                            type: SectionTypes.collapsable,
+                            fields: [
+                                {
+                                    type: InputTypes.FieldMutation,
+                                    path: 'httpstager.server.output',
+                                    transformOptions: transformOptions,
+                                    terminationOptions: terminationOptions
+                                }
+                            ]
                         }
                     ]
                 }

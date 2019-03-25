@@ -15,7 +15,7 @@ class Main extends React.Component {
                     <KeystoreTab />
                 </Tab>
                 <Tab eventKey="about" title="About">
-                    Hello about
+                    Created By Oscar
                 </Tab>
             </Tabs>
         )

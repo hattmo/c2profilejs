@@ -18,21 +18,16 @@ route.post('/', validator.validate({ body: postProfileScema }), (req, res, next)
 });
 
 route.get('/', (req, res) => {
-  const output = {
-    profiles: profilemodel.getProfiles(),
-  };
-  res.json(output);
+  res.json(profilemodel.getProfiles());
 });
 
 route.get('/:id', (req, res) => {
-  const profile = profilemodel.getProfile(req.params.id);
-  if (profile) {
-    const output = {
-      profile,
-    };
-    res.json(output);
+  const profileData = profilemodel.getProfile(req.params.id);
+  if (req.query.download) {
+    res.append('Content-Disposition', `attachment; filename="${profileData.profile.name}.profile"`);
+    res.send(profileData.compiled);
   } else {
-    res.sendStatus(404);
+    res.json(profileData.profile);
   }
 });
 

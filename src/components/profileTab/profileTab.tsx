@@ -3,18 +3,66 @@ import { Component } from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
 import ProfileForm from './profileForm';
 import cobaltStrikeProfile from '../../formDescription/profileDesc';
+import CollapsablePanel from '../utility/collapsablePanel';
+import ProfileInf from '../../interfaces/profile';
+import ProfileData from './profileData';
+interface State {
+    profiles: ProfileInf[]
+}
+interface Props {
 
-export default class ProfileTab extends Component {
+}
+export default class ProfileTab extends Component<Props, State> {
 
-    render() : JSX.Element{
+    constructor(props: Props) {
+        super(props)
+        this.state = {
+            profiles: []
+        }
+        this.checkForProfiles = this.checkForProfiles.bind(this);
+        this.buildPanels = this.buildPanels.bind(this);
+    }
+    async checkForProfiles(): Promise<void> {
+        const profiles = await (await fetch('/profiles', {
+            method: 'GET',
+        })).json();
+        this.setState({
+            profiles
+        })
+    }
+    async componentDidMount(): Promise<void> {
+        await this.checkForProfiles()
+    }
+    buildPanels(): JSX.Element[] {
+        return this.state.profiles.map((val) => {
+            return (
+                <CollapsablePanel title={val.name} key={val.name} >
+                    <ProfileData title={val.name} />
+                </CollapsablePanel>
+            )
+        })
+    }
+
+    render(): JSX.Element {
         return (
             <Container fluid>
                 <Row>
                     <Col md='9'>
-                        <ProfileForm formDef={cobaltStrikeProfile}/>
+                        <ProfileForm onProfileChange={this.checkForProfiles} formDef={cobaltStrikeProfile} />
                     </Col>
                     <Col md='3'>
-
+                        <Container fluid>
+                            <Row>
+                                <Col sm='12'>
+                                    <h4 className='text-center'>Profiles</h4>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col sm='12'>
+                                    {this.buildPanels()}
+                                </Col>
+                            </Row>
+                        </Container>
                     </Col>
                 </Row>
             </Container>

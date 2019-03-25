@@ -5,7 +5,7 @@ export default interface FormInf {
 export interface Section {
     title: string
     type: SectionTypes
-    fields?: (FieldSelectText | FieldText | FieldPairText | FieldSignKeystore)[]
+    fields?: (FieldSelectText | FieldText | FieldPairText | FieldSignKeystore | FieldMutation)[]
     sections?: Section[]
 }
 
@@ -22,6 +22,7 @@ export interface FieldSelectText extends Field {
 export interface OptionSelectText {
     text: string
     format: RegExp
+    hasInput: boolean
 }
 
 export interface FieldText extends Field {
@@ -39,6 +40,11 @@ export interface FieldSignKeystore extends Field {
     label: string
 }
 
+export interface FieldMutation extends Field {
+    transformOptions: OptionSelectText[]
+    terminationOptions: OptionSelectText[]
+}
+
 export enum SectionTypes {
     collapsable,
     box,
@@ -49,5 +55,6 @@ export enum InputTypes {
     FieldSelectText,
     FieldText,
     FieldPairText,
-    FieldSignKeystore
+    FieldSignKeystore,
+    FieldMutation
 }
