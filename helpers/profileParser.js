@@ -14,14 +14,16 @@ function buildHeadParam(name, opts, tabs) {
   return out;
 }
 
-function buildMutation(transformation, termination, tabs) {
+function buildMutation(transform, termination, tabs) {
   let out = '';
-  if (transformation) {
-    transformation.forEach((val) => {
-      out += `${tabs}${val}\n`;
+  if (transform) {
+    transform.forEach((item) => {
+      out += `${tabs}${item.key}`;
+      out += item.value ? ` "${item.value}";\n` : ';\n';
     });
   }
-  out += `${tabs}${termination}\n`;
+  out += `${tabs}${termination.key}`;
+  out += termination.value ? ` "${termination.value}";\n` : ';\n';
   return out;
 }
 
@@ -35,7 +37,7 @@ function buildBlock(opts, tabs) {
     out += /globaloptions/.test(key) ? buildOptions(opts[key], tabs) : '';
     out += /uri|verb|uri_x86|uri_x64/.test(key) ? `${tabs}set ${key} "${opts[key]}";\n` : '';
     out += /header|parameter/.test(key) ? buildHeadParam(key, opts[key], tabs) : '';
-    out += /termination/.test(key) ? buildMutation(opts.transformation, opts.termination, tabs) : '';
+    out += /termination/.test(key) ? buildMutation(opts.transform, opts.termination, tabs) : '';
   });
   return out;
 }

@@ -5,7 +5,7 @@ const profiles = {
 
   addProfile: (profile) => {
     console.log(profile);
-    const index = profiles.store.findIndex(ele => ele.profile.id === profile.id);
+    const index = profiles.store.findIndex(ele => ele.profile.name === profile.name);
     if (index === -1) {
       const compiled = parser(profile);
       console.log('---compiled----');
@@ -24,11 +24,11 @@ const profiles = {
   removeProfile: (profile) => {
     let storeid;
     if (typeof profile !== 'string') {
-      storeid = profile.id;
+      storeid = profile.name;
     } else {
       storeid = profile;
     }
-    const index = profiles.store.findIndex(ele => ele.profile.id === storeid);
+    const index = profiles.store.findIndex(ele => ele.profile.name === storeid);
     if (index !== -1) {
       profiles.store.splice(index, 1);
       return true;
@@ -36,12 +36,12 @@ const profiles = {
     return false;
   },
 
-  getProfile: id => profiles.store.find(val => val.profile.id === id),
+  getProfile: name => profiles.store.find(val => val.profile.name === name),
 
   /**
    * @returns {array}
    */
-  getKeystores: () => profiles.store.map(item => item.profile.id),
+  getProfiles: () => profiles.store.map(val => val.profile),
 
 };
 

@@ -1,32 +1,47 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const pug = {
-  test: /\.pug$/,
-  use: ['html-loader?attrs=false', 'pug-html-loader'],
-};
 
 const css = {
   test: /\.css$/,
   use: ['style-loader', 'css-loader'],
 };
 
+const ts = {
+  test: /\.ts(x)?$/,
+  use: [
+    {
+      loader: 'ts-loader',
+      options: {
+        compilerOptions: {
+          jsx: 'react',
+        },
+      },
+    },
+  ],
+};
+
 const config = {
-  entry: './src/index.js',
+  entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
   module: {
-    rules: [pug, css],
+    rules: [css, ts],
   },
   plugins: [
     new HtmlWebpackPlugin({
+      title: 'C2 Profile JS',
       filename: 'index.html',
-      template: './src/index.pug',
       inject: 'body',
+      favicon: './src/images/favicon.png',
+      meta: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' },
       minify: /staging/.test(process.env.NODE_ENV),
     }),
   ],
+  resolve: {
+    extensions: [' ', '.js', '.jsx', '.ts', '.tsx'],
+  },
 };
 module.exports = config;

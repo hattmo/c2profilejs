@@ -3,14 +3,32 @@
 const transform = {
   type: 'array',
   items: {
-    type: 'string',
-    pattern: '^(append ".+"|prepend ".+"|base64|base64url|mask|netbios|netbiosu)$',
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      key: {
+        type: 'string',
+        pattern: '^(append|prepend|base64|base64url|mask|netbios|netbiosu)$',
+      },
+      value: {
+        type: 'string',
+      },
+    },
   },
 };
 
 const termination = {
-  type: 'string',
-  pattern: '^(header ".+"|parameter ".+"|print|uri-append)$',
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    key: {
+      type: 'string',
+      pattern: '^(header|parameter|print|uri-append)$',
+    },
+    value: {
+      type: 'string',
+    },
+  },
 };
 
 const options = {
