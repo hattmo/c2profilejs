@@ -1,17 +1,18 @@
 language: node_js
-node_js: '10'
+node_js: "10"
 sudo: required
 services:
-- docker
+  - docker
 cache:
   directories:
-  - node_modules
+    - node_modules
 before_deploy:
-- npm run build
-- docker login -u hattmo -p $DOCKERHUB_PW
-- VERSION="$(node -e "console.log(require('./package.json').version)")"
-- export VERSION
-- docker build -t hattmo/c2profilejs:latest -t hattmo/c2profilejs:$VERSION .
+  - npm run getAssets
+  - npm run build
+  - docker login -u hattmo -p $DOCKERHUB_PW
+  - VERSION="$(node -e "console.log(require('./package.json').version)")"
+  - export VERSION
+  - docker build -t hattmo/c2profilejs:latest -t hattmo/c2profilejs:$VERSION .
 deploy:
   provider: script
   skip_cleanup: true

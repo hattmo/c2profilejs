@@ -1,8 +1,16 @@
 {
-    "include": [
-        "./src"
-    ],
-    "compilerOptions": {
-        "jsx": "react"
-    }
+  "include": [
+    "src/server"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "types/*"
+      ]
+    },
+    "newLine": "LF",
+    "outDir": "dist/server",
+    "skipLibCheck": true
+  }
 }

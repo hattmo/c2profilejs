@@ -1,10 +1,12 @@
-FROM openjdk:latest
-RUN apt-get install -y curl \
+FROM openjdk:11
+RUN apt install -y curl \
   && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
-  && apt-get install -y nodejs \
+  && apt install -y nodejs \
   && curl -L https://www.npmjs.com/install.sh | sh
-COPY ./ /app/
+COPY ./dist /app/dist/
 WORKDIR /app/
+COPY package.json .
+COPY package-lock.json .
 RUN npm install --production
 ENV NODE_ENV production
 ENTRYPOINT ["npm", "start"]
