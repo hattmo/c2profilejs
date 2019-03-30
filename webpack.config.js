@@ -22,9 +22,9 @@ const ts = {
 };
 
 const config = {
-  entry: './src/index.tsx',
+  entry: './src/client/index.tsx',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist/client'),
     filename: 'bundle.js',
   },
   module: {
@@ -35,7 +35,7 @@ const config = {
       title: 'C2 Profile JS',
       filename: 'index.html',
       inject: 'body',
-      favicon: './src/images/favicon.png',
+      favicon: './assets/favicon.png',
       meta: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' },
       minify: /staging/.test(process.env.NODE_ENV),
     }),
