@@ -16,7 +16,7 @@
     "build:staging": "webpack --mode production && tsc",
     "build:development": "concurrently \"webpack --watch --mode development\" \"tsc --watch\"",
     "test": "cross-per-env",
-    "test:staging": "mocha -r ts-node/register src/**/*Test.ts",
+    "test:staging": "mocha -r ts-node/register test/**/*Test.ts",
     "test:development": "mocha -r ts-node/register --bail test/**/*Test.ts"
   },
   "dependencies": {
