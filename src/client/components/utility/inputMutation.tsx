@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Component } from "react";
-import { Button, Container, FormControl, InputGroup, ListGroup } from "react-bootstrap";
+import { Button, Container, FormControl, InputGroup } from "react-bootstrap";
 import { Row } from "react-bootstrap";
-import { OptionSelectText } from "../../interfaces/formInterfaces";
-import { Mutation } from "../../interfaces/profile";
+import { OptionSelectText } from "../../../interfaces/formInterfaces";
+import { Mutation } from "../../../interfaces/profile";
 import Pill from "./pill";
 
 interface Props {

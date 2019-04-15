@@ -2,7 +2,7 @@ import * as React from "react";
 import { Component } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import cobaltStrikeProfile from "../../formDescription/profileDesc";
-import ProfileInf from "../../interfaces/profile";
+import ProfileInf from "../../../interfaces/profile";
 import CollapsablePanel from "../utility/collapsablePanel";
 import ProfileData from "./profileData";
 import ProfileForm from "./profileForm";

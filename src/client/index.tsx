@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
-// tslint:disable: no-var-requires
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./css/selectTextStyle.css";
+import "./css/customStyle.css";
 
 import Main from "./components/main";
 

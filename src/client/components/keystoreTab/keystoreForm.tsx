@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Component } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import FormInf, { FieldSelectText, FieldSignKeystore, FieldText, InputTypes, Section } from "../../interfaces/formInterfaces";
+import FormInf, { FieldSelectText, FieldSignKeystore, FieldText, InputTypes, Section } from "../../../interfaces/formInterfaces";
 import InputSelectText from "../utility/inputSelectText";
 import InputSignKeystore from "../utility/inputSignKeystore";
 import InputText from "../utility/inputText";
@@ -19,7 +19,7 @@ interface State {
 
 export default class KeystoreForm extends Component<Prop, State> {
 
-    constructor(props: Prop) {
+    constructor(props: Readonly<Prop>) {
         super(props);
         this.state = {
             waitingForPost: false,

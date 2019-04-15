@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Component } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import FormInf, { FieldMutation, FieldPairText, FieldSelectText, FieldText, InputTypes, Section } from "../../interfaces/formInterfaces";
+import FormInf, { FieldMutation, FieldPairText, FieldSelectText, FieldText, InputTypes, Section } from "../../../interfaces/formInterfaces";
 import CollapsablePanel from "../utility/collapsablePanel";
 import InputMutation from "../utility/inputMutation";
 import InputPairText from "../utility/inputPairText";

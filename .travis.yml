@@ -7,7 +7,6 @@ cache:
   directories:
     - node_modules
 before_deploy:
-  - npm run getAssets
   - npm run build
   - docker login -u hattmo -p $DOCKERHUB_PW
   - VERSION="$(node -e "console.log(require('./package.json').version)")"

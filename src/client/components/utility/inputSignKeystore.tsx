@@ -20,7 +20,7 @@ export default class InputSignKeystore extends Component<Props, State> {
         selectedVal: "",
     };
 
-    constructor(props) {
+    constructor(props: Readonly<Props>) {
 
         super(props);
         this.state = {
