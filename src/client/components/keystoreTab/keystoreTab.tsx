@@ -2,7 +2,7 @@ import * as React from "react";
 import { Component } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import keystoreDesc from "../../formDescription/keystoreDesc";
-import Keystore from "../../interfaces/keystore";
+import Keystore from "../../../interfaces/keystore";
 import CollapsablePanel from "../utility/collapsablePanel";
 import KeystoreData from "./keystoreData";
 import KeystoreForm from "./keystoreForm";

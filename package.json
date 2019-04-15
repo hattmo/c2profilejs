@@ -8,18 +8,18 @@
     "url": "https://hattmo.com"
   },
   "scripts": {
-    "getAssets": "ts-node loadAssets",
     "start": "cross-per-env",
     "start:production": "node --no-warnings dist/server/bin/www",
     "start:development": "nodemon -V dist/server/bin/www",
     "build": "cross-per-env",
-    "build:staging": "webpack --mode production && tsc",
-    "build:development": "concurrently \"webpack --watch --mode development\" \"tsc --watch\"",
+    "build:staging": "loadAssets && webpack --mode production && tsc ",
+    "build:development": "concurrently \"loadAssets\" \"webpack --watch --mode development\" \"tsc --watch\"",
     "test": "cross-per-env",
     "test:staging": "mocha -r ts-node/register test/**/*Test.ts",
     "test:development": "mocha -r ts-node/register --bail test/**/*Test.ts"
   },
   "dependencies": {
+    "@hattmo/assetloader": "^1.0.1",
     "cross-per-env": "^1.0.5",
     "express": "^4.16.4",
     "express-fileupload": "^0.4.0",
@@ -34,6 +34,7 @@
     "@types/mocha": "^5.2.6",
     "@types/morgan": "^1.7.35",
     "@types/node": "^11.10.5",
+    "@types/node-fetch": "^2.1.7",
     "@types/react": "^16.8.7",
     "@types/react-bootstrap": "^0.32.17",
     "@types/react-dom": "^16.8.2",
@@ -55,5 +56,11 @@
     "typescript": "^3.3.3333",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
-  }
+  },
+  "assets": [
+    {
+      "filename": "favicon.png",
+      "uri": "https://s3-us-west-1.amazonaws.com/c2profilejs/favicon.png"
+    }
+  ]
 }

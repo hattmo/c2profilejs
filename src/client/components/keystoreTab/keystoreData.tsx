@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Component } from "react";
 import { Card } from "react-bootstrap";
-import { Option } from "../../interfaces/keystore";
+import { Option } from "../../../interfaces/keystore";
 interface Props {
     title: string;
     dname: Option[];

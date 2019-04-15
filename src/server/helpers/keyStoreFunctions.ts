@@ -10,14 +10,14 @@ const keygen = {
   /**
    * Creates the directories temp and keystores if they dont exist
    */
-  checkDirs: async () => {
+  checkDirs: async (): Promise<void> => {
     const dirsToCreate = [keygen.createDir("./temp"), keygen.createDir("./keystores")];
     await Promise.all(dirsToCreate);
   },
   /**
    * @param {String} dir
    */
-  createDir: async (dir) => {
+  createDir: async (dir: string): Promise<void> => {
     try {
       await fsp.mkdir(dir);
     } catch (err) {
@@ -37,7 +37,7 @@ const keygen = {
    * @param {String} uniquepath
    */
 
-  signKeyStore: async (keystore, ca, uniquepath) => {
+  signKeyStore: async (keystore, ca, uniquepath: string) => {
     await keygen.certreq(keystore, uniquepath);
     await keygen.gencert(ca, uniquepath);
     await keygen.exportcert(ca, uniquepath, "CA.crt");

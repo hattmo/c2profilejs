@@ -12,10 +12,10 @@ interface Props {
 export default class InputText extends Component<Props> {
 
     public static defaultProps = {
-        text : "",
+        text: "",
     };
 
-    constructor(props) {
+    constructor(props: Readonly<Props>) {
         super(props);
         this.onChange = this.onChange.bind(this);
     }

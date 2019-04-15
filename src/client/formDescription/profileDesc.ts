@@ -1,4 +1,4 @@
-import FormInf, { InputTypes, OptionSelectText, SectionTypes } from "../interfaces/formInterfaces";
+import FormInf, { InputTypes, OptionSelectText, SectionTypes } from "../../interfaces/formInterfaces";
 
 const globalOptions: OptionSelectText[] = [
     {
