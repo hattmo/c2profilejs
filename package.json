@@ -12,11 +12,12 @@
     "start:production": "node --no-warnings dist/server/bin/www",
     "start:development": "nodemon -V dist/server/bin/www",
     "build": "cross-per-env",
-    "build:staging": "loadAssets && webpack --mode production && tsc ",
-    "build:development": "concurrently \"loadAssets\" \"webpack --watch --mode development\" \"tsc --watch\"",
+    "build:staging": "webpack --mode production && tsc ",
+    "build:development": "concurrently \"webpack --watch --mode development\" \"tsc --watch\"",
     "test": "cross-per-env",
     "test:staging": "mocha -r ts-node/register test/**/*Test.ts",
-    "test:development": "mocha -r ts-node/register --bail test/**/*Test.ts"
+    "test:development": "mocha -r ts-node/register --bail test/**/*Test.ts",
+    "postinstall": "loadAssets"
   },
   "dependencies": {
     "@hattmo/assetloader": "^1.0.1",
