@@ -35,7 +35,7 @@ export default class InputSignKeystore extends Component<Props, State> {
         });
         this.props.onChanged(this.props.path, undefined);
     }
-    public onSelected(e: React.FormEvent<HTMLInputElement>): void {
+    public onSelected(e): void {
         this.props.onChanged(this.props.path, e.currentTarget.value || undefined);
     }
 
