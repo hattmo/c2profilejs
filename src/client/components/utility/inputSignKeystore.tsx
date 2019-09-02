@@ -7,7 +7,7 @@ interface Props {
     label: string;
     selectedVal: string;
     keystoreNames: string[];
-    onChanged: (path: string, text: string) => void;
+    onChanged: (path: string, text: string | undefined) => void;
 }
 
 interface State {

@@ -7,7 +7,7 @@ interface Props {
     label: string;
     format: RegExp;
     text: string;
-    onChanged: (path: string, text: string) => void;
+    onChanged: (path: string, text: string | undefined) => void;
 }
 export default class InputText extends Component<Props> {
 

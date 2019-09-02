@@ -11,7 +11,7 @@ interface Props {
     formatKey: RegExp;
     formatValue: RegExp;
     selectedOptions: Option[];
-    onChanged: (path: string, options: Option[]) => void;
+    onChanged: (path: string, options: Option[] | undefined) => void;
 }
 
 interface State {
@@ -70,7 +70,7 @@ export default class InputPairText extends Component<Props, State> {
     }
 
     public onRemoveClicked(label: string) {
-        let tempArr = this.props.selectedOptions.slice();
+        let tempArr: Option[] | undefined = this.props.selectedOptions.slice();
         const index = tempArr.map((val) => val.key).indexOf(label);
         if (index !== -1) {
             tempArr.splice(index, 1);

@@ -10,7 +10,7 @@ interface Props {
     path: string;
     options: OptionSelectText[];
     selectedOptions: Option[];
-    onChanged: (path: string, options: Option[]) => void;
+    onChanged: (path: string, options: Option[] | undefined) => void;
 }
 
 interface State {
@@ -37,7 +37,7 @@ export default class InputSelectText extends Component<Props, State> {
 
     public onAddClick() {
         const key = this.state.selectedKey;
-        const value =  this.state.value;
+        const value = this.state.value;
         if (!value) { return; }
         const tempArr = this.props.selectedOptions.slice();
         const index = tempArr.map((val) => val.key).indexOf(key);
@@ -56,7 +56,7 @@ export default class InputSelectText extends Component<Props, State> {
     }
 
     public onRemoveClicked(label: string) {
-        let tempArr = this.props.selectedOptions.slice();
+        let tempArr: Option[] | undefined = this.props.selectedOptions.slice();
         const index = tempArr.map((val) => val.key).indexOf(label);
         if (index !== -1) {
             tempArr.splice(index, 1);
@@ -87,8 +87,10 @@ export default class InputSelectText extends Component<Props, State> {
         });
     }
 
-    public buildSelectedOptions(): JSX.Element[] {
-        if (!this.props.selectedOptions) { return null; }
+    public buildSelectedOptions(): JSX.Element[] | null {
+        if (!this.props.selectedOptions) {
+            return null;
+        }
         return (
             this.props.selectedOptions.map((val: Option) => {
                 return (
@@ -104,7 +106,12 @@ export default class InputSelectText extends Component<Props, State> {
         if (this.state.value === "") {
             return "";
         } else {
-            return this.props.options.find((val) => val.text === this.state.selectedKey).format.test(this.state.value) ? "goodInput" : "badInput";
+            const found = this.props.options.find((val) => val.text === this.state.selectedKey);
+            if (found) {
+                return found.format.test(this.state.value) ? "goodInput" : "badInput";
+            } else {
+                return "badInputr";
+            }
         }
     }
 

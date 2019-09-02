@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import * as http from "http";
+import http from "http";
 import app from "./app";
 import keystorefunc from "../helpers/keyStoreFunctions";
 import { AddressInfo } from "net";

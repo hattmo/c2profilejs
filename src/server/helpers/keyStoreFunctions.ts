@@ -1,7 +1,7 @@
 import { exec } from "child_process";
-import * as fs from "fs";
-import * as uuid from "uuid/v4";
-import * as util from "util";
+import fs from "fs";
+import uuid from "uuid/v4";
+import util from "util";
 
 const fsp = fs.promises;
 const execp = util.promisify(exec);

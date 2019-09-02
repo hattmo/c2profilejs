@@ -51,18 +51,24 @@ export default class KeystoreForm extends Component<Prop, State> {
         );
     }
     public buildFieldsInSection(section: Section): JSX.Element[] {
-        return (
-            section.fields.map((field) => {
-                switch (field.type) {
-                    case InputTypes.FieldText:
-                        return this.buildTextField(field as FieldText);
-                    case InputTypes.FieldSelectText:
-                        return this.buildSelectTextField(field as FieldSelectText);
-                    case InputTypes.FieldSignKeystore:
-                        return this.buildSignKeystoreField(field as FieldSignKeystore);
-                }
-            })
-        );
+        if (section.fields !== undefined) {
+            return (
+                section.fields.map((field) => {
+                    switch (field.type) {
+                        case InputTypes.FieldText:
+                            return this.buildTextField(field as FieldText);
+                        case InputTypes.FieldSelectText:
+                            return this.buildSelectTextField(field as FieldSelectText);
+                        case InputTypes.FieldSignKeystore:
+                            return this.buildSignKeystoreField(field as FieldSignKeystore);
+                        default:
+                            throw new Error();
+                    }
+                })
+            );
+        } else {
+            return [];
+        }
     }
     public render(): JSX.Element {
         return (

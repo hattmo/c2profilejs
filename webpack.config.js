@@ -12,11 +12,6 @@ const ts = {
   use: [
     {
       loader: 'ts-loader',
-      options: {
-        compilerOptions: {
-          jsx: 'react',
-        },
-      },
     },
   ],
 };

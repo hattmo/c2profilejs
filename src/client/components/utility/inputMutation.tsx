@@ -11,7 +11,7 @@ interface Props {
     transformOptions: OptionSelectText[];
     terminationOptions: OptionSelectText[];
     currentMutation: Mutation;
-    onChanged: (path: string, mutation: Mutation) => void;
+    onChanged: (path: string, mutation: Mutation | undefined) => void;
 }
 interface State {
     selectedTransformKey: string;
@@ -41,7 +41,12 @@ export default class InputMutation extends Component<Props, State> {
     public onAddClick() {
         const key = this.state.selectedTransformKey;
         const value = this.state.transformValue;
-        const tempArr = this.props.currentMutation.transform.slice();
+        let tempArr;
+        if (this.props.currentMutation.transform !== undefined) {
+            tempArr = [...this.props.currentMutation.transform];
+        } else {
+            tempArr = []
+        }
         tempArr.push({
             key,
             value,
@@ -93,23 +98,43 @@ export default class InputMutation extends Component<Props, State> {
         if (this.state.transformValue === "") {
             return "";
         } else {
-            return this.props.transformOptions.find((val) => val.text === this.state.selectedTransformKey).format.test(this.state.transformValue) ? "goodInput" : "badInput";
+            const found = this.props.transformOptions.find((val) => val.text === this.state.selectedTransformKey)
+            if (found !== undefined) {
+                return found.format.test(this.state.transformValue) ? "goodInput" : "badInput";
+            } else {
+                return "badInput"
+            }
         }
     }
     public validateTerminationInput(): string {
         if (this.props.currentMutation.termination.value === "") {
             return "";
         } else {
-            return this.props.terminationOptions.find((val) => val.text === this.props.currentMutation.termination.key).format.test(this.props.currentMutation.termination.value) ? "goodInput" : "badInput";
+            const found = this.props.terminationOptions.find((val) => val.text === this.props.currentMutation.termination.key);
+            if (found !== undefined) {
+                return found.format.test(this.props.currentMutation.termination.value) ? "goodInput" : "badInput";
+            } else {
+                return "badInput";
+            }
         }
     }
 
     public transformHasInput(): boolean {
-        return !this.props.transformOptions.find((val) => val.text === this.state.selectedTransformKey).hasInput;
+        const found = this.props.transformOptions.find((val) => val.text === this.state.selectedTransformKey);
+        if (found !== undefined) {
+            return found.hasInput;
+        } else {
+            return false;
+        }
     }
 
     public terminationHasInput(): boolean {
-        return !this.props.terminationOptions.find((val) => val.text === this.props.currentMutation.termination.key).hasInput;
+        const found = this.props.terminationOptions.find((val) => val.text === this.props.currentMutation.termination.key);
+        if (found !== undefined) {
+            return found.hasInput;
+        } else {
+            return false;
+        }
     }
 
     public buildTransformOptions(): JSX.Element[] {
@@ -131,7 +156,10 @@ export default class InputMutation extends Component<Props, State> {
         });
     }
     public onRemoveClicked(index: number) {
-        const tempArr = this.props.currentMutation.transform.slice();
+        if (this.props.currentMutation.transform === undefined) {
+            return;
+        }
+        const tempArr = [...this.props.currentMutation.transform];
         tempArr.splice(index, 1);
         if (tempArr.length === 0 && this.props.currentMutation.termination.key === "") {
             this.props.onChanged(this.props.path, undefined);
@@ -142,14 +170,18 @@ export default class InputMutation extends Component<Props, State> {
             });
         }
     }
-    public buildSelectedTransformOptions(): JSX.Element[] {
-        return this.props.currentMutation.transform.map((val, index) => {
-            return (
-                <Row key={index}>
-                    <Pill id={index} onClick={this.onRemoveClicked}>{`${index + 1} ${val.key} ${val.value}`}</Pill>
-                </Row>
-            );
-        });
+    public buildSelectedTransformOptions(): JSX.Element[] | void {
+        if (this.props.currentMutation.transform !== undefined) {
+            return this.props.currentMutation.transform.map((val, index) => {
+                return (
+                    <Row key={index}>
+                        <Pill id={index} onClick={this.onRemoveClicked}>{`${index + 1} ${val.key} ${val.value}`}</Pill>
+                    </Row>
+                );
+            });
+        } else {
+            return;
+        }
     }
 
     public render(): JSX.Element {
@@ -165,7 +197,7 @@ export default class InputMutation extends Component<Props, State> {
                                 {this.buildTransformOptions()}
                             </FormControl>
                         </InputGroup.Prepend>
-                        <FormControl disabled={this.transformHasInput()} className={this.validateTransformInput()}
+                        <FormControl disabled={!this.transformHasInput()} className={this.validateTransformInput()}
                             onChange={(e) => { this.onTransformTyped(e); }}
                             value={this.state.transformValue} />
                         <InputGroup.Append>
@@ -186,7 +218,7 @@ export default class InputMutation extends Component<Props, State> {
                                 {this.buildTerminationOptions()}
                             </FormControl>
                         </InputGroup.Prepend>
-                        <FormControl disabled={this.terminationHasInput()} className={this.validateTerminationInput()}
+                        <FormControl disabled={!this.terminationHasInput()} className={this.validateTerminationInput()}
                             onChange={(e) => { this.onTerminationTyped(e); }}
                             value={this.props.currentMutation.termination.value} />
                     </InputGroup>

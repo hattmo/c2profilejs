@@ -60,20 +60,26 @@ export default class ProfileForm extends Component<Props, State> {
     }
 
     public buildFieldsInSection(section: Section): JSX.Element[] {
-        return (
-            section.fields ? section.fields.map((field) => {
-                switch (field.type) {
-                    case InputTypes.FieldText:
-                        return this.buildTextField(field as FieldText);
-                    case InputTypes.FieldSelectText:
-                        return this.buildSelectTextField(field as FieldSelectText);
-                    case InputTypes.FieldPairText:
-                        return this.buildPairTextField(field as FieldPairText);
-                    case InputTypes.FieldMutation:
-                        return this.buildMutationField(field as FieldMutation);
-                }
-            }) : null
-        );
+        if (section.fields !== undefined) {
+            return (
+                section.fields.map((field) => {
+                    switch (field.type) {
+                        case InputTypes.FieldText:
+                            return this.buildTextField(field as FieldText);
+                        case InputTypes.FieldSelectText:
+                            return this.buildSelectTextField(field as FieldSelectText);
+                        case InputTypes.FieldPairText:
+                            return this.buildPairTextField(field as FieldPairText);
+                        case InputTypes.FieldMutation:
+                            return this.buildMutationField(field as FieldMutation);
+                        default:
+                            throw new Error();
+                    }
+                })
+            );
+        } else {
+            return [];
+        }
     }
 
     public buildSection(section: Section): JSX.Element {
