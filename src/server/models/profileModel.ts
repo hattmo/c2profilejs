@@ -45,6 +45,6 @@ export default class ProfileModel {
   }
 
   public getProfiles() {
-    this.store.map((val) => val.profile);
+    return this.store.map((val) => val.profile);
   }
 };
