@@ -4,7 +4,7 @@ import { Button, Container, FormControl, InputGroup } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import { OptionSelectText } from "../../../interfaces/formInterfaces";
 import { Mutation } from "../../../interfaces/profile";
-import Pill from "./pill";
+import Pill from "./Pill";
 
 interface Props {
     path: string;

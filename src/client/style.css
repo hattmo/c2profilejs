@@ -33,3 +33,16 @@
     background-color: #e9ecef;
     border-color: #ced4da;
 }
+
+.pill {
+    background-color: lightblue;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 5px;
+    float: left;
+    border-radius: 15px;
+    border-color: black;
+    border: 1px;
+    border-style: solid;
+    box-shadow: 5px 5px 15px -5px black;
+}

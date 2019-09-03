@@ -3,7 +3,7 @@ import { Component } from "react";
 import { Button, Container, FormControl, InputGroup } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import { Option } from "../../../interfaces/profile";
-import Pill from "./pill";
+import Pill from "./Pill";
 
 interface Props {
     path: string;
