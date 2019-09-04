@@ -16,6 +16,18 @@ const ts = {
   ],
 };
 
+const ttf = {
+  test: /\.ttf$/,
+  use:[
+    {
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]'
+      }
+    }
+  ]
+}
+
 const config = {
   entry: './src/client/index.tsx',
   output: {
@@ -23,7 +35,7 @@ const config = {
     filename: 'bundle.js',
   },
   module: {
-    rules: [css, ts],
+    rules: [css, ts, ttf],
   },
   plugins: [
     new HtmlWebpackPlugin({

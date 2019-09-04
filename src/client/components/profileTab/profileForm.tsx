@@ -6,7 +6,7 @@ import CollapsablePanel from "../utility/collapsablePanel";
 import InputMutation from "../utility/inputMutation";
 import InputPairText from "../utility/inputPairText";
 import InputSelectText from "../utility/inputSelectText";
-import InputText from "../utility/inputText";
+import InputText from "../utility/InputText";
 
 interface Props {
     formDef: FormInf;
