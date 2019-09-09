@@ -1,60 +1,35 @@
-import * as React from "react";
-import { ChangeEvent, Component } from "react";
-import { Form, InputGroup } from "react-bootstrap";
+import React, { useState } from "react";
 
-interface Props {
+interface IProps {
     path: string;
     label: string;
-    selectedVal: string;
+    selectedVal?: string;
     keystoreNames: string[];
     onChanged: (path: string, text: string | undefined) => void;
 }
 
-interface State {
-    isChecked: boolean;
-}
 
-export default class InputSignKeystore extends Component<Props, State> {
+export default ({ path, label, selectedVal = "", keystoreNames, onChanged }: IProps) => {
+    const [isChecked, setIsChecked] = useState(false);
+    return (
+        <div className="inputSignKeystore" >
 
-    public static defaultProps = {
-        selectedVal: "",
-    };
+            <div>
+                {label}
+            </div>
+            <input type="checkbox" disabled={!keystoreNames.length} onChange={(e) => {
+                setIsChecked(e.currentTarget.checked);
+                onChanged(path, undefined);
+            }} />
 
-    constructor(props: Readonly<Props>) {
-
-        super(props);
-        this.state = {
-            isChecked: false,
-        };
-        this.onChecked = this.onChecked.bind(this);
-    }
-
-    public onChecked(event: ChangeEvent<HTMLInputElement>): void {
-        this.setState({
-            isChecked: event.target.checked,
-        });
-        this.props.onChanged(this.props.path, undefined);
-    }
-    public onSelected(e): void {
-        this.props.onChanged(this.props.path, e.currentTarget.value || undefined);
-    }
-
-    public render(): JSX.Element {
-        return (
-            <InputGroup className="my-1">
-                <InputGroup.Prepend>
-                    <InputGroup.Text>
-                        {this.props.label}
-                    </InputGroup.Text>
-                    <InputGroup.Checkbox disabled={!this.props.keystoreNames.length} onChange={this.onChecked} />
-                </InputGroup.Prepend>
-                <Form.Control value={this.props.selectedVal} onChange={(e) => this.onSelected(e)} disabled={!this.state.isChecked} as="select">
-                    <option key={""} value={""}></option>
-                    {this.props.keystoreNames.map((val) => {
-                        return (<option key={val} value={val}>{val}</option>);
-                    })}
-                </Form.Control>
-            </InputGroup>
-        );
-    }
+            <select value={selectedVal} onChange={(e) => {
+                onChanged(path, e.currentTarget.value)
+            }} disabled={!isChecked}>
+                <option key={""} value={""}></option>
+                {keystoreNames.map((val) => {
+                    return (<option key={val} value={val}>{val}</option>);
+                })}
+            </select>
+        </div>
+    );
 }

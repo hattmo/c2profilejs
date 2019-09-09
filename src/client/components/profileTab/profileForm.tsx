@@ -3,9 +3,9 @@ import { Component } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import FormInf, { FieldMutation, FieldPairText, FieldSelectText, FieldText, InputTypes, Section } from "../../../interfaces/formInterfaces";
 import CollapsablePanel from "../utility/collapsablePanel";
-import InputMutation from "../utility/inputMutation";
-import InputPairText from "../utility/inputPairText";
-import InputSelectText from "../utility/inputSelectText";
+import InputMutation from "../utility/InputMutation";
+import InputPairText from "../utility/InputPairText";
+import InputSelectText from "../utility/InputSelectText";
 import InputText from "../utility/InputText";
 
 interface Props {

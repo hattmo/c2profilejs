@@ -2,14 +2,13 @@ import React from "react";
 
 
 interface Props {
-    onClick: (event: any, optionID: string) => void;
-    id: any;
+    onClick: () => void;
     children?: any;
 }
 
-export default ({ onClick, id, children }: Props) => {
+export default ({ onClick, children }: Props) => {
     return (
-        <span className="pill" onClick={(e) => onClick(e, id)} >
+        <span className="pill" onClick={() => onClick()} >
             {children}<span style={{ cursor: "pointer" }}> X</span>
         </span>
     );

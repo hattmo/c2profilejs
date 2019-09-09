@@ -2,8 +2,8 @@ import * as React from "react";
 import { Component } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import FormInf, { FieldSelectText, FieldSignKeystore, FieldText, InputTypes, Section } from "../../../interfaces/formInterfaces";
-import InputSelectText from "../utility/inputSelectText";
-import InputSignKeystore from "../utility/inputSignKeystore";
+import InputSelectText from "../utility/InputSelectText";
+import InputSignKeystore from "../utility/InputSignKeystore";
 import InputText from "../utility/InputText";
 
 interface Prop {
