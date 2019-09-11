@@ -19,6 +19,7 @@ export default ({ selectedOptions, onRemoved, className }: IProps) => {
                         })
                         onRemoved(newOptions.length > 0 ? newOptions : undefined)
                     }}>
+                        {`${option.key} ${option.value}`}
                     </Pill>
                 )
             })}
