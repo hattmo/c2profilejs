@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { OptionSelectText } from "../../../interfaces/formInterfaces";
 import { Mutation } from "../../../interfaces/profile";
-import Pill from "./Pill";
+import { Option } from "../../../interfaces/keystore";
+import MutationBox from "./MutationBox";
 
 
 interface IProps {
@@ -12,47 +13,16 @@ interface IProps {
     onChanged: (path: string, mutation: Mutation | undefined) => void;
 }
 
-export default ({ path, transformOptions, terminationOptions, currentMutation = {
-    transform: [],
-    termination: {
-        key: "",
-        value: "",
-    },
-}, onChanged, }: IProps) => {
-    const [selectedTransformKey, setSelectedTransformKey] = useState(transformOptions[0].text);
+export default ({ path, transformOptions, terminationOptions, onChanged }: IProps) => {
+    const [transformKey, setTransformKey] = useState(transformOptions[0].text);
     const [transformValue, setTransformValue] = useState("");
-
-    const buildSelectedTransformOptions = () => {
-        if (currentMutation.transform !== undefined) {
-            return currentMutation.transform.map((val, index) => {
-                return (
-                    <div key={index}>
-                        <Pill onClick={() => { onRemoveClicked(index) }}>{`${index + 1} ${val.key} ${val.value}`}</Pill>
-                    </div>
-                );
-            });
-        } else {
-            return;
-        }
-    }
-    const onRemoveClicked = (index: number) => {
-        if (currentMutation.transform === undefined) {
-            return;
-        }
-        const tempArr = [...currentMutation.transform];
-        tempArr.splice(index, 1);
-        if (tempArr.length === 0 && currentMutation.termination.key === "") {
-            onChanged(path, undefined);
-        } else {
-            onChanged(path, {
-                termination: currentMutation.termination,
-                transform: tempArr,
-            });
-        }
-    }
+    const [terminationKey, setTerminationKey] = useState(terminationOptions[0].text);
+    const [terminationValue, setTerminationValue] = useState("");
+    const [termination, setTermination] = useState<Option>();
+    const [transform, setTransform] = useState<Option[]>([]);
 
     const transformHasInput = () => {
-        const found = transformOptions.find((val) => val.text === selectedTransformKey);
+        const found = transformOptions.find((val) => val.text === transformKey);
         if (found !== undefined) {
             return found.hasInput;
         } else {
@@ -61,7 +31,7 @@ export default ({ path, transformOptions, terminationOptions, currentMutation = 
     }
 
     const terminationHasInput = () => {
-        const found = terminationOptions.find((val) => val.text === currentMutation.termination.key);
+        const found = terminationOptions.find((val) => val.text === transformKey);
         if (found !== undefined) {
             return found.hasInput;
         } else {
@@ -90,42 +60,26 @@ export default ({ path, transformOptions, terminationOptions, currentMutation = 
     }
 
     const onTransformSelected = (e: React.FormEvent<HTMLInputElement>) => {
-        setSelectedTransformKey(e.currentTarget.value);
+        setTransformKey(e.currentTarget.value);
         setTransformValue("");
     }
     const onTerminationSelected = (e: React.FormEvent<HTMLInputElement>) => {
-        if (e.currentTarget.value === "") {
-            onChanged(path, undefined);
-        } else {
-            onChanged(path, {
-                transform: currentMutation.transform,
-                termination: {
-                    key: e.currentTarget.value,
-                    value: "",
-                },
-            });
-        }
+        setTerminationKey(e.currentTarget.value);
+        setTerminationValue("");
     }
 
     const onTransformTyped = (e: React.FormEvent<HTMLInputElement>) => {
         setTransformValue(e.currentTarget.value);
     }
     const onTerminationTyped = (e: React.FormEvent<HTMLInputElement>) => {
-
-        onChanged(path, {
-            transform: currentMutation.transform,
-            termination: {
-                key: currentMutation.termination.key,
-                value: e.currentTarget.value,
-            },
-        });
+        setTerminationValue(e.currentTarget.value);
     }
 
     const validateTransformInput = () => {
         if (transformValue === "") {
             return "";
         } else {
-            const found = transformOptions.find((val) => val.text === selectedTransformKey)
+            const found = transformOptions.find((val) => val.text === transformKey)
             if (found !== undefined) {
                 return found.format.test(transformValue) ? "goodInput" : "badInput";
             } else {
@@ -134,12 +88,12 @@ export default ({ path, transformOptions, terminationOptions, currentMutation = 
         }
     }
     const validateTerminationInput = () => {
-        if (currentMutation.termination.value === "") {
+        if (terminationValue === "") {
             return "";
         } else {
-            const found = terminationOptions.find((val) => val.text === currentMutation.termination.key);
+            const found = terminationOptions.find((val) => val.text === terminationKey);
             if (found !== undefined) {
-                return found.format.test(currentMutation.termination.value) ? "goodInput" : "badInput";
+                return found.format.test(terminationValue) ? "goodInput" : "badInput";
             } else {
                 return "badInput";
             }
@@ -149,7 +103,7 @@ export default ({ path, transformOptions, terminationOptions, currentMutation = 
 
     return (
         <div>
-            <select className={"selectTextDropDown"} value={selectedTransformKey}
+            <select className={"selectTextDropDown"} value={transformKey}
                 onChange={(e: any) => onTransformSelected(e)}>
                 {transformOptions.map((val) => {
                     return (
@@ -163,7 +117,7 @@ export default ({ path, transformOptions, terminationOptions, currentMutation = 
                 onChange={(e) => { onTransformTyped(e); }}
                 value={transformValue} />
             <button onClick={onAddClick}>Add</button>
-            <select className={"selectTextDropDown"} value={currentMutation.termination.key}
+            <select className={"selectTextDropDown"} value={terminationKey}
                 onChange={(e: any) => onTerminationSelected(e)} >
                 {terminationOptions.map((val) => {
                     return (
@@ -175,9 +129,9 @@ export default ({ path, transformOptions, terminationOptions, currentMutation = 
             </select>
             <input type="text" disabled={!terminationHasInput()} className={validateTerminationInput()}
                 onChange={(e) => { onTerminationTyped(e); }}
-                value={currentMutation.termination.value} />
+                value={terminationValue} />
             <button onClick={onAddClick}>Add</button>
-            {buildSelectedTransformOptions()}
+            <MutationBox transform={transform} termination={termination} onTerminationChanged={() => { setTermination(undefined) }}} />
         </div>
     )
 }
