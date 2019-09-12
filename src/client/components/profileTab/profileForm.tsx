@@ -55,7 +55,7 @@ export default class ProfileForm extends Component<Props, State> {
     }
     public buildMutationField(field: FieldMutation) {
         return (
-            <InputMutation key={field.path} onChanged={this.handleData} path={field.path} transformOptions={field.transformOptions} terminationOptions={field.terminationOptions} currentMutation={this.state[field.path]} />
+            <InputMutation key={field.path} onChanged={this.handleData} path={field.path} transformOptions={field.transformOptions} terminationOptions={field.terminationOptions} />
         );
     }
 

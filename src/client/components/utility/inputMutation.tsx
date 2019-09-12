@@ -9,7 +9,6 @@ interface IProps {
     path: string;
     transformOptions: OptionSelectText[];
     terminationOptions: OptionSelectText[];
-    currentMutation: Mutation;
     onChanged: (path: string, mutation: Mutation | undefined) => void;
 }
 
@@ -39,26 +38,21 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
         }
     }
 
-    const onAddClick = () => {
-        const key = selectedTransformKey;
-        const value = transformValue;
-        let tempArr;
-        if (currentMutation.transform !== undefined) {
-            tempArr = [...currentMutation.transform];
-        } else {
-            tempArr = []
-        }
-        tempArr.push({
-            key,
-            value,
-        });
-        const newMutation: Mutation = {
-            transform: tempArr,
-            termination: currentMutation.termination,
-        };
-        onChanged(path, newMutation);
+    const onTransformAdd = () => {
+        console.log("called");
+        setTransform([...transform, { key: transformKey, value: transformValue }])
     }
 
+    const onTerminationAdd = () => {
+        setTermination({ key: terminationKey, value: terminationValue });
+        onChanged(path, {
+            transform: transform.length > 0 ? transform : undefined,
+            termination: {
+                key: terminationKey,
+                value: terminationValue
+            }
+        })
+    }
     const onTransformSelected = (e: React.FormEvent<HTMLInputElement>) => {
         setTransformKey(e.currentTarget.value);
         setTransformValue("");
@@ -116,7 +110,7 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
             <input type="text" disabled={!transformHasInput()} className={validateTransformInput()}
                 onChange={(e) => { onTransformTyped(e); }}
                 value={transformValue} />
-            <button onClick={onAddClick}>Add</button>
+            <button onClick={onTransformAdd}>Add</button>
             <select className={"selectTextDropDown"} value={terminationKey}
                 onChange={(e: any) => onTerminationSelected(e)} >
                 {terminationOptions.map((val) => {
@@ -130,8 +124,13 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
             <input type="text" disabled={!terminationHasInput()} className={validateTerminationInput()}
                 onChange={(e) => { onTerminationTyped(e); }}
                 value={terminationValue} />
-            <button onClick={onAddClick}>Add</button>
-            <MutationBox transform={transform} termination={termination} onTerminationChanged={() => { setTermination(undefined) }}} />
+            <button onClick={onTerminationAdd}>Add</button>
+            <MutationBox transform={transform} termination={termination}
+                onTerminationChanged={() => {
+                    setTermination(undefined)
+                }} onTransformChanged={(newTransform) => {
+                    setTransform(newTransform);
+                }} />
         </div>
     )
 }
