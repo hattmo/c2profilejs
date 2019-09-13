@@ -1,39 +1,23 @@
 import * as React from "react";
-import { Component } from "react";
-import { Card } from "react-bootstrap";
+import { useState } from "react";
 
-interface Props {
+interface IProps {
     title: string;
+    children?: any;
 }
 
-interface State {
-    closed: boolean;
-}
-
-export default class CollapsablePanel extends Component<Props, State> {
-
-    constructor(props: Readonly<Props>) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-        this.state = {
-            closed: true,
-        };
-    }
-
-    public handleClick(): void {
-        this.setState((prevState) => ({
-            closed: !prevState.closed,
-        }));
-    }
-
-    public render(): JSX.Element {
-        return (
-            <Card className="m-3">
-                <Card.Header onClick={this.handleClick}><h5 className="text-center" style={{ cursor: "pointer" }}>{this.props.title}</h5></Card.Header>
-                <Card.Body hidden={this.state.closed}>
-                    {this.props.children}
-                </Card.Body>
-            </Card>
-        );
-    }
+export default ({ title, children }: IProps) => {
+    const [closed, setclosed] = useState(true);
+    return (
+        <div>
+            <div onClick={() => {
+                setclosed(!closed);
+            }}>
+                <h5 className="text-center" style={{ cursor: "pointer" }}>{title}</h5>
+            </div>
+            <div>
+                {children}
+            </div>
+        </div>
+    )
 }

@@ -1,13 +1,12 @@
 import * as React from "react";
-import { Card } from "react-bootstrap";
-interface Props {
+interface IProps {
     title: string;
 }
 
-export default function({title}: Props): JSX.Element {
+export default function ({ title }: IProps) {
     return (
-        <Card.Text>
+        <div>
             <a href={`/profiles/${title}?download=true`}>download</a>
-        </Card.Text>
+        </div>
     );
 }

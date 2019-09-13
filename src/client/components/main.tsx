@@ -2,7 +2,7 @@ import * as React from "react";
 import { Tabs } from "react-bootstrap";
 import { Tab } from "react-bootstrap";
 import KeystoreTab from "./keystoreTab/keystoreTab";
-import ProfileTab from "./profileTab/profileTab";
+import ProfileTab from "./profileTab/ProfileTab";
 
 class Main extends React.Component {
 

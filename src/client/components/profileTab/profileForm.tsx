@@ -1,8 +1,6 @@
-import * as React from "react";
-import { Component } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import React, { Component } from "react";
 import FormInf, { FieldMutation, FieldPairText, FieldSelectText, FieldText, InputTypes, Section } from "../../../interfaces/formInterfaces";
-import CollapsablePanel from "../utility/collapsablePanel";
+import CollapsablePanel from "../utility/CollapsablePanel";
 import InputMutation from "../utility/InputMutation";
 import InputPairText from "../utility/InputPairText";
 import InputSelectText from "../utility/InputSelectText";
@@ -84,25 +82,26 @@ export default class ProfileForm extends Component<Props, State> {
 
     public buildSection(section: Section): JSX.Element {
         return (
-            <Row key={section.title}>
-                <Col md="12">
-                    <CollapsablePanel title={section.title}>
-                        {this.buildFieldsInSection(section)}
-                        {section.sections && section.sections.map(this.buildSection)}
-                    </CollapsablePanel>
-                </Col>
-            </Row>
+            <div>
+                <CollapsablePanel title={section.title}>
+                    {this.buildFieldsInSection(section)}
+                    {section.sections && section.sections.map(this.buildSection)}
+                </CollapsablePanel>
+            </div>
         );
     }
 
     public render(): JSX.Element {
         return (
-            <Container fluid>
-                {this.props.formDef.sections.map(this.buildSection)}
-                <Row>
-                    <Button disabled={this.state.waitingForPost} onClick={this.handleBuild} className="mx-3" variant="primary" block>Generate</Button>
-                </Row>
-            </Container>
+            <div>
+                <div>
+
+                    {this.props.formDef.sections.map(this.buildSection)}
+                </div>
+
+                <button disabled={this.state.waitingForPost} onClick={this.handleBuild}>Generate</button>
+
+            </div>
         );
     }
     public async handleBuild(): Promise<void> {
@@ -141,4 +140,8 @@ export default class ProfileForm extends Component<Props, State> {
             waitingForPost: false,
         });
     }
+}
+
+export default () => {
+
 }
