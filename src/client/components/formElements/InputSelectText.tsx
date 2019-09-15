@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { OptionSelectText } from "../../../interfaces/formInterfaces";
-import { Option } from "../../../interfaces/profile";
+import { IOptionSelectText } from "../../../interfaces/formInterfaces";
+import { IOption } from "../../../interfaces/profile";
 import PillBox from "./PillBox";
 
 interface IProps {
     path: string;
-    options: OptionSelectText[];
-    selectedOptions: Option[];
-    onChanged: (path: string, options: Option[] | undefined) => void;
+    options: IOptionSelectText[];
+    selectedOptions: IOption[];
+    onChanged: (path: string, options: IOption[] | undefined) => void;
 }
-
 
 export default ({ path, options, selectedOptions = [], onChanged }: IProps) => {
     const [key, setKey] = useState(options[0].text);
@@ -17,9 +16,9 @@ export default ({ path, options, selectedOptions = [], onChanged }: IProps) => {
 
     const onAddClick = () => {
         const clearedOptions = selectedOptions.filter((item) => item.key !== key);
-        onChanged(path, [...clearedOptions, { key, value }])
+        onChanged(path, [...clearedOptions, { key, value }]);
         setValue("");
-    }
+    };
 
     const validateInput = (): string => {
         if (value === "") {
@@ -32,11 +31,11 @@ export default ({ path, options, selectedOptions = [], onChanged }: IProps) => {
                 return "badInput";
             }
         }
-    }
+    };
 
     return (
         <div>
-            <PillBox onRemoved={(newOptions) => { onChanged(path, newOptions) }} selectedOptions={selectedOptions} />
+            <PillBox onRemoved={(newOptions) => { onChanged(path, newOptions); }} selectedOptions={selectedOptions} />
             <select value={key} onChange={(e) => setKey(e.currentTarget.value)} >
                 {options.map((val) => {
                     return (
@@ -46,10 +45,12 @@ export default ({ path, options, selectedOptions = [], onChanged }: IProps) => {
                     );
                 })}
             </select>
-            <input type="text" className={validateInput()} onChange={(e) => { setValue(e.currentTarget.value) }} value={value} />
-            <button onClick={() => { onAddClick() }}>
+            <input type="text" className={validateInput()} onChange={(e) => {
+                setValue(e.currentTarget.value);
+            }} value={value} />
+            <button onClick={() => { onAddClick(); }}>
                 Add
             </button>
         </div>
-    )
-}
+    );
+};

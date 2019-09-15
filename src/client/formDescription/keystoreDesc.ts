@@ -1,6 +1,6 @@
-import FormInf, { InputTypes, OptionSelectText, SectionTypes } from "../../interfaces/formInterfaces";
+import IFormInf, { InputTypes, IOptionSelectText, SectionTypes } from "../../interfaces/formInterfaces";
 
-const dnameOptions: OptionSelectText[] = [
+const dnameOptions: IOptionSelectText[] = [
     {
         text: "CN",
         format: /^.*$/,
@@ -33,7 +33,7 @@ const dnameOptions: OptionSelectText[] = [
     },
 ];
 
-export default (keystores: string[]): FormInf => {
+export default (keystores: string[]): IFormInf => {
     return (
         {
             sections: [
@@ -64,12 +64,11 @@ export default (keystores: string[]): FormInf => {
                             type: InputTypes.FieldSignKeystore,
                             path: "ca",
                             label: "Keystore",
-                            options: keystores
+                            options: keystores,
                         },
                     ],
                 },
             ],
         }
-    )
-}
-
+    );
+};

@@ -3,11 +3,11 @@ import keygen from "../helpers/keyStoreFunctions";
 const fsp = fs.promises;
 
 export default class KeystoreModel {
-  private store: {
+  private store: Array<{
     keystore: any,
     opt: string,
     ca?: string,
-  }[] = [];
+  }> = [];
   /**
    * @param {object} keystore
    * @param {string} keystore.alias
@@ -17,7 +17,7 @@ export default class KeystoreModel {
   public async addKeystore(keystore, opt, ca?) {
     let caparams;
     if (ca) {
-      const castore = this.getKeystore(ca)
+      const castore = this.getKeystore(ca);
       if (castore !== undefined) {
         caparams = castore.keystore;
       } else {
@@ -36,7 +36,7 @@ export default class KeystoreModel {
       return true;
     }
     return false;
-  };
+  }
 
   /**
    * @param {string} keystore keystore name to remove from the manager
@@ -50,7 +50,7 @@ export default class KeystoreModel {
       return true;
     }
     return false;
-  };
+  }
 
   /**
    * Finds and returns a keystore object with the same keystore name ks otherwise returns undefined
@@ -64,7 +64,7 @@ export default class KeystoreModel {
    * @returns {array}
    */
   public getKeystores() {
-    return this.store
+    return this.store;
   }
 
-};
+}

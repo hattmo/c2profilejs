@@ -2,30 +2,28 @@ import express from "express";
 import { ValidationError } from "express-json-validator-middleware";
 import logger from "morgan";
 import path from "path";
-import KeystoreModel from "../models/keyStoreModel"
+import KeystoreModel from "../models/keyStoreModel";
 import ProfileModel from "../models/profileModel";
 import api from "../routes/api";
 
 const keystoreModel = new KeystoreModel();
 const profileModel = new ProfileModel();
 
-console.log(__dirname)
 const app = express();
 app.use(logger(process.env.NODE_ENV === "production" ? "combined" : "dev"));
-app.use("/api/", express.json(), api(profileModel, keystoreModel))
+app.use("/api/", express.json(), api(profileModel, keystoreModel));
 app.use("/static/", express.static(path.join(__dirname, "../../client")));
 app.use((_req, res) => {
-  res.sendFile(path.join(__dirname, "../../client/index.html"))
-})
+  res.sendFile(path.join(__dirname, "../../client/index.html"));
+});
 
 app.use((err, _req, res, _next) => {
   if (err instanceof ValidationError) {
-    console.error("invalid json");
-    console.log(err.validationErrors);
+    process.stderr.write(`${err.validationErrors}\n`);
     res.sendStatus(400);
   } else {
     res.sendStatus(500);
-    console.log(err);
+    process.stderr.write(`${err}\n`);
   }
 });
 

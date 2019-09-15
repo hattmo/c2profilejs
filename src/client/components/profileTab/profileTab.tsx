@@ -1,19 +1,23 @@
-import React, { useState } from "react";
-import ProfileInf from "../../../interfaces/profile";
+import React, { useState, useEffect } from "react";
+import IProfile from "../../../interfaces/profile";
 import CollapsablePanel from "../formElements/CollapsablePanel";
 import ProfileData from "./ProfileData";
 import ProfileForm from "./ProfileForm";
 
 export default () => {
 
-    const [profiles, setProfiles] = useState<ProfileInf[]>([]);
+    const [profiles, setProfiles] = useState<IProfile[]>([]);
 
     const checkForProfiles = async () => {
-        const profiles = await (await fetch("/profiles", {
+        const newProfiles = await (await fetch("/profiles", {
             method: "GET",
         })).json();
-        setProfiles(profiles);
-    }
+        setProfiles(newProfiles);
+    };
+
+    useEffect(() => {
+        checkForProfiles();
+    }, []);
 
     return (
         <div>
@@ -30,5 +34,4 @@ export default () => {
             </div>
         </div>
     );
-}
-
+};

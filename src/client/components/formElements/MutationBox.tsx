@@ -1,16 +1,15 @@
 
 import React from "react";
-import { Option } from "../../../interfaces/profile";
+import { IOption } from "../../../interfaces/profile";
 
 interface IProps {
-    transform: Option[];
-    termination?: Option;
-    onTransformChanged: (newTransform: Option[]) => void;
+    transform: IOption[];
+    termination?: IOption;
+    onTransformChanged: (newTransform: IOption[]) => void;
     onTerminationChanged: () => void;
 }
 
 export default ({ transform, termination, onTransformChanged, onTerminationChanged }: IProps) => {
-    console.log(transform);
     return (
         <div>
             {
@@ -20,7 +19,7 @@ export default ({ transform, termination, onTransformChanged, onTerminationChang
                         <span onClick={() => {
                             onTransformChanged(transform.filter((_item, i) => index !== i));
                         }}>X</span>
-                    </div>)
+                    </div>);
                 })
             }{
                 termination ? <div key={0}>
@@ -30,10 +29,5 @@ export default ({ transform, termination, onTransformChanged, onTerminationChang
                 </div> : null
             }
         </div >
-    )
-}
-
-/**
- * ,
-
- */
+    );
+};

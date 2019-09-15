@@ -10,6 +10,7 @@
   "scripts": {
     "start": "nodemon -V dist/server/bin/www",
     "build": "concurrently \"webpack-cli --watch --mode development\" \"tsc --project ./src/server --watch\"",
+    "list": "tslint --project .",
     "test": "mocha -r ts-node/register test/**/*Test.ts",
     "postinstall": "loadAssets"
   },
@@ -45,6 +46,7 @@
     "style-loader": "^1.0.0",
     "ts-loader": "^6.1.0",
     "ts-node": "^8.3.0",
+    "tslint": "^5.20.0",
     "typescript": "^3.6.3",
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.8"

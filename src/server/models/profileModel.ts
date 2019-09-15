@@ -2,19 +2,15 @@ import parser from "../helpers/profileParser";
 
 export default class ProfileModel {
 
-  private store: {
+  private store: Array<{
     compiled: string,
-    profile: any
-  }[] = [];
+    profile: any,
+  }> = [];
 
   public addProfile(profile) {
-    console.log(profile);
     const index = this.store.findIndex((ele) => ele.profile.name === profile.name);
     if (index === -1) {
       const compiled = parser(profile);
-      console.log("---compiled----");
-      console.log(compiled);
-      console.log("---compiled----");
       const item = {
         compiled,
         profile,
@@ -23,7 +19,7 @@ export default class ProfileModel {
       return true;
     }
     return false;
-  };
+  }
 
   public removeProfile(profile) {
     let storeid;
@@ -38,7 +34,7 @@ export default class ProfileModel {
       return true;
     }
     return false;
-  };
+  }
 
   public getProfile(name) {
     return this.store.find((val) => val.profile.name === name);
@@ -47,4 +43,4 @@ export default class ProfileModel {
   public getProfiles() {
     return this.store.map((val) => val.profile);
   }
-};
+}

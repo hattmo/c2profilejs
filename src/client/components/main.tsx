@@ -1,37 +1,35 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, NavLink, Redirect, Route, Switch } from "react-router-dom";
+import Error404 from "./errors/404";
 
 class Main extends React.Component {
 
     public render(): React.ReactNode {
         return (
             <Router>
-                <Switch>
-                    <Route  path="/" exact render={()=>{
-                        return(
-                            <Redirect to="/profile"/>
-                        )
-                    }}/>
-                    <Route path="/profile" />
-                    <Route path="/keystore" />
-                    <Route path="/about" />
-                </Switch>
+                <div>
+                    <div>
+                        <NavLink to="/profile">Profile</NavLink>
+                        <NavLink to="/keystore">Keystore</NavLink>
+                        <NavLink to="/about">About</NavLink>
+                    </div>
+                    <div>
+                        <Switch>
+                            <Route path="/" exact render={() => {
+                                return (
+                                    <Redirect to="/profile" />
+                                );
+                            }} />
+                            <Route path="/profile" />
+                            <Route path="/keystore" />
+                            <Route path="/about" />
+                            <Route component={Error404} />
+                        </Switch>
+                    </div>
+                </div>
             </Router>
         );
     }
 }
 
 export default Main;
-/**
- *             <Tabs defaultActiveKey="profiles" id="mainTabs">
-                <Tab eventKey="profiles" title="Profiles">
-                  <ProfileTab/>
-                </Tab>
-                <Tab eventKey="keystores" title="Keystores">
-                    <KeystoreTab/>
-                </Tab>
-                <Tab eventKey="about" title="About">
-                    Created By Oscar
-                </Tab>
-            </Tabs>
- */

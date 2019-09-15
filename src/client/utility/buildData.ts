@@ -14,4 +14,4 @@ export default (data: any) => {
         });
     });
     return outObj;
-}
+};

@@ -1,11 +1,11 @@
 import * as express from "express";
 import { Validator } from "express-json-validator-middleware";
+import { isUndefined } from "util";
 import postProfileScema from "../helpers/schemas/postProfileSchema";
 import ProfileModel from "../models/profileModel";
-import { isUndefined } from "util";
 
 export default (profileModel: ProfileModel) => {
-  const route = express.Router()
+  const route = express.Router();
   const validator = new Validator({ allErrors: true });
 
   route.post("/", validator.validate({ body: postProfileScema }), (req, res, next) => {
@@ -51,4 +51,4 @@ export default (profileModel: ProfileModel) => {
   });
 
   return route;
-}
+};

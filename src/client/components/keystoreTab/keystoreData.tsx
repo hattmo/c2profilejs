@@ -1,12 +1,11 @@
 import React from "react";
-import { Option } from "../../../interfaces/keystore";
+import { IOption } from "../../../interfaces/keystore";
 
 interface IProps {
     title: string;
-    dname: Option[];
+    dname: IOption[];
     ca?: string;
 }
-
 
 export default ({ title, dname, ca }: IProps) => {
     const buildOptDName = () => {
@@ -15,7 +14,7 @@ export default ({ title, dname, ca }: IProps) => {
             out += `${val.key}=${val.value}, `;
         });
         return out.slice(0, out.length - 2);
-    }
+    };
 
     return (
         <div>
@@ -25,4 +24,4 @@ export default ({ title, dname, ca }: IProps) => {
         </div>
     );
 
-}
+};

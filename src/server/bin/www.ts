@@ -10,33 +10,34 @@ app.set("port", port);
 const server = http.createServer(app);
 
 function onError(error) {
-  if (error.syscall !== "listen") {
-    throw error;
-  }
+    if (error.syscall !== "listen") {
+        throw error;
+    }
 
-  switch (error.code) {
-    case "EACCES":
-      console.error(`Port ${port} requires elevated privileges`);
-      process.exit(1);
-      break;
-    case "EADDRINUSE":
-      console.error(`Port ${port} is already in use`);
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+    switch (error.code) {
+        case "EACCES":
+            process.stderr.write(`Port ${port} requires elevated privileges`);
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            process.stderr.write(`Port ${port} is already in use`);
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 
 function onListening() {
-  const addr = server.address() as AddressInfo;
-  console.log(`Listening on port ${addr.port}`);
+    const addr = server.address() as AddressInfo;
+    process.stderr.write(`Listening on port ${addr.port}\n`);
 }
 
 keystorefunc.checkDirs().then(() => {
-  server.listen(port);
-  server.on("error", onError);
-  server.on("listening", onListening);
+    server.listen(port);
+    server.on("error", onError);
+    server.on("listening", onListening);
 }).catch(() => {
-  console.error("Failed to create directories for certs");
+    process.stderr.write(`Failed to create directories for certs\n`);
+    process.exit(1);
 });

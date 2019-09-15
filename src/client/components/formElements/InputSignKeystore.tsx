@@ -8,7 +8,6 @@ interface IProps {
     onChanged: (path: string, text: string | undefined) => void;
 }
 
-
 export default ({ path, label, selectedVal = "", keystoreNames, onChanged }: IProps) => {
     const [isChecked, setIsChecked] = useState(false);
     return (
@@ -23,7 +22,7 @@ export default ({ path, label, selectedVal = "", keystoreNames, onChanged }: IPr
             }} />
 
             <select value={selectedVal} onChange={(e) => {
-                onChanged(path, e.currentTarget.value)
+                onChanged(path, e.currentTarget.value);
             }} disabled={!isChecked}>
                 <option key={""} value={""}></option>
                 {keystoreNames.map((val) => {
@@ -32,4 +31,4 @@ export default ({ path, label, selectedVal = "", keystoreNames, onChanged }: IPr
             </select>
         </div>
     );
-}
+};

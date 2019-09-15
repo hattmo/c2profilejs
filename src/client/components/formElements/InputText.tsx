@@ -15,7 +15,7 @@ export default ({ path, label, format, text, onChanged }: IProps) => {
         } else {
             return format.test(text) ? "goodInput" : "badInput";
         }
-    }
+    };
     return (
         <div className="inputText">
             <div>
@@ -26,4 +26,4 @@ export default ({ path, label, format, text, onChanged }: IProps) => {
             }} value={text} />
         </div>
     );
-}
+};

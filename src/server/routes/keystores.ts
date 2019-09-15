@@ -4,10 +4,9 @@ import { Validator } from "express-json-validator-middleware";
 import postKeystoresScema from "../helpers/schemas/postKeystoresSchema";
 import KeystoreModel from "../models/keyStoreModel";
 
-
 export default (keystoreModel: KeystoreModel) => {
 
-  const route = Express.Router()
+  const route = Express.Router();
   const validator = new Validator({ allErrors: true });
 
   route.post("/", validator.validate({ body: postKeystoresScema }), async (req, res) => {
@@ -18,7 +17,6 @@ export default (keystoreModel: KeystoreModel) => {
         res.sendStatus(400);
       }
     } catch (err) {
-      console.error(err);
       res.sendStatus(500);
     }
   });
@@ -32,7 +30,7 @@ export default (keystoreModel: KeystoreModel) => {
       try {
         res.download(Path.join(__dirname, `../../../keystores/${req.params.id}.jks`), `${req.params.id}.jks`);
       } catch (err) {
-        console.log(err);
+        res.sendStatus(500);
       }
     } else {
       const keystore = keystoreModel.getKeystore(req.params.id);
@@ -57,4 +55,4 @@ export default (keystoreModel: KeystoreModel) => {
   });
 
   return route;
-}
+};

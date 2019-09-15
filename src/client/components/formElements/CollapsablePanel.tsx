@@ -19,5 +19,5 @@ export default ({ title, children }: IProps) => {
                 {children}
             </div>
         </div>
-    )
-}
+    );
+};

@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { OptionSelectText } from "../../../interfaces/formInterfaces";
-import { Mutation } from "../../../interfaces/profile";
-import { Option } from "../../../interfaces/keystore";
+import { IOptionSelectText } from "../../../interfaces/formInterfaces";
+import { IOption } from "../../../interfaces/keystore";
+import { IMutation } from "../../../interfaces/profile";
 import MutationBox from "./MutationBox";
-
 
 interface IProps {
     path: string;
-    transformOptions: OptionSelectText[];
-    terminationOptions: OptionSelectText[];
-    onChanged: (path: string, mutation: Mutation | undefined) => void;
+    transformOptions: IOptionSelectText[];
+    terminationOptions: IOptionSelectText[];
+    onChanged: (path: string, mutation: IMutation | undefined) => void;
 }
 
 export default ({ path, transformOptions, terminationOptions, onChanged }: IProps) => {
@@ -17,8 +16,8 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
     const [transformValue, setTransformValue] = useState("");
     const [terminationKey, setTerminationKey] = useState(terminationOptions[0].text);
     const [terminationValue, setTerminationValue] = useState("");
-    const [termination, setTermination] = useState<Option>();
-    const [transform, setTransform] = useState<Option[]>([]);
+    const [termination, setTermination] = useState<IOption>();
+    const [transform, setTransform] = useState<IOption[]>([]);
 
     const transformHasInput = () => {
         const found = transformOptions.find((val) => val.text === transformKey);
@@ -27,7 +26,7 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
         } else {
             return false;
         }
-    }
+    };
 
     const terminationHasInput = () => {
         const found = terminationOptions.find((val) => val.text === transformKey);
@@ -36,12 +35,11 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
         } else {
             return false;
         }
-    }
+    };
 
     const onTransformAdd = () => {
-        console.log("called");
-        setTransform([...transform, { key: transformKey, value: transformValue }])
-    }
+        setTransform([...transform, { key: transformKey, value: transformValue }]);
+    };
 
     const onTerminationAdd = () => {
         setTermination({ key: terminationKey, value: terminationValue });
@@ -49,38 +47,38 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
             transform: transform.length > 0 ? transform : undefined,
             termination: {
                 key: terminationKey,
-                value: terminationValue
-            }
-        })
-    }
+                value: terminationValue,
+            },
+        });
+    };
     const onTransformSelected = (e: React.FormEvent<HTMLInputElement>) => {
         setTransformKey(e.currentTarget.value);
         setTransformValue("");
-    }
+    };
     const onTerminationSelected = (e: React.FormEvent<HTMLInputElement>) => {
         setTerminationKey(e.currentTarget.value);
         setTerminationValue("");
-    }
+    };
 
     const onTransformTyped = (e: React.FormEvent<HTMLInputElement>) => {
         setTransformValue(e.currentTarget.value);
-    }
+    };
     const onTerminationTyped = (e: React.FormEvent<HTMLInputElement>) => {
         setTerminationValue(e.currentTarget.value);
-    }
+    };
 
     const validateTransformInput = () => {
         if (transformValue === "") {
             return "";
         } else {
-            const found = transformOptions.find((val) => val.text === transformKey)
+            const found = transformOptions.find((val) => val.text === transformKey);
             if (found !== undefined) {
                 return found.format.test(transformValue) ? "goodInput" : "badInput";
             } else {
-                return "badInput"
+                return "badInput";
             }
         }
-    }
+    };
     const validateTerminationInput = () => {
         if (terminationValue === "") {
             return "";
@@ -92,8 +90,7 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
                 return "badInput";
             }
         }
-    }
-
+    };
 
     return (
         <div>
@@ -127,10 +124,10 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
             <button onClick={onTerminationAdd}>Add</button>
             <MutationBox transform={transform} termination={termination}
                 onTerminationChanged={() => {
-                    setTermination(undefined)
+                    setTermination(undefined);
                 }} onTransformChanged={(newTransform) => {
                     setTransform(newTransform);
                 }} />
         </div>
-    )
-}
+    );
+};

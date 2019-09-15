@@ -1,48 +1,48 @@
-export default interface FormInf {
-    sections: Section[];
+export default interface IFormInf {
+    sections: ISection[];
 }
 
-export interface Section {
+export interface ISection {
     title: string;
     type: SectionTypes;
-    fields?: Array<FieldSelectText | FieldText | FieldPairText | FieldSignKeystore | FieldMutation>;
-    sections?: Section[];
+    fields?: Array<IFieldSelectText | IFieldText | IFieldPairText | IFieldSignKeystore | IFieldMutation>;
+    sections?: ISection[];
 }
 
-export interface Field {
+export interface IField {
     type: InputTypes;
     path: string;
 }
 
-export interface FieldSelectText extends Field {
-    options: OptionSelectText[];
+export interface IFieldSelectText extends IField {
+    options: IOptionSelectText[];
 }
 
-export interface OptionSelectText {
+export interface IOptionSelectText {
     text: string;
     format: RegExp;
     hasInput: boolean;
 }
 
-export interface FieldText extends Field {
+export interface IFieldText extends IField {
     label: string;
     format: RegExp;
 }
 
-export interface FieldPairText extends Field {
+export interface IFieldPairText extends IField {
     label: string;
     formatKey: RegExp;
     formatValue: RegExp;
 }
 
-export interface FieldSignKeystore extends Field {
+export interface IFieldSignKeystore extends IField {
     label: string;
     options: string[];
 }
 
-export interface FieldMutation extends Field {
-    transformOptions: OptionSelectText[];
-    terminationOptions: OptionSelectText[];
+export interface IFieldMutation extends IField {
+    transformOptions: IOptionSelectText[];
+    terminationOptions: IOptionSelectText[];
 }
 
 export enum SectionTypes {

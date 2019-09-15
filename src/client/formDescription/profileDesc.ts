@@ -1,6 +1,6 @@
-import FormInf, { InputTypes, OptionSelectText, SectionTypes } from "../../interfaces/formInterfaces";
+import IFormInf, { InputTypes, IOptionSelectText, SectionTypes } from "../../interfaces/formInterfaces";
 
-const globalOptions: OptionSelectText[] = [
+const globalOptions: IOptionSelectText[] = [
     {
         text: "dns_idle",
         format: /^.*$/,
@@ -77,7 +77,7 @@ const globalOptions: OptionSelectText[] = [
         hasInput: true,
     },
 ];
-const transformOptions: OptionSelectText[] = [
+const transformOptions: IOptionSelectText[] = [
     {
         text: "append",
         format: /^.*$/,
@@ -108,7 +108,7 @@ const transformOptions: OptionSelectText[] = [
         hasInput: false,
     },
 ];
-const terminationOptions: OptionSelectText[] = [
+const terminationOptions: IOptionSelectText[] = [
     {
         text: "",
         format: /^$/,
@@ -132,7 +132,7 @@ const terminationOptions: OptionSelectText[] = [
     },
 ];
 
-export default (): FormInf => {
+export default (): IFormInf => {
     return ({
         sections: [
             {
@@ -392,6 +392,5 @@ export default (): FormInf => {
                 ],
             },
         ],
-    })
+    });
 };
-
