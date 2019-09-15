@@ -23,38 +23,40 @@
   },
   "devDependencies": {
     "@hattmo/assetloader": "^1.0.2",
-    "@types/chai": "^4.2.0",
+    "@types/chai": "^4.2.2",
     "@types/express": "^4.17.1",
     "@types/express-fileupload": "^1.1.0",
     "@types/mocha": "^5.2.7",
     "@types/morgan": "^1.7.37",
-    "@types/node": "^12.7.3",
-    "@types/node-fetch": "^2.5.0",
+    "@types/node": "^12.7.5",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^4.3.5",
     "@types/uuid": "^3.4.5",
-    "bootstrap": "^4.3.1",
     "chai": "^4.2.0",
     "css-loader": "^3.2.0",
     "file-loader": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
     "mocha": "^6.2.0",
-    "node-fetch": "^2.6.0",
-    "nodemon": "^1.19.1",
+    "nodemon": "^1.19.2",
     "react": "^16.9.0",
-    "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.9.0",
+    "react-router-dom": "^5.0.1",
     "style-loader": "^1.0.0",
-    "ts-loader": "^6.0.4",
+    "ts-loader": "^6.1.0",
     "ts-node": "^8.3.0",
-    "typescript": "^3.6.2",
-    "webpack": "^4.39.3",
-    "webpack-cli": "^3.3.7"
+    "typescript": "^3.6.3",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.8"
   },
   "assets": [
     {
       "filename": "favicon.png",
       "uri": "https://s3-us-west-1.amazonaws.com/c2profilejs/favicon.png"
+    },
+    {
+      "filename": "futura.ttf",
+      "uri": "https://s3-us-west-1.amazonaws.com/c2profilejs/futura.ttf"
     }
   ]
 }

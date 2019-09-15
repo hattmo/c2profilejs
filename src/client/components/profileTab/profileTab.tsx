@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import cobaltStrikeProfile from "../../formDescription/profileDesc";
 import ProfileInf from "../../../interfaces/profile";
-import CollapsablePanel from "../utility/CollapsablePanel";
+import CollapsablePanel from "../formElements/CollapsablePanel";
 import ProfileData from "./ProfileData";
-import ProfileForm from "./profileForm";
+import ProfileForm from "./ProfileForm";
 
 export default () => {
 
@@ -18,7 +17,7 @@ export default () => {
 
     return (
         <div>
-            <ProfileForm onProfileChange={checkForProfiles} formDef={cobaltStrikeProfile} />
+            <ProfileForm onProfileChange={checkForProfiles} />
             <h4>Profiles</h4>
             <div>
                 {profiles.map((val) => {

@@ -33,40 +33,43 @@ const dnameOptions: OptionSelectText[] = [
     },
 ];
 
-const defaultKeystoreForm: FormInf = {
-    sections: [
+export default (keystores: string[]): FormInf => {
+    return (
         {
-            title: "KeyStore Options",
-            type: SectionTypes.box,
-            fields: [
+            sections: [
                 {
-                    type: InputTypes.FieldText,
-                    path: "keystore.id",
-                    label: "Keystore ID",
-                    format: /^.*$/,
-                }, {
-                    type: InputTypes.FieldText,
-                    path: "keystore.alias",
-                    label: "Alias",
-                    format: /^\w*$/,
-                }, {
-                    type: InputTypes.FieldText,
-                    path: "keystore.password",
-                    label: "Password",
-                    format: /^\w{8,}$/,
-                }, {
-                    type: InputTypes.FieldSelectText,
-                    path: "opt.dname",
-                    options: dnameOptions,
-                }, {
-                    type: InputTypes.FieldSignKeystore,
-                    path: "ca",
-                    label: "Keystore",
+                    title: "KeyStore Options",
+                    type: SectionTypes.box,
+                    fields: [
+                        {
+                            type: InputTypes.FieldText,
+                            path: "keystore.id",
+                            label: "Keystore ID",
+                            format: /^.*$/,
+                        }, {
+                            type: InputTypes.FieldText,
+                            path: "keystore.alias",
+                            label: "Alias",
+                            format: /^\w*$/,
+                        }, {
+                            type: InputTypes.FieldText,
+                            path: "keystore.password",
+                            label: "Password",
+                            format: /^\w{8,}$/,
+                        }, {
+                            type: InputTypes.FieldSelectText,
+                            path: "opt.dname",
+                            options: dnameOptions,
+                        }, {
+                            type: InputTypes.FieldSignKeystore,
+                            path: "ca",
+                            label: "Keystore",
+                            options: keystores
+                        },
+                    ],
                 },
             ],
-        },
-    ],
+        }
+    )
+}
 
-};
-
-export default defaultKeystoreForm;

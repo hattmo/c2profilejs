@@ -15,4 +15,4 @@ COPY package-lock.json package.json ./
 RUN npm ci --production
 COPY --from=0 /app/dist/ /app/dist/
 ENV NODE_ENV production
-ENTRYPOINT ["node","/app/dist/server/www"]
+ENTRYPOINT ["node","--no-warnings","/app/dist/server/www"]

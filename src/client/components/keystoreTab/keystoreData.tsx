@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Component } from "react";
-import { Card } from "react-bootstrap";
+import React from "react";
 import { Option } from "../../../interfaces/keystore";
-interface Props {
+
+interface IProps {
     title: string;
     dname: Option[];
     ca?: string;
 }
 
-export default class KeystoreData extends Component<Props> {
-    public buildOptDName(dname: Option[]) {
+
+export default ({ title, dname, ca }: IProps) => {
+    const buildOptDName = () => {
         let out = "";
         dname.forEach((val) => {
             out += `${val.key}=${val.value}, `;
@@ -17,13 +17,12 @@ export default class KeystoreData extends Component<Props> {
         return out.slice(0, out.length - 2);
     }
 
-    public render(): JSX.Element {
-        return (
-            <Card.Text>
-                dname: {this.buildOptDName(this.props.dname)}<br />
-                {this.props.ca ? "Signed" : "Self-Signed"}<br />
-                <a href={`/keystores/${this.props.title}?download=true`}>download</a>
-            </Card.Text>
-        );
-    }
+    return (
+        <div>
+            dname: {buildOptDName()}<br />
+            {ca ? "Signed" : "Self-Signed"}<br />
+            <a href={`/keystores/${title}?download=true`}>download</a>
+        </div>
+    );
+
 }

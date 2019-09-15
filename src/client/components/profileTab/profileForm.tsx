@@ -1,128 +1,27 @@
-import React, { Component } from "react";
-import FormInf, { FieldMutation, FieldPairText, FieldSelectText, FieldText, InputTypes, Section } from "../../../interfaces/formInterfaces";
-import CollapsablePanel from "../utility/CollapsablePanel";
-import InputMutation from "../utility/InputMutation";
-import InputPairText from "../utility/InputPairText";
-import InputSelectText from "../utility/InputSelectText";
-import InputText from "../utility/InputText";
+import React, { useState } from "react";
+import FormBuilder from "../formElements/FormBuilder";
+import buildData from "../../utility/buildData";
+import profileDesc from "../../formDescription/profileDesc";
 
-interface Props {
-    formDef: FormInf;
+interface IProps {
     onProfileChange: () => Promise<void>;
 }
-interface State {
-    [x: string]: any;
-    waitingForPost: boolean;
-}
 
-export default class ProfileForm extends Component<Props, State> {
+export default ({ onProfileChange }: IProps) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            waitingForPost: false,
-        };
-        this.handleData = this.handleData.bind(this);
-        this.buildFieldsInSection = this.buildFieldsInSection.bind(this);
-        this.buildSection = this.buildSection.bind(this);
-        this.buildSelectTextField = this.buildSelectTextField.bind(this);
-        this.buildTextField = this.buildTextField.bind(this);
-        this.buildPairTextField = this.buildPairTextField.bind(this);
-        this.handleBuild = this.handleBuild.bind(this);
+    const [waitingForPost, setWaitingForPost] = useState(false);
+    const [currentProfile, setCurrentProfile] = useState({});
+
+    const handleData = (path: string, data: any) => {
+        setCurrentProfile({
+            ...currentProfile,
+            [path]: data
+        })
     }
 
-    public handleData(path: string, data: any) {
-        this.setState({
-            [path]: data,
-        });
-    }
-    public buildTextField(field: FieldText) {
-        return (
-            <InputText key={field.path} onChanged={this.handleData} path={field.path} label={field.label} format={field.format} text={this.state[field.path]} ></InputText>
-        );
-    }
-    public buildSelectTextField(field: FieldSelectText) {
-        return (
-            <InputSelectText key={field.path} onChanged={this.handleData} path={field.path} options={field.options} selectedOptions={this.state[field.path]} ></InputSelectText>
-        );
-    }
-    public buildPairTextField(field: FieldPairText) {
-        return (
-            <InputPairText key={field.path} onChanged={this.handleData} path={field.path} label={field.label} formatKey={field.formatKey} formatValue={field.formatValue} selectedOptions={this.state[field.path]} />
-        );
-    }
-    public buildMutationField(field: FieldMutation) {
-        return (
-            <InputMutation key={field.path} onChanged={this.handleData} path={field.path} transformOptions={field.transformOptions} terminationOptions={field.terminationOptions} />
-        );
-    }
-
-    public buildFieldsInSection(section: Section): JSX.Element[] {
-        if (section.fields !== undefined) {
-            return (
-                section.fields.map((field) => {
-                    switch (field.type) {
-                        case InputTypes.FieldText:
-                            return this.buildTextField(field as FieldText);
-                        case InputTypes.FieldSelectText:
-                            return this.buildSelectTextField(field as FieldSelectText);
-                        case InputTypes.FieldPairText:
-                            return this.buildPairTextField(field as FieldPairText);
-                        case InputTypes.FieldMutation:
-                            return this.buildMutationField(field as FieldMutation);
-                        default:
-                            throw new Error();
-                    }
-                })
-            );
-        } else {
-            return [];
-        }
-    }
-
-    public buildSection(section: Section): JSX.Element {
-        return (
-            <div>
-                <CollapsablePanel title={section.title}>
-                    {this.buildFieldsInSection(section)}
-                    {section.sections && section.sections.map(this.buildSection)}
-                </CollapsablePanel>
-            </div>
-        );
-    }
-
-    public render(): JSX.Element {
-        return (
-            <div>
-                <div>
-
-                    {this.props.formDef.sections.map(this.buildSection)}
-                </div>
-
-                <button disabled={this.state.waitingForPost} onClick={this.handleBuild}>Generate</button>
-
-            </div>
-        );
-    }
-    public async handleBuild(): Promise<void> {
-        this.setState({
-            waitingForPost: true,
-        });
-        const outObj = {};
-        Object.keys(this.state).forEach((key) => {
-            if (key === "waitingForPost") { return; }
-            let pointer = outObj;
-            key.split(".").forEach((item, i, arr) => {
-                if (i !== (arr.length - 1)) {
-                    if (pointer[item] === undefined) {
-                        pointer[item] = {};
-                    }
-                    pointer = pointer[item];
-                } else {
-                    pointer[item] = this.state[key];
-                }
-            });
-        });
+    const handleBuild = async () => {
+        setWaitingForPost(true);
+        const outObj = buildData(currentProfile);
         try {
             const res = await fetch("/profiles", {
                 method: "POST",
@@ -132,16 +31,19 @@ export default class ProfileForm extends Component<Props, State> {
             if (res.status !== 200) {
 
             }
-            await this.props.onProfileChange();
+            await onProfileChange();
         } catch (e) {
             console.error("error fetching data");
         }
-        this.setState({
-            waitingForPost: false,
-        });
+        setWaitingForPost(false);
     }
-}
 
-export default () => {
+    const profileFormDef = profileDesc();
 
+    return (
+        <div>
+            <FormBuilder formDef={profileFormDef} currentData={currentProfile} handleData={handleData} />
+            <button disabled={waitingForPost} onClick={handleBuild}>Generate</button>
+        </div>
+    );
 }

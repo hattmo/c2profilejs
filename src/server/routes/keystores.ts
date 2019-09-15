@@ -1,5 +1,5 @@
-import * as express from "express";
-import * as path from "path";
+import Express from "express";
+import Path from "path";
 import { Validator } from "express-json-validator-middleware";
 import postKeystoresScema from "../helpers/schemas/postKeystoresSchema";
 import KeystoreModel from "../models/keyStoreModel";
@@ -7,7 +7,7 @@ import KeystoreModel from "../models/keyStoreModel";
 
 export default (keystoreModel: KeystoreModel) => {
 
-  const route = express.Router()
+  const route = Express.Router()
   const validator = new Validator({ allErrors: true });
 
   route.post("/", validator.validate({ body: postKeystoresScema }), async (req, res) => {
@@ -30,7 +30,7 @@ export default (keystoreModel: KeystoreModel) => {
   route.get("/:id", (req, res) => {
     if (req.query.download) {
       try {
-        res.download(path.join(__dirname, `../../../keystores/${req.params.id}.jks`), `${req.params.id}.jks`);
+        res.download(Path.join(__dirname, `../../../keystores/${req.params.id}.jks`), `${req.params.id}.jks`);
       } catch (err) {
         console.log(err);
       }

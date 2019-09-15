@@ -1,114 +1,29 @@
-import * as React from "react";
-import { Component } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
-import FormInf, { FieldSelectText, FieldSignKeystore, FieldText, InputTypes, Section } from "../../../interfaces/formInterfaces";
-import InputSelectText from "../utility/InputSelectText";
-import InputSignKeystore from "../utility/InputSignKeystore";
-import InputText from "../utility/InputText";
+import React, { useState } from "react";
+import FormBuilder from "../formElements/FormBuilder";
+import buildData from "../../utility/buildData";
+import keystoreDesc from "../../formDescription/keystoreDesc";
 
-interface Prop {
-    formDef: FormInf;
+interface IProp {
     onKeyStoreChange: () => Promise<void>;
     keystoreNames: string[];
 }
 
-interface State {
-    waitingForPost: boolean;
-    [x: string]: any;
-}
+export default ({ onKeyStoreChange, keystoreNames }: IProp) => {
 
-export default class KeystoreForm extends Component<Prop, State> {
+    const [waitingForPost, setWaitingForPost] = useState(false);
+    const [currentKeystore, setCurrentKeystore] = useState({});
 
-    constructor(props: Readonly<Prop>) {
-        super(props);
-        this.state = {
-            waitingForPost: false,
-        };
-        this.handleData = this.handleData.bind(this);
-        this.handleBuild = this.handleBuild.bind(this);
-    }
-
-    public handleData(path: string, data: any) {
+    const handleData = (path: string, data: any) => {
         console.log(path, data);
-        this.setState({
+        setCurrentKeystore({
+            ...currentKeystore,
             [path]: data,
         });
     }
-    public buildTextField(field: FieldText) {
-        return (
-            <InputText key={field.path} onChanged={this.handleData} path={field.path} label={field.label} format={field.format} text={this.state[field.path]} ></InputText>
-        );
-    }
-    public buildSelectTextField(field: FieldSelectText) {
-        return (
-            <InputSelectText key={field.path} onChanged={this.handleData} path={field.path} options={field.options} selectedOptions={this.state[field.path]} ></InputSelectText>
-        );
-    }
 
-    public buildSignKeystoreField(field: FieldSignKeystore) {
-        return (
-            <InputSignKeystore key={field.path} onChanged={this.handleData} path={field.path} label={field.label} keystoreNames={this.props.keystoreNames} selectedVal={this.state[field.path]} ></InputSignKeystore>
-        );
-    }
-    public buildFieldsInSection(section: Section): JSX.Element[] {
-        if (section.fields !== undefined) {
-            return (
-                section.fields.map((field) => {
-                    switch (field.type) {
-                        case InputTypes.FieldText:
-                            return this.buildTextField(field as FieldText);
-                        case InputTypes.FieldSelectText:
-                            return this.buildSelectTextField(field as FieldSelectText);
-                        case InputTypes.FieldSignKeystore:
-                            return this.buildSignKeystoreField(field as FieldSignKeystore);
-                        default:
-                            throw new Error();
-                    }
-                })
-            );
-        } else {
-            return [];
-        }
-    }
-    public render(): JSX.Element {
-        return (
-            <Container fluid>
-                <Row>
-                    <Col sm="12">
-                        <h4 className="text-center">{this.props.formDef.sections[0].title}</h4>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col sm="12">
-                        {this.buildFieldsInSection(this.props.formDef.sections[0])}
-                    </Col>
-                </Row>
-                <Row>
-                    <Button disabled={this.state.waitingForPost} onClick={this.handleBuild} className="mx-3" variant="primary" block>Generate</Button>
-                </Row>
-            </Container>
-        );
-    }
-
-    public async handleBuild(): Promise<void> {
-        this.setState({
-            waitingForPost: true,
-        });
-        const outObj = {};
-        Object.keys(this.state).forEach((key) => {
-            if (key === "waitingForPost") { return; }
-            let pointer = outObj;
-            key.split(".").forEach((item, i, arr) => {
-                if (i !== (arr.length - 1)) {
-                    if (pointer[item] === undefined) {
-                        pointer[item] = {};
-                    }
-                    pointer = pointer[item];
-                } else {
-                    pointer[item] = this.state[key];
-                }
-            });
-        });
+    const handleBuild = async () => {
+        setWaitingForPost(true);
+        const outObj = buildData(currentKeystore);
         try {
             const res = await fetch("/keystores", {
                 method: "POST",
@@ -118,12 +33,19 @@ export default class KeystoreForm extends Component<Prop, State> {
             if (res.status !== 200) {
 
             }
-            await this.props.onKeyStoreChange();
+            await onKeyStoreChange();
         } catch (e) {
             console.error("error fetching data");
         }
-        this.setState({
-            waitingForPost: false,
-        });
+        setWaitingForPost(false);
     }
+
+    const keystoreFormDef = keystoreDesc(keystoreNames);
+
+    return (
+        <div>
+            <FormBuilder formDef={keystoreFormDef} currentData={currentKeystore} handleData={handleData} />
+            <button disabled={waitingForPost} onClick={handleBuild}>Generate</button>
+        </div>
+    );
 }

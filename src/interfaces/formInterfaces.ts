@@ -37,6 +37,7 @@ export interface FieldPairText extends Field {
 
 export interface FieldSignKeystore extends Field {
     label: string;
+    options: string[];
 }
 
 export interface FieldMutation extends Field {
