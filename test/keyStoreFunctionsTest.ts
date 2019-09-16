@@ -61,7 +61,7 @@ describe("keyStoreFunctions Test", () => {
 
         after(async () => {
             const files = await fsp.readdir(`temp/${uniquepath}`);
-            const filePromises = [];
+            const filePromises: Array<Promise<void>> = [];
             files.forEach((file) => {
                 filePromises.push(fsp.unlink(`temp/${uniquepath}/${file}`));
             });
@@ -102,7 +102,7 @@ describe("keyStoreFunctions Test", () => {
 
         after(async () => {
             const files = await fsp.readdir("keystores");
-            const filePromises = [];
+            const filePromises: Array<Promise<void>> = [];
             files.forEach((file) => {
                 filePromises.push(fsp.unlink(`keystores/${file}`));
             });

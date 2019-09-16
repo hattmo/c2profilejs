@@ -29,7 +29,7 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
     };
 
     const terminationHasInput = () => {
-        const found = terminationOptions.find((val) => val.text === transformKey);
+        const found = terminationOptions.find((val) => val.text === terminationKey);
         if (found !== undefined) {
             return found.hasInput;
         } else {
@@ -39,6 +39,15 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
 
     const onTransformAdd = () => {
         setTransform([...transform, { key: transformKey, value: transformValue }]);
+        if (termination !== undefined) {
+            onChanged(path, {
+                transform: [...transform, { key: transformKey, value: transformValue }],
+                termination: {
+                    key: terminationKey,
+                    value: terminationValue,
+                },
+            });
+        }
     };
 
     const onTerminationAdd = () => {
@@ -125,8 +134,18 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
             <MutationBox transform={transform} termination={termination}
                 onTerminationChanged={() => {
                     setTermination(undefined);
+                    onChanged(path, undefined);
                 }} onTransformChanged={(newTransform) => {
                     setTransform(newTransform);
+                    if (termination !== undefined) {
+                        onChanged(path, {
+                            transform: newTransform.length > 0 ? newTransform : undefined,
+                            termination: {
+                                key: terminationKey,
+                                value: terminationValue,
+                            },
+                        });
+                    }
                 }} />
         </div>
     );

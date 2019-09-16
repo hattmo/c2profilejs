@@ -2,7 +2,9 @@
 
 import { promises as fsp } from "fs";
 import { expect } from "chai";
-import keystoremanager from "../src/server/models/keyStoreModel";
+import keystoreModel from "../src/server/models/keyStoreModel";
+
+const keystoremanager = new keystoreModel();
 
 describe("keyStoreModel Test", () => {
     const keystoreObj1 = {
@@ -28,13 +30,13 @@ describe("keyStoreModel Test", () => {
         it("adds a keystore object to the keystore manager", async () => {
             expect(await keystoremanager.addKeystore(keystoreObj1, opt)).to.be.true;
             const found = keystoremanager.getKeystore(keystoreObj1.id);
-            expect(found.keystore).to.equal(keystoreObj1);
+            expect(found ? found.keystore : null).to.equal(keystoreObj1);
         });
         it("adds a keystore over another keystore", async () => {
             expect(await keystoremanager.addKeystore(keystoreObj2, opt)).to.be.false;
             const found = keystoremanager.getKeystore(keystoreObj2.id);
-            expect(found.keystore).to.not.equal(keystoreObj2);
-            expect(found.keystore).to.equal(keystoreObj1);
+            expect(found ? found.keystore : null).to.not.equal(keystoreObj2);
+            expect(found ? found.keystore : null).to.equal(keystoreObj1);
         });
     });
 
@@ -47,12 +49,13 @@ describe("keyStoreModel Test", () => {
             expect(await keystoremanager.addKeystore(keystoreObj1, opt)).to.be.true;
 
             expect(await keystoremanager.removeKeystore(notkeystoreObj1.id)).to.be.false;
-            expect(keystoremanager.getKeystore(keystoreObj1.id).keystore).to.equal(keystoreObj1);
+            const foundKeystore = keystoremanager.getKeystore(keystoreObj1.id)
+            expect(foundKeystore ? foundKeystore.keystore : null).to.equal(keystoreObj1);
         });
     });
     after(async () => {
         const files = await fsp.readdir("keystores");
-        const filePromises = [];
+        const filePromises: Array<Promise<void>> = [];
         files.forEach((file) => {
             filePromises.push(fsp.unlink(`keystores/${file}`));
         });

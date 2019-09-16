@@ -1,45 +1,46 @@
 import React, { useState } from "react";
-import profileDesc from "../../formDescription/profileDesc";
+import keystoreDesc from "../../formDescription/keystoreDesc";
 import buildData from "../../utility/buildData";
 import FormBuilder from "../formElements/FormBuilder";
 
 interface IProps {
-    onProfileChange: () => Promise<void>;
+    onKeyStoreChange: () => Promise<void>;
+    keystoreNames: string[];
 }
 
-export default ({ onProfileChange }: IProps) => {
+export default ({ onKeyStoreChange, keystoreNames }: IProps) => {
 
     const [waitingForPost, setWaitingForPost] = useState(false);
-    const [currentProfile, setCurrentProfile] = useState({});
+    const [currentKeystore, setCurrentKeystore] = useState({});
 
     const handleData = (path: string, data: any) => {
-        setCurrentProfile({
-            ...currentProfile,
+        setCurrentKeystore({
+            ...currentKeystore,
             [path]: data,
         });
     };
 
     const handleBuild = async () => {
         setWaitingForPost(true);
-        const outObj = buildData(currentProfile);
+        const outObj = buildData(currentKeystore);
         try {
-            await fetch("/profiles", {
+            await fetch("/api/keystores", {
                 method: "POST",
                 body: JSON.stringify(outObj),
                 headers: new Headers({ "content-type": "application/json" }),
             });
-            await onProfileChange();
+            await onKeyStoreChange();
         } catch (e) {
-            process.stderr.write("Failed to submit new profile\n");
+            process.stderr.write("Failed to submit new keystore\n");
         }
         setWaitingForPost(false);
     };
 
-    const profileFormDef = profileDesc();
+    const keystoreFormDef = keystoreDesc(keystoreNames);
 
     return (
         <div>
-            <FormBuilder formDef={profileFormDef} currentData={currentProfile} handleData={handleData} />
+            <FormBuilder formDef={keystoreFormDef} currentData={currentKeystore} handleData={handleData} />
             <button disabled={waitingForPost} onClick={handleBuild}>Generate</button>
         </div>
     );

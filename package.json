@@ -59,6 +59,14 @@
     {
       "filename": "futura.ttf",
       "uri": "https://s3-us-west-1.amazonaws.com/c2profilejs/futura.ttf"
+    },
+    {
+      "filename": "back.png",
+      "uri": "https://c2profilejs.s3-us-west-1.amazonaws.com/back.png"
+    },
+    {
+      "filename": "forward.png",
+      "uri": "https://c2profilejs.s3-us-west-1.amazonaws.com/forward.png"
     }
   ]
 }

@@ -13,7 +13,6 @@ before_deploy:
   - docker build -t hattmo/c2profilejs:latest -t hattmo/c2profilejs:$VERSION .
 deploy:
   provider: script
-  skip_cleanup: true
   script: bash ./deploy.sh
   on:
     branch: master

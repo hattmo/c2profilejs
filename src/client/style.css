@@ -1,10 +1,14 @@
-@font-face{
+@font-face {
     font-family: Futura;
     src: url("../../assets/futura.ttf");
 }
 
 * {
     font-family: Futura;
+}
+
+body {
+    margin: 0;
 }
 
 .badInput {
@@ -23,26 +27,6 @@
     background-color: lightgreen
 }
 
-.input-group-text {
-    font-weight: bolder
-}
-
-.selectTextDropDown {
-    font-weight: bolder;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    background-color: #e9ecef;
-    border-color: #ced4da;
-}
-
-.selectTextDropDown:focus {
-    font-weight: bolder;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    background-color: #e9ecef;
-    border-color: #ced4da;
-}
-
 .pill {
     background-color: lightblue;
     padding-left: 5px;
@@ -59,13 +43,14 @@
 .inputText {
     display: grid;
     grid-template-columns: min-content auto;
-    column-gap: 3px; 
+    column-gap: 3px;
 }
 
 .inputText div {
     white-space: nowrap;
 }
-.inputText input{
+
+.inputText input {
     padding-left: 10px;
     border-style: solid;
     border-width: 0px;
@@ -75,8 +60,62 @@
 .inputSignKeystore {
     display: grid;
     grid-template-columns: min-content min-content auto;
-    column-gap: 3px; 
+    column-gap: 3px;
 }
-.inputSignKeystore input{
+
+.inputSignKeystore input {
     align-self: center;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: 'form server'
+}
+
+.content {
+    grid-area: content;
+}
+
+.navbar {
+    background-color: rgba(100, 100, 255, 0.5);
+    position: fixed;
+    width: 100vw;
+    left: 0px;
+    top: 0px;
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+    justify-content: center;
+    justify-items: center;
+    border-bottom-style: solid;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+.mainSmall {
+    margin-right: 50px;
+}
+
+.sidebar {
+    background-color: rgba(100, 100, 255, 0.5);
+    position: fixed;
+    height: 100vh;
+    right: 0px;
+    top: 0px;
+    display: grid;
+    grid-template-columns: 50px 0px;
+    border-left-style: solid;
+}
+
+.sidebarOpen {
+    grid-template-columns: 50px 200px;
+}
+
+.sidebarButton {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    width: 100%;
 }

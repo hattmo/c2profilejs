@@ -15,13 +15,13 @@ import InputSelectText from "./InputSelectText";
 import InputSignKeystore from "./InputSignKeystore";
 import InputText from "./InputText";
 
-interface IProp {
+interface IProps {
     formDef: IFormInf;
     currentData: any;
     handleData: (path: string, data: any) => void;
 }
 
-export default ({ formDef, currentData, handleData }: IProp) => {
+export default ({ formDef, currentData, handleData }: IProps) => {
     const buildTextField = (field: IFieldText) => {
         return (
             <InputText key={field.path} onChanged={handleData} path={field.path}
@@ -58,7 +58,7 @@ export default ({ formDef, currentData, handleData }: IProp) => {
     const buildFieldsInSection = (section: ISection) => {
         if (section.fields !== undefined) {
             return (
-                section.fields.map((field) => {
+                section.fields && section.fields.map((field) => {
                     switch (field.type) {
                         case InputTypes.FieldText:
                             return buildTextField(field as IFieldText);
@@ -82,12 +82,10 @@ export default ({ formDef, currentData, handleData }: IProp) => {
 
     const buildSection = (section: ISection) => {
         return (
-            <div>
-                <CollapsablePanel title={section.title}>
-                    {buildFieldsInSection(section)}
-                    {section.sections && section.sections.map(buildSection)}
-                </CollapsablePanel>
-            </div>
+            <CollapsablePanel key={section.title} title={section.title}>
+                {buildFieldsInSection(section)}
+                {section.sections && section.sections.map(buildSection)}
+            </CollapsablePanel>
         );
     };
 

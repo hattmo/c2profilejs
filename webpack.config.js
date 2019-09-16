@@ -16,8 +16,8 @@ const ts = {
   ],
 };
 
-const ttf = {
-  test: /\.ttf$/,
+const staticFiles = {
+  test: /\.(ttf|png)$/,
   use:[
     {
       loader: 'file-loader',
@@ -37,7 +37,7 @@ const config = {
     filename: 'bundle.js',
   },
   module: {
-    rules: [css, ts, ttf],
+    rules: [css, ts, staticFiles],
   },
   plugins: [
     new HtmlWebpackPlugin({

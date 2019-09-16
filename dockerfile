@@ -1,7 +1,7 @@
 FROM node:10
 WORKDIR /app/
 COPY src/ tsconfig.json package-lock.json package.json ./
-RUN npm ci
+RUN npm i
 RUN npx tsc --project .
 RUN npx webpack --mode production
 
@@ -12,7 +12,7 @@ RUN apt install -y curl \
   && curl -L https://www.npmjs.com/install.sh | sh
 WORKDIR /app/
 COPY package-lock.json package.json ./
-RUN npm ci --production
+RUN npm i --production
 COPY --from=0 /app/dist/ /app/dist/
 ENV NODE_ENV production
 ENTRYPOINT ["node","--no-warnings","/app/dist/server/www"]

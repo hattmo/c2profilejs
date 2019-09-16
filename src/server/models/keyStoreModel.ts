@@ -1,8 +1,9 @@
-import * as fs from "fs";
+import fs from "fs";
 import keygen from "../helpers/keyStoreFunctions";
-const fsp = fs.promises;
 
 export default class KeystoreModel {
+  private fsp = fs.promises;
+
   private store: Array<{
     keystore: any,
     opt: string,
@@ -46,7 +47,7 @@ export default class KeystoreModel {
     if (index !== -1) {
       const { id } = this.store[index].keystore;
       this.store.splice(index, 1);
-      await fsp.unlink(`./keystores/${id}.jks`);
+      await this.fsp.unlink(`./keystores/${id}.jks`);
       return true;
     }
     return false;

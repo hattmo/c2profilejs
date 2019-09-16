@@ -8,7 +8,7 @@ interface IProps {
     onChanged: (path: string, text: string | undefined) => void;
 }
 
-export default ({ path, label, format, text, onChanged }: IProps) => {
+export default ({ path, label, format, text = "", onChanged }: IProps) => {
     const validate = () => {
         if (text === "") {
             return "";
