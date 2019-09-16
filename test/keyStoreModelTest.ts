@@ -49,7 +49,7 @@ describe("keyStoreModel Test", () => {
             expect(await keystoremanager.addKeystore(keystoreObj1, opt)).to.be.true;
 
             expect(await keystoremanager.removeKeystore(notkeystoreObj1.id)).to.be.false;
-            const foundKeystore = keystoremanager.getKeystore(keystoreObj1.id)
+            const foundKeystore = keystoremanager.getKeystore(keystoreObj1.id);
             expect(foundKeystore ? foundKeystore.keystore : null).to.equal(keystoreObj1);
         });
     });
