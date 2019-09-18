@@ -119,3 +119,14 @@ body {
     height: 100%;
     width: 100%;
 }
+
+.collapseablePanel {
+    border-style: solid;
+    border-width: 3px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.collapseablePanel h2 {
+    
+}

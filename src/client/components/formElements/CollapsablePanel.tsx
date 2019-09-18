@@ -9,11 +9,11 @@ interface IProps {
 export default ({ title, children }: IProps) => {
     const [closed, setclosed] = useState(true);
     return (
-        <div>
+        <div className="collapseablePanel">
             <div onClick={() => {
                 setclosed(!closed);
             }}>
-                <h5 className="text-center" style={{ cursor: "pointer" }}>{title}</h5>
+                <h2 className="text-center" style={{ cursor: "pointer" }}>{title}</h5>
             </div>
             <div>
                 {children}
