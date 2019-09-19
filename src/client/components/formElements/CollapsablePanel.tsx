@@ -7,17 +7,13 @@ interface IProps {
 }
 
 export default ({ title, children }: IProps) => {
-    const [closed, setclosed] = useState(true);
+    const [closed, setClosed] = useState(true);
     return (
-        <div className="collapseablePanel">
-            <div onClick={() => {
-                setclosed(!closed);
-            }}>
-                <h2 className="text-center" style={{ cursor: "pointer" }}>{title}</h5>
-            </div>
-            <div>
+        <div className={`collapseablePanel ${closed ? "closed" : "open"}`} >
+            <h2 className="title" style={{ cursor: "pointer" }} onClick={() => setClosed(!closed)}>{title} </h2>
+            <div className="content">
                 {children}
             </div>
-        </div>
+        </div >
     );
 };
