@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/hattmo/c2profilejs.svg?branch=master)](https://travis-ci.org/hattmo/c2profilejs)
 
+## 🚧 UNDER CONSTRUCTION 🚧
+
+I'm in the process of updating the look and feel of the UI so some of the components are unstyled, but all the functionality is still there.
+
 ## About
 
 C2 Profile JS is a web app designed to ease the generation of C2 profiles for the implant tool [Cobalt Strike](https://www.cobaltstrike.com/).  C2 profiles are not overly complex but when red teams need to adapt to BLUEFOR on the fly, time is a critical factor.  C2 Profile JS can improve turnaround time for C2 profiles and reduce chances of error.
