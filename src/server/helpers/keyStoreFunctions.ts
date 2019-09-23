@@ -1,22 +1,17 @@
 import { exec } from "child_process";
-import * as fs from "fs";
-import * as uuid from "uuid/v4";
-import * as util from "util";
+import fs from "fs";
+import util from "util";
+import uuid from "uuid/v4";
 
 const fsp = fs.promises;
 const execp = util.promisify(exec);
 
 const keygen = {
-  /**
-   * Creates the directories temp and keystores if they dont exist
-   */
   checkDirs: async (): Promise<void> => {
     const dirsToCreate = [keygen.createDir("./temp"), keygen.createDir("./keystores")];
     await Promise.all(dirsToCreate);
   },
-  /**
-   * @param {String} dir
-   */
+
   createDir: async (dir: string): Promise<void> => {
     try {
       await fsp.mkdir(dir);
@@ -24,18 +19,6 @@ const keygen = {
       await Promise.all((await fsp.readdir(dir)).map((file) => fsp.unlink(`${dir}/${file}`)));
     }
   },
-
-  /**
-   * @param {Object} keystore
-   * @param {String} keystore.alias
-   * @param {String} keystore.password
-   * @param {String} keystore.id
-   * @param {Object} ca
-   * @param {String} ca.alias
-   * @param {String} ca.password
-   * @param {String} ca.id
-   * @param {String} uniquepath
-   */
 
   signKeyStore: async (keystore, ca, uniquepath: string) => {
     await keygen.certreq(keystore, uniquepath);
@@ -48,19 +31,7 @@ const keygen = {
     }, uniquepath, "CA.crt");
     await keygen.importcert(keystore, uniquepath, "temp.crt");
   },
-  /**
-   * @param {Object} keystore
-   * @param {String} keystore.alias
-   * @param {String} keystore.password
-   * @param {String} keystore.id
-   * @param {Object} opt
-   * @param {String[]} opt.dname
-   * @param {Object} [ca]
-   * @param {String} [ca.alias]
-   * @param {String} [ca.password]
-   * @param {String} [ca.id]
-   * @returns {Promise}
-   */
+
   generateKeyStore: async (keystore, opt, ca?) => {
     const uniquepath = uuid();
     try {
@@ -76,9 +47,7 @@ const keygen = {
       await fsp.rmdir(`temp/${uniquepath}`);
     }
   },
-  /**
-  *@param {Object[]} dname
-  */
+
   buildOptDName: (dname) => {
     let out = "";
     dname.forEach((val) => {
@@ -86,16 +55,7 @@ const keygen = {
     });
     return out.slice(0, out.length - 2);
   },
-  /**
-   * Creates a keystore at the unique path described in opt.
-   * @param {Object} keystore
-   * @param {String} keystore.alias
-   * @param {String} keystore.password
-   * @param {String} keystore.id
-   * @param {Object} opt
-   * @param {String} opt.dname
-   * @param {String} uniquepath
-   */
+
   genkeypair: (keystore, opt, uniquepath) => execp(`keytool -genkeypair \
         -alias ${keystore.alias} \
         -keyalg RSA \
@@ -105,15 +65,6 @@ const keygen = {
         -keypass ${keystore.password} \
         -storepass ${keystore.password} \
         -keystore temp/${uniquepath}/${keystore.id}.jks`),
-  /**
-   * Generates a file called temp.csr at the unique path from the
-   * keystore described in opt. The keystore must also be in the unique path.
-   * @param {Object} keystore
-   * @param {String} keystore.alias
-   * @param {String} keystore.password
-   * @param {String} keystore.id
-   * @param {String} uniquepath
-   */
   certreq: (keystore, uniquepath) => execp(`keytool -certreq \
         -alias ${keystore.alias} \
         -file temp/${uniquepath}/temp.csr \
@@ -121,16 +72,6 @@ const keygen = {
         -storepass  ${keystore.password}\
         -keystore temp/${uniquepath}/${keystore.id}.jks`),
 
-  /**
-   * Signs temp.csr in the unique path with another certificate from keystores.
-   * Outputs a cert named temp.crt in the unique path.
-   *
-   * @param {Object} keystore
-   * @param {String} keystore.alias - alias of the signing key
-   * @param {String} keystore.password - signing keystore password
-   * @param {String} keystore.id - signing keystore
-   * @param {String} uniquepath
-   */
   gencert: (keystore, uniquepath) => execp(`keytool -gencert\
         -alias ${keystore.alias}\
         -infile temp/${uniquepath}/temp.csr\
@@ -139,32 +80,14 @@ const keygen = {
         -storepass ${keystore.password}\
         -keystore keystores/${keystore.id}.jks\
         -rfc`),
-  /**
-   * Exports a cert at alias from keystore to a file named opt.file in the unique path.
-   * @param {Object} keystore
-   * @param {String} keystore.alias
-   * @param {String} keystore.password
-   * @param {String} keystore.id
-   * @param {String} uniquepath
-   * @param {String} file
-   */
+
   exportcert: (keystore, uniquepath, file) => execp(`keytool -exportcert\
         -alias ${keystore.alias}\
         -file temp/${uniquepath}/${file}\
         -storepass ${keystore.password}\
         -keystore keystores/${keystore.id}.jks\
         -rfc`),
-  /**
-   * Imports a certificate with the file name defined in "opt.file" into
-   * the keystore 'opt.keystore'.
-   * file and keystore must be in the unique path.
-   * @param {Object} keystore
-   * @param {String} keystore.alias
-   * @param {String} keystore.password
-   * @param {String} keystore.keystore
-   * @param {String} uniquepath
-   * @param {String} file
-   */
+
   importcert: (keystore, uniquepath, file) => execp(`keytool -importcert\
             -noprompt -trustcacerts\
             -alias ${keystore.alias}\

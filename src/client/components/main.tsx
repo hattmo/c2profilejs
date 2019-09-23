@@ -1,26 +1,73 @@
-import * as React from "react";
-import { Tabs } from "react-bootstrap";
-import { Tab } from "react-bootstrap";
-import KeystoreTab from "./keystoreTab/keystoreTab";
-import ProfileTab from "./profileTab/profileTab";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import Error404 from "./errors/404";
+import SideBar from "./sidebar/SideBar";
+import NavBar from "./navbar/NavBar";
+import ProfileForm from "./profilePage/ProfileForm";
+import KeystoreForm from "./keystorePage/KeystoreForm";
+import AboutPage from "./aboutPage/AboutPage";
+import IProfile from "../../interfaces/profile";
+import IKeystore from "../../interfaces/keystore";
 
-class Main extends React.Component {
+export default () => {
+    const [smallScreen, setSmallScreen] = useState(window.innerWidth <= 1000);
+    const [profiles, setProfiles] = useState<IProfile[]>([]);
+    const [keystores, setKeystores] = useState<IKeystore[]>([]);
+    console.log(profiles);
+    const checkForProfiles = async () => {
+        const newProfiles = await (await fetch("/api/profiles", {
+            method: "GET",
+        })).json();
+        setProfiles(newProfiles);
+    };
 
-    public render(): React.ReactNode {
-        return (
-            <Tabs defaultActiveKey="profiles" id="mainTabs">
-                <Tab eventKey="profiles" title="Profiles">
-                  <ProfileTab/>
-                </Tab>
-                <Tab eventKey="keystores" title="Keystores">
-                    <KeystoreTab />
-                </Tab>
-                <Tab eventKey="about" title="About">
-                    Created By Oscar
-                </Tab>
-            </Tabs>
-        );
-    }
-}
+    const checkForKeystores = async () => {
+        const newKeystores = await (await fetch("/api/keystores", {
+            method: "GET",
+        })).json();
+        setKeystores(newKeystores);
+    };
 
-export default Main;
+    useEffect(() => {
+        checkForProfiles();
+        checkForKeystores();
+    }, []);
+
+    useEffect(() => {
+        let resizeTimer;
+        const resizeEvent = () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                setSmallScreen(window.innerWidth <= 1000);
+            }, 250);
+
+        };
+        window.addEventListener("resize", resizeEvent);
+        return () => {
+            window.removeEventListener("resize", resizeEvent);
+        };
+    }, []);
+
+    return (
+        <Router>
+            <div className={smallScreen ? "mainSmall" : "main"}>
+                {smallScreen ? <SideBar /> : <NavBar />}
+                <Switch>
+                    <Route path="/" exact render={() => {
+                        return (
+                            <Redirect to="/profile" />
+                        );
+                    }} />
+                    <Route path="/profile" render={() =>
+                        <ProfileForm onProfileChange={checkForProfiles}
+                            keystoreNames={keystores.map((i) => i.keystore.id)} />
+                    } />
+                    <Route path="/keystore" render={() => <KeystoreForm onKeyStoreChange={checkForKeystores}
+                        keystoreNames={keystores.map((i) => i.keystore.id)} />} />
+                    <Route path="/about" component={AboutPage} />
+                    <Route component={Error404} />
+                </Switch>
+            </div>
+        </Router>
+    );
+};

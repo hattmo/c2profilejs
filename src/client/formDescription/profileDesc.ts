@@ -1,6 +1,6 @@
-import FormInf, { InputTypes, OptionSelectText, SectionTypes } from "../../interfaces/formInterfaces";
+import IFormInf, { InputTypes, IOptionSelectText, SectionTypes } from "../../interfaces/formInterfaces";
 
-const globalOptions: OptionSelectText[] = [
+const globalOptions: IOptionSelectText[] = [
     {
         text: "dns_idle",
         format: /^.*$/,
@@ -77,7 +77,7 @@ const globalOptions: OptionSelectText[] = [
         hasInput: true,
     },
 ];
-const transformOptions: OptionSelectText[] = [
+const transformOptions: IOptionSelectText[] = [
     {
         text: "append",
         format: /^.*$/,
@@ -108,7 +108,7 @@ const transformOptions: OptionSelectText[] = [
         hasInput: false,
     },
 ];
-const terminationOptions: OptionSelectText[] = [
+const terminationOptions: IOptionSelectText[] = [
     {
         text: "",
         format: /^$/,
@@ -132,265 +132,265 @@ const terminationOptions: OptionSelectText[] = [
     },
 ];
 
-const cobaltStrikeProfile: FormInf = {
-    sections: [
-        {
-            title: "Global Options",
-            type: SectionTypes.collapsable,
-            fields: [
-                {
-                    type: InputTypes.FieldText,
-                    path: "name",
-                    label: "Name",
-                    format: /.*/,
-                },
-                {
-                    type: InputTypes.FieldSelectText,
-                    path: "globaloptions",
-                    options: globalOptions,
-                },
-            ],
-        }, {
-            title: "HTTP-Get",
-            type: SectionTypes.collapsable,
-            fields: [
-                {
-                    type: InputTypes.FieldText,
-                    path: "httpget.uri",
-                    label: "URI",
-                    format: /.*/,
-                },
-                {
-                    type: InputTypes.FieldText,
-                    path: "httpget.verb",
-                    label: "Verb",
-                    format: /.*/,
-                },
-            ],
-            sections: [
-                {
-                    title: "Client",
-                    type: SectionTypes.collapsable,
-                    fields: [
-                        {
-                            type: InputTypes.FieldPairText,
-                            path: "httpget.client.header",
-                            label: "Headers",
-                            formatKey: /.*/,
-                            formatValue: /.*/,
-                        },
-                        {
-                            type: InputTypes.FieldPairText,
-                            path: "httpget.client.paramer",
-                            label: "Parameters",
-                            formatKey: /.*/,
-                            formatValue: /.*/,
-                        },
-                    ],
-                    sections: [
-                        {
-                            title: "Metadata",
-                            type: SectionTypes.collapsable,
-                            fields: [
-                                {
-                                    type: InputTypes.FieldMutation,
-                                    path: "httpget.client.metadata",
-                                    transformOptions,
-                                    terminationOptions,
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    title: "Server",
-                    type: SectionTypes.collapsable,
-                    fields: [
-                        {
-                            type: InputTypes.FieldPairText,
-                            path: "httpget.server.header",
-                            label: "Headers",
-                            formatKey: /.*/,
-                            formatValue: /.*/,
-                        },
-                        {
-                            type: InputTypes.FieldPairText,
-                            path: "httpget.server.paramer",
-                            label: "Parameters",
-                            formatKey: /.*/,
-                            formatValue: /.*/,
-                        },
-                    ],
-                    sections: [
-                        {
-                            title: "Output",
-                            type: SectionTypes.collapsable,
-                            fields: [
-                                {
-                                    type: InputTypes.FieldMutation,
-                                    path: "httpget.server.output",
-                                    transformOptions,
-                                    terminationOptions,
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ],
-        }, {
-            title: "HTTP-Post",
-            type: SectionTypes.collapsable,
-            fields: [
-                {
-                    type: InputTypes.FieldText,
-                    path: "httppost.uri",
-                    label: "URI",
-                    format: /.*/,
-                },
-                {
-                    type: InputTypes.FieldText,
-                    path: "httppost.verb",
-                    label: "Verb",
-                    format: /.*/,
-                },
-            ],
-            sections: [
-                {
-                    title: "Client",
-                    type: SectionTypes.collapsable,
-                    fields: [
-                        {
-                            type: InputTypes.FieldPairText,
-                            path: "httppost.client.header",
-                            label: "Headers",
-                            formatKey: /.*/,
-                            formatValue: /.*/,
-                        },
-                        {
-                            type: InputTypes.FieldPairText,
-                            path: "httppost.client.paramer",
-                            label: "Parameters",
-                            formatKey: /.*/,
-                            formatValue: /.*/,
-                        },
-                    ],
-                    sections: [
-                        {
-                            title: "ID",
-                            type: SectionTypes.collapsable,
-                            fields: [
-                                {
-                                    type: InputTypes.FieldMutation,
-                                    path: "httppost.client.id",
-                                    transformOptions,
-                                    terminationOptions,
-                                },
-                            ],
-                        },
-                        {
-                            title: "Output",
-                            type: SectionTypes.collapsable,
-                            fields: [
-                                {
-                                    type: InputTypes.FieldMutation,
-                                    path: "httppost.client.output",
-                                    transformOptions,
-                                    terminationOptions,
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    title: "Server",
-                    type: SectionTypes.collapsable,
-                    fields: [
-                        {
-                            type: InputTypes.FieldPairText,
-                            path: "httppost.server.header",
-                            label: "Headers",
-                            formatKey: /.*/,
-                            formatValue: /.*/,
-                        },
-                        {
-                            type: InputTypes.FieldPairText,
-                            path: "httppost.server.paramer",
-                            label: "Parameters",
-                            formatKey: /.*/,
-                            formatValue: /.*/,
-                        },
-                    ],
-                    sections: [
-                        {
-                            title: "Output",
-                            type: SectionTypes.collapsable,
-                            fields: [
-                                {
-                                    type: InputTypes.FieldMutation,
-                                    path: "httppost.server.output",
-                                    transformOptions,
-                                    terminationOptions,
-                                },
-                            ],
-                        },
-                    ],
-                },
+export default (): IFormInf => {
+    return ({
+        sections: [
+            {
+                title: "Global Options",
+                type: SectionTypes.collapsable,
+                fields: [
+                    {
+                        type: InputTypes.FieldText,
+                        path: "name",
+                        label: "Name",
+                        format: /.*/,
+                    },
+                    {
+                        type: InputTypes.FieldSelectText,
+                        path: "globaloptions",
+                        options: globalOptions,
+                    },
+                ],
+            }, {
+                title: "HTTP-Get",
+                type: SectionTypes.collapsable,
+                fields: [
+                    {
+                        type: InputTypes.FieldText,
+                        path: "httpget.uri",
+                        label: "URI",
+                        format: /.*/,
+                    },
+                    {
+                        type: InputTypes.FieldText,
+                        path: "httpget.verb",
+                        label: "Verb",
+                        format: /.*/,
+                    },
+                ],
+                sections: [
+                    {
+                        title: "Client",
+                        type: SectionTypes.collapsable,
+                        fields: [
+                            {
+                                type: InputTypes.FieldPairText,
+                                path: "httpget.client.header",
+                                label: "Headers",
+                                formatKey: /.*/,
+                                formatValue: /.*/,
+                            },
+                            {
+                                type: InputTypes.FieldPairText,
+                                path: "httpget.client.paramer",
+                                label: "Parameters",
+                                formatKey: /.*/,
+                                formatValue: /.*/,
+                            },
+                        ],
+                        sections: [
+                            {
+                                title: "Metadata",
+                                type: SectionTypes.collapsable,
+                                fields: [
+                                    {
+                                        type: InputTypes.FieldMutation,
+                                        path: "httpget.client.metadata",
+                                        transformOptions,
+                                        terminationOptions,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        title: "Server",
+                        type: SectionTypes.collapsable,
+                        fields: [
+                            {
+                                type: InputTypes.FieldPairText,
+                                path: "httpget.server.header",
+                                label: "Headers",
+                                formatKey: /.*/,
+                                formatValue: /.*/,
+                            },
+                            {
+                                type: InputTypes.FieldPairText,
+                                path: "httpget.server.paramer",
+                                label: "Parameters",
+                                formatKey: /.*/,
+                                formatValue: /.*/,
+                            },
+                        ],
+                        sections: [
+                            {
+                                title: "Output",
+                                type: SectionTypes.collapsable,
+                                fields: [
+                                    {
+                                        type: InputTypes.FieldMutation,
+                                        path: "httpget.server.output",
+                                        transformOptions,
+                                        terminationOptions,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            }, {
+                title: "HTTP-Post",
+                type: SectionTypes.collapsable,
+                fields: [
+                    {
+                        type: InputTypes.FieldText,
+                        path: "httppost.uri",
+                        label: "URI",
+                        format: /.*/,
+                    },
+                    {
+                        type: InputTypes.FieldText,
+                        path: "httppost.verb",
+                        label: "Verb",
+                        format: /.*/,
+                    },
+                ],
+                sections: [
+                    {
+                        title: "Client",
+                        type: SectionTypes.collapsable,
+                        fields: [
+                            {
+                                type: InputTypes.FieldPairText,
+                                path: "httppost.client.header",
+                                label: "Headers",
+                                formatKey: /.*/,
+                                formatValue: /.*/,
+                            },
+                            {
+                                type: InputTypes.FieldPairText,
+                                path: "httppost.client.paramer",
+                                label: "Parameters",
+                                formatKey: /.*/,
+                                formatValue: /.*/,
+                            },
+                        ],
+                        sections: [
+                            {
+                                title: "ID",
+                                type: SectionTypes.collapsable,
+                                fields: [
+                                    {
+                                        type: InputTypes.FieldMutation,
+                                        path: "httppost.client.id",
+                                        transformOptions,
+                                        terminationOptions,
+                                    },
+                                ],
+                            },
+                            {
+                                title: "Output",
+                                type: SectionTypes.collapsable,
+                                fields: [
+                                    {
+                                        type: InputTypes.FieldMutation,
+                                        path: "httppost.client.output",
+                                        transformOptions,
+                                        terminationOptions,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        title: "Server",
+                        type: SectionTypes.collapsable,
+                        fields: [
+                            {
+                                type: InputTypes.FieldPairText,
+                                path: "httppost.server.header",
+                                label: "Headers",
+                                formatKey: /.*/,
+                                formatValue: /.*/,
+                            },
+                            {
+                                type: InputTypes.FieldPairText,
+                                path: "httppost.server.paramer",
+                                label: "Parameters",
+                                formatKey: /.*/,
+                                formatValue: /.*/,
+                            },
+                        ],
+                        sections: [
+                            {
+                                title: "Output",
+                                type: SectionTypes.collapsable,
+                                fields: [
+                                    {
+                                        type: InputTypes.FieldMutation,
+                                        path: "httppost.server.output",
+                                        transformOptions,
+                                        terminationOptions,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
 
-            ],
-        }, {
-            title: "HTTP-Stager",
-            type: SectionTypes.collapsable,
-            fields: [
-                {
-                    type: InputTypes.FieldText,
-                    path: "httpstager.uri_x86",
-                    label: "URI x86",
-                    format: /.*/,
-                }, {
-                    type: InputTypes.FieldText,
-                    path: "httpstager.uri_x64",
-                    label: "URI x64",
-                    format: /.*/,
-                },
-            ],
-            sections: [
-                {
-                    title: "Server",
-                    type: SectionTypes.collapsable,
-                    fields: [
-                        {
-                            type: InputTypes.FieldPairText,
-                            path: "httpstager.server.header",
-                            label: "Headers",
-                            formatKey: /.*/,
-                            formatValue: /.*/,
-                        },
-                        {
-                            type: InputTypes.FieldPairText,
-                            path: "httpstager.server.paramer",
-                            label: "Parameters",
-                            formatKey: /.*/,
-                            formatValue: /.*/,
-                        },
-                    ],
-                    sections: [
-                        {
-                            title: "Output",
-                            type: SectionTypes.collapsable,
-                            fields: [
-                                {
-                                    type: InputTypes.FieldMutation,
-                                    path: "httpstager.server.output",
-                                    transformOptions,
-                                    terminationOptions,
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ],
-        },
-    ],
+                ],
+            }, {
+                title: "HTTP-Stager",
+                type: SectionTypes.collapsable,
+                fields: [
+                    {
+                        type: InputTypes.FieldText,
+                        path: "httpstager.uri_x86",
+                        label: "URI x86",
+                        format: /.*/,
+                    }, {
+                        type: InputTypes.FieldText,
+                        path: "httpstager.uri_x64",
+                        label: "URI x64",
+                        format: /.*/,
+                    },
+                ],
+                sections: [
+                    {
+                        title: "Server",
+                        type: SectionTypes.collapsable,
+                        fields: [
+                            {
+                                type: InputTypes.FieldPairText,
+                                path: "httpstager.server.header",
+                                label: "Headers",
+                                formatKey: /.*/,
+                                formatValue: /.*/,
+                            },
+                            {
+                                type: InputTypes.FieldPairText,
+                                path: "httpstager.server.paramer",
+                                label: "Parameters",
+                                formatKey: /.*/,
+                                formatValue: /.*/,
+                            },
+                        ],
+                        sections: [
+                            {
+                                title: "Output",
+                                type: SectionTypes.collapsable,
+                                fields: [
+                                    {
+                                        type: InputTypes.FieldMutation,
+                                        path: "httpstager.server.output",
+                                        transformOptions,
+                                        terminationOptions,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    });
 };
-
-export default cobaltStrikeProfile;

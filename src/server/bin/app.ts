@@ -1,32 +1,29 @@
-/* eslint no-unused-vars: 0 */
-import * as express from "express";
+import express from "express";
 import { ValidationError } from "express-json-validator-middleware";
-import * as logger from "morgan";
-import * as path from "path";
-import keystores from "../routes/keystores";
-import profiles from "../routes/profiles";
-console.log(__dirname)
+import logger from "morgan";
+import path from "path";
+import KeystoreModel from "../models/keyStoreModel";
+import ProfileModel from "../models/profileModel";
+import api from "../routes/api";
+
+const keystoreModel = new KeystoreModel();
+const profileModel = new ProfileModel();
+
 const app = express();
 app.use(logger(process.env.NODE_ENV === "production" ? "combined" : "dev"));
-app.use(express.static(path.join(__dirname, "../../client")));
-app.use(express.json());
-app.use("/keystores", keystores);
-app.use("/profiles", profiles);
-
-app.use((_req, _res, next) => {
-  next(404);
+app.use("/api/", express.json(), api(profileModel, keystoreModel));
+app.use("/static/", express.static(path.join(__dirname, "../../client")));
+app.use((_req, res) => {
+  res.sendFile(path.join(__dirname, "../../client/index.html"));
 });
 
 app.use((err, _req, res, _next) => {
   if (err instanceof ValidationError) {
-    console.error("invalid json");
-    console.log(err.validationErrors);
+    process.stderr.write(`${err.validationErrors}\n`);
     res.sendStatus(400);
-  } else if (err === 404) {
-    res.sendStatus(404);
   } else {
     res.sendStatus(500);
-    console.log(err);
+    process.stderr.write(`${err}\n`);
   }
 });
 

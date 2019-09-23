@@ -1,0 +1,163 @@
+@font-face {
+    font-family: Futura;
+    src: url("../../assets/futura.ttf");
+}
+
+* {
+    font-family: Futura;
+}
+
+body {
+    margin: 0;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: 'form server';
+    margin-top: 50px;
+}
+
+.mainSmall {
+    margin-right: 50px;
+}
+
+.navbar {
+    background-color: rgba(100, 100, 255, 0.5);
+    position: fixed;
+    width: 100vw;
+    left: 0px;
+    top: 0px;
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 50px;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    border-bottom-style: solid;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+.sidebar {
+    background-color: rgba(100, 100, 255, 0.5);
+    position: fixed;
+    height: 100vh;
+    right: 0px;
+    top: 0px;
+    display: grid;
+    grid-template-columns: 50px 0px;
+    border-left-style: solid;
+}
+
+.sidebarOpen {
+    grid-template-columns: 50px 200px;
+}
+
+.sidebarButton {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.collapseablePanel {
+    display: grid;
+    border-style: solid;
+    border-width: 3px;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    grid-template-areas: 'title' 'content';
+}
+
+.collapseablePanel .content {
+    grid-area: content;
+}
+
+.collapseablePanel.closed .content {
+    display: none;
+}
+
+.collapseablePanel .title {
+    grid-area: title;
+    text-align: center;
+    margin: 2px;
+}
+
+.badInput {
+    background-color: lightcoral
+}
+
+.goodInput {
+    background-color: lightgreen
+}
+
+.badInput:focus {
+    background-color: lightcoral
+}
+
+.goodInput:focus {
+    background-color: lightgreen
+}
+
+.pill {
+    background-color: lightblue;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 5px;
+    float: left;
+    border-radius: 15px;
+    border-color: black;
+    border: 1px;
+    border-style: solid;
+    box-shadow: 5px 5px 15px -5px black;
+}
+
+.inputText {
+    display: grid;
+    grid-template-columns: min-content auto;
+    column-gap: 3px;
+    margin: 5px;
+}
+
+.inputText div {
+    white-space: nowrap;
+    width: 60px;
+}
+
+input {
+    padding-left: 10px;
+    border-style: solid;
+    border-width: 0px;
+    border-bottom-width: 2px;
+}
+
+.inputSignKeystore {
+    display: grid;
+    grid-template-columns: min-content min-content auto;
+    column-gap: 3px;
+}
+
+.inputSignKeystore input {
+    align-self: center;
+}
+
+.submitButton {
+    background-color: lightgreen;
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.form {
+    display: grid;
+    grid-template-rows: auto auto;
+    justify-items: fill;
+    align-items: center;
+}

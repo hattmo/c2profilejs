@@ -1,16 +1,16 @@
-export interface Option {
+export interface IOption {
     key: string;
     value: string;
 }
 
-export default interface Keystore {
+export default interface IKeystore {
     keystore: {
         alias: string,
         password: string,
         id: string,
     };
     opt: {
-        dname: Option[],
+        dname: IOption[],
     };
     ca?: string;
 }

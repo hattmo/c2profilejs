@@ -7,14 +7,12 @@ cache:
   directories:
     - node_modules
 before_deploy:
-  - npm run build
   - docker login -u hattmo -p $DOCKERHUB_PW
   - VERSION="$(node -e "console.log(require('./package.json').version)")"
   - export VERSION
   - docker build -t hattmo/c2profilejs:latest -t hattmo/c2profilejs:$VERSION .
 deploy:
   provider: script
-  skip_cleanup: true
   script: bash ./deploy.sh
   on:
     branch: master

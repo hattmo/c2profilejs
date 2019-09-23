@@ -12,23 +12,32 @@ const ts = {
   use: [
     {
       loader: 'ts-loader',
-      options: {
-        compilerOptions: {
-          jsx: 'react',
-        },
-      },
     },
   ],
 };
+
+const staticFiles = {
+  test: /\.(ttf|png)$/,
+  use:[
+    {
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]',
+        publicPath: 'static',
+      }
+    }
+  ]
+}
 
 const config = {
   entry: './src/client/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist/client'),
+    publicPath: 'static/',
     filename: 'bundle.js',
   },
   module: {
-    rules: [css, ts],
+    rules: [css, ts, staticFiles],
   },
   plugins: [
     new HtmlWebpackPlugin({
