@@ -39,9 +39,9 @@ export default ({ onKeyStoreChange, keystoreNames }: IProps) => {
     const keystoreFormDef = keystoreDesc(keystoreNames);
 
     return (
-        <div>
+        <div className="form">
             <FormBuilder formDef={keystoreFormDef} currentData={currentKeystore} handleData={handleData} />
-            <button disabled={waitingForPost} onClick={handleBuild}>Generate</button>
+            <button className="submitButton" disabled={waitingForPost} onClick={handleBuild}>Generate</button>
         </div>
     );
 };

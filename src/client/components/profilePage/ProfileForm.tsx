@@ -39,9 +39,9 @@ export default ({ onProfileChange }: IProps) => {
     const profileFormDef = profileDesc();
 
     return (
-        <div>
+        <div className="form">
             <FormBuilder formDef={profileFormDef} currentData={currentProfile} handleData={handleData} />
-            <button disabled={waitingForPost} onClick={handleBuild}>Generate</button>
+            <button className="submitButton"  disabled={waitingForPost} onClick={handleBuild}>Generate</button>
         </div>
     );
 };

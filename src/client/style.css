@@ -14,7 +14,8 @@ body {
 .main {
     display: grid;
     grid-template-columns: 3fr 1fr;
-    grid-template-areas: 'form server'
+    grid-template-areas: 'form server';
+    margin-top: 50px;
 }
 
 .mainSmall {
@@ -29,8 +30,10 @@ body {
     top: 0px;
     display: grid;
     grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 50px;
     justify-content: center;
     justify-items: center;
+    align-items: center;
     border-bottom-style: solid;
 }
 
@@ -122,7 +125,7 @@ body {
 
 .inputText div {
     white-space: nowrap;
-    width: 40px;
+    width: 60px;
 }
 
 input {
@@ -140,4 +143,21 @@ input {
 
 .inputSignKeystore input {
     align-self: center;
+}
+
+.submitButton {
+    background-color: lightgreen;
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.form {
+    display: grid;
+    grid-template-rows: auto auto;
+    justify-items: fill;
+    align-items: center;
 }
