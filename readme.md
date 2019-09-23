@@ -31,7 +31,6 @@ C2 Profile JS can be built and ran from source with the following commands
 
 ~~~bash
 npm install
-npm run getAssets
 npm run build
 npm start
 ~~~
