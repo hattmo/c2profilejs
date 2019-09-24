@@ -13,7 +13,6 @@ export default () => {
     const [smallScreen, setSmallScreen] = useState(window.innerWidth <= 1000);
     const [profiles, setProfiles] = useState<IProfile[]>([]);
     const [keystores, setKeystores] = useState<IKeystore[]>([]);
-    console.log(profiles);
     const checkForProfiles = async () => {
         const newProfiles = await (await fetch("/api/profiles", {
             method: "GET",

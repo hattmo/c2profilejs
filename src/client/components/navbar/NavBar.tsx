@@ -8,5 +8,5 @@ export default () => {
             <NavLink to="/keystore">Keystore</NavLink>
             <NavLink to="/about">About</NavLink>
         </div>
-    )
-}
+    );
+};

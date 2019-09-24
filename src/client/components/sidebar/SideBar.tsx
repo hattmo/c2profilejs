@@ -27,7 +27,7 @@ export default () => {
                 </div>
             </React.Fragment>
         );
-    }
+    };
     return (
         <div className={collapsed ? "sidebar" : "sidebarOpen sidebar"}>
             {collapsed ? collapsedContent() : expandedContent()}
