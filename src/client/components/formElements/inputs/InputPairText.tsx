@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { IOption } from "../../../interfaces/profile";
-import PillBox from "./PillBox";
+import { IOption } from "../../../../interfaces/profile";
+import PillBox from "../PillBox";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     path: string;
     label: string;
     formatKey: RegExp;
@@ -11,7 +11,7 @@ interface IProps {
     onChanged: (path: string, options: IOption[] | undefined) => void;
 }
 
-export default ({ path, label, formatKey, formatValue, selectedOptions = [], onChanged }: IProps) => {
+export default ({ path, label, formatKey, formatValue, selectedOptions = [], onChanged, style, ...rest }: IProps) => {
     const [key, setKey] = useState("");
     const [value, setValue] = useState("");
 
@@ -38,8 +38,9 @@ export default ({ path, label, formatKey, formatValue, selectedOptions = [], onC
     };
 
     return (
-        <div>
-            <PillBox selectedOptions={selectedOptions} onRemoved={(newOptions) => { onChanged(path, newOptions); }} />
+        <div style={{ ...mainStyle, ...style }} {...rest}>
+            <PillBox style={{ gridArea: "box" }} selectedOptions={selectedOptions}
+                onRemoved={(newOptions) => { onChanged(path, newOptions); }} />
             <div>
                 {label}
             </div>
@@ -54,4 +55,11 @@ export default ({ path, label, formatKey, formatValue, selectedOptions = [], onC
             </button>
         </div>
     );
+};
+
+const mainStyle = {
+    display: "grid",
+    gridTemplateAreas: '"box box box box" "label input input button"',
+    gridTemplateColumns: "90px auto auto 80px",
+    gap: "4px 4px",
 };

@@ -2,15 +2,14 @@ import React from "react";
 import { IOption } from "../../../interfaces/profile";
 import Pill from "./Pill";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     selectedOptions: IOption[];
     onRemoved: (newOptions: IOption[] | undefined) => void;
-    className?: string;
 }
 
-export default ({ selectedOptions, onRemoved, className }: IProps) => {
+export default ({ selectedOptions, onRemoved, style, ...rest }: IProps) => {
     return (
-        <div className={className}>
+        <div style={selectedOptions.length > 0 ? { ...mainStyle, ...style } : style} {...rest}>
             {selectedOptions.map((option, index) => {
                 return (
                     <Pill key={index} onClick={() => {
@@ -19,10 +18,16 @@ export default ({ selectedOptions, onRemoved, className }: IProps) => {
                         });
                         onRemoved(newOptions.length > 0 ? newOptions : undefined);
                     }}>
-                        {`${option.key} ${option.value}`}
+                        {`${option.key} : ${option.value}`}
                     </Pill>
                 );
             })}
         </div>
     );
+};
+
+const mainStyle: React.CSSProperties = {
+    borderWidth: "1px",
+    borderStyle: "solid",
+    backgroundColor: "lightblue",
 };

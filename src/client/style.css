@@ -5,8 +5,13 @@
 
 * {
     font-family: Futura;
+    font-size: 15pt
 }
 
+h2 {
+    font-size: 30pt;
+    margin: 0px;
+}
 body {
     margin: 0;
 }
@@ -63,30 +68,6 @@ body {
     width: 100%;
 }
 
-.collapseablePanel {
-    display: grid;
-    border-style: solid;
-    border-width: 3px;
-    margin: 5px;
-    padding: 5px;
-    border-radius: 5px;
-    grid-template-areas: 'title' 'content';
-}
-
-.collapseablePanel .content {
-    grid-area: content;
-}
-
-.collapseablePanel.closed .content {
-    display: none;
-}
-
-.collapseablePanel .title {
-    grid-area: title;
-    text-align: center;
-    margin: 2px;
-}
-
 .badInput {
     background-color: lightcoral
 }
@@ -103,29 +84,12 @@ body {
     background-color: lightgreen
 }
 
-.pill {
-    background-color: lightblue;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin: 5px;
-    float: left;
-    border-radius: 15px;
-    border-color: black;
-    border: 1px;
+button {
     border-style: solid;
-    box-shadow: 5px 5px 15px -5px black;
-}
-
-.inputText {
-    display: grid;
-    grid-template-columns: min-content auto;
-    column-gap: 3px;
-    margin: 5px;
-}
-
-.inputText div {
-    white-space: nowrap;
-    width: 60px;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 5px;
+    padding: 3px;
 }
 
 input {
@@ -135,29 +99,9 @@ input {
     border-bottom-width: 2px;
 }
 
-.inputSignKeystore {
-    display: grid;
-    grid-template-columns: min-content min-content auto;
-    column-gap: 3px;
-}
-
-.inputSignKeystore input {
-    align-self: center;
-}
-
-.submitButton {
-    background-color: lightgreen;
-    border-style: solid;
-    border-width: 3px;
-    border-color: black;
+select {
     border-radius: 5px;
-    padding: 5px;
-    margin: 5px;
-}
-
-.form {
-    display: grid;
-    grid-template-rows: auto auto;
-    justify-items: fill;
-    align-items: center;
+    border-color: black;
+    border: 1px;
+    border-style: solid;
 }

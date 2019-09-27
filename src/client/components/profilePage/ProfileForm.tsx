@@ -3,12 +3,12 @@ import profileDesc from "../../formDescription/profileDesc";
 import buildData from "../../utility/buildData";
 import FormBuilder from "../formElements/FormBuilder";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     onProfileChange: () => Promise<void>;
-    keystoreNames: string[];
+    //    keystoreNames: string[];
 }
 
-export default ({ onProfileChange }: IProps) => {
+export default ({ onProfileChange, style, ...rest }: IProps) => {
 
     const [waitingForPost, setWaitingForPost] = useState(false);
     const [currentProfile, setCurrentProfile] = useState({});
@@ -39,9 +39,17 @@ export default ({ onProfileChange }: IProps) => {
     const profileFormDef = profileDesc();
 
     return (
-        <div className="form">
+        <div style={{ ...mainStyle, ...style }} {...rest}>
             <FormBuilder formDef={profileFormDef} currentData={currentProfile} handleData={handleData} />
-            <button className="submitButton"  disabled={waitingForPost} onClick={handleBuild}>Generate</button>
+            <button className="submitButton" disabled={waitingForPost} onClick={handleBuild}>Generate</button>
         </div>
     );
+};
+const mainStyle: React.CSSProperties = {
+    display: "grid",
+    gridTemplateRows: "auto auto",
+    justifyItems: "fill",
+    alignItems: "center",
+    gap: "4px 4px",
+    padding: "4px",
 };

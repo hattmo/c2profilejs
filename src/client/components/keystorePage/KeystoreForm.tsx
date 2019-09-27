@@ -3,12 +3,12 @@ import keystoreDesc from "../../formDescription/keystoreDesc";
 import buildData from "../../utility/buildData";
 import FormBuilder from "../formElements/FormBuilder";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     onKeyStoreChange: () => Promise<void>;
     keystoreNames: string[];
 }
 
-export default ({ onKeyStoreChange, keystoreNames }: IProps) => {
+export default ({ onKeyStoreChange, keystoreNames, style, ...rest }: IProps) => {
 
     const [waitingForPost, setWaitingForPost] = useState(false);
     const [currentKeystore, setCurrentKeystore] = useState({});
@@ -39,9 +39,18 @@ export default ({ onKeyStoreChange, keystoreNames }: IProps) => {
     const keystoreFormDef = keystoreDesc(keystoreNames);
 
     return (
-        <div className="form">
+        <div style={{ ...mainStyle, ...style }} {...rest}>
             <FormBuilder formDef={keystoreFormDef} currentData={currentKeystore} handleData={handleData} />
             <button className="submitButton" disabled={waitingForPost} onClick={handleBuild}>Generate</button>
         </div>
     );
+};
+
+const mainStyle: React.CSSProperties = {
+    display: "grid",
+    gridTemplateRows: "auto auto",
+    justifyItems: "fill",
+    alignItems: "center",
+    gap: "4px 4px",
+    padding: "4px",
 };

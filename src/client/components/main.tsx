@@ -8,6 +8,8 @@ import KeystoreForm from "./keystorePage/KeystoreForm";
 import AboutPage from "./aboutPage/AboutPage";
 import IProfile from "../../interfaces/profile";
 import IKeystore from "../../interfaces/keystore";
+import KeystoreData from "./keystorePage/KeystoreData";
+import ProfileData from "./profilePage/ProfileData";
 
 export default () => {
     const [smallScreen, setSmallScreen] = useState(window.innerWidth <= 1000);
@@ -46,26 +48,47 @@ export default () => {
             window.removeEventListener("resize", resizeEvent);
         };
     }, []);
-
     return (
         <Router>
             <div className={smallScreen ? "mainSmall" : "main"}>
-                {smallScreen ? <SideBar /> : <NavBar />}
+                {smallScreen ? (<SideBar >
+                    <Switch>
+                        <Route path="/profile">
+                            <ProfileData profiles={profiles} />
+                        </Route>
+                        <Route path="/keystore">
+                            <KeystoreData keystores={keystores} />
+                        </Route>
+                    </Switch>
+                </SideBar>) : <NavBar />}
                 <Switch>
-                    <Route path="/" exact render={() => {
-                        return (
-                            <Redirect to="/profile" />
-                        );
-                    }} />
-                    <Route path="/profile" render={() =>
-                        <ProfileForm onProfileChange={checkForProfiles}
+                    <Route path="/" exact>
+                        <Redirect to="/profile" />
+                    </Route>
+                    <Route path="/profile">
+                        <ProfileForm onProfileChange={checkForProfiles} />
+                    </Route>
+                    <Route path="/keystore">
+                        <KeystoreForm onKeyStoreChange={checkForKeystores}
                             keystoreNames={keystores.map((i) => i.keystore.id)} />
-                    } />
-                    <Route path="/keystore" render={() => <KeystoreForm onKeyStoreChange={checkForKeystores}
-                        keystoreNames={keystores.map((i) => i.keystore.id)} />} />
-                    <Route path="/about" component={AboutPage} />
-                    <Route component={Error404} />
+                    </Route>
+                    <Route path="/about" >
+                        <AboutPage />
+                    </Route>
+                    <Route>
+                        <Error404 />
+                    </Route>
                 </Switch>
+                {!smallScreen ? (
+                    <Switch>
+                        <Route path="/profile">
+                            <ProfileData profiles={profiles} />
+                        </Route>
+                        <Route path="/keystore">
+                            <KeystoreData keystores={keystores} />
+                        </Route>
+                    </Switch>
+                ) : null}
             </div>
         </Router>
     );

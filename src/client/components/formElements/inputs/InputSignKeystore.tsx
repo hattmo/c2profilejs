@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     path: string;
     label: string;
     selectedVal?: string;
@@ -8,15 +8,15 @@ interface IProps {
     onChanged: (path: string, text: string | undefined) => void;
 }
 
-export default ({ path, label, selectedVal = "", keystoreNames, onChanged }: IProps) => {
+export default ({ path, label, selectedVal = "", keystoreNames, onChanged, style, ...rest }: IProps) => {
     const [isChecked, setIsChecked] = useState(false);
     return (
-        <div className="inputSignKeystore" >
+        <div style={{ ...mainStyle, ...style }}{...rest}  >
 
             <div>
                 {label}
             </div>
-            <input type="checkbox" disabled={!keystoreNames.length} onChange={(e) => {
+            <input style={{ alignSelf: "center" }} type="checkbox" disabled={!keystoreNames.length} onChange={(e) => {
                 setIsChecked(e.currentTarget.checked);
                 onChanged(path, undefined);
             }} />
@@ -31,4 +31,10 @@ export default ({ path, label, selectedVal = "", keystoreNames, onChanged }: IPr
             </select>
         </div>
     );
+};
+
+const mainStyle = {
+    display: "grid",
+    gridTemplateColumns: "min-content min-content auto",
+    gap: "4px 4px",
 };

@@ -8,20 +8,20 @@ import IFormInf, {
     InputTypes,
     ISection,
 } from "../../../interfaces/formInterfaces";
-import CollapsablePanel from "./CollapsablePanel";
-import InputMutation from "./InputMutation";
-import InputPairText from "./InputPairText";
-import InputSelectText from "./InputSelectText";
-import InputSignKeystore from "./InputSignKeystore";
-import InputText from "./InputText";
+import CollapsablePanel from "./panels/CollapsablePanel";
+import InputMutation from "./inputs/InputMutation";
+import InputPairText from "./inputs/InputPairText";
+import InputSelectText from "./inputs/InputSelectText";
+import InputSignKeystore from "./inputs/InputSignKeystore";
+import InputText from "./inputs/InputText";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     formDef: IFormInf;
-    currentData: any;
+    currentData: object;
     handleData: (path: string, data: any) => void;
 }
 
-export default ({ formDef, currentData, handleData }: IProps) => {
+export default ({ formDef, currentData, handleData, style, ...rest }: IProps) => {
     const buildTextField = (field: IFieldText) => {
         return (
             <InputText key={field.path} onChanged={handleData} path={field.path}
@@ -76,7 +76,7 @@ export default ({ formDef, currentData, handleData }: IProps) => {
                 })
             );
         } else {
-            return [];
+            return null;
         }
     };
 
@@ -90,8 +90,14 @@ export default ({ formDef, currentData, handleData }: IProps) => {
     };
 
     return (
-        <div>
+        <div style={{ ...mainStyle, ...style }} {...rest}>
             {formDef.sections.map((section) => buildSection(section))}
         </div>
     );
+};
+const mainStyle: React.CSSProperties = {
+    display: "grid",
+    justifyItems: "fill",
+    alignItems: "center",
+    gap: "4px 4px",
 };

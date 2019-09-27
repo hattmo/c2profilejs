@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { IOptionSelectText } from "../../../interfaces/formInterfaces";
-import { IOption } from "../../../interfaces/profile";
-import PillBox from "./PillBox";
+import { IOptionSelectText } from "../../../../interfaces/formInterfaces";
+import { IOption } from "../../../../interfaces/profile";
+import PillBox from "../PillBox";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     path: string;
     options: IOptionSelectText[];
     selectedOptions: IOption[];
     onChanged: (path: string, options: IOption[] | undefined) => void;
 }
 
-export default ({ path, options, selectedOptions = [], onChanged }: IProps) => {
+export default ({ path, options, selectedOptions = [], onChanged, style, ...rest }: IProps) => {
     const [key, setKey] = useState(options[0].text);
     const [value, setValue] = useState("");
 
@@ -34,8 +34,10 @@ export default ({ path, options, selectedOptions = [], onChanged }: IProps) => {
     };
 
     return (
-        <div>
-            <PillBox onRemoved={(newOptions) => { onChanged(path, newOptions); }} selectedOptions={selectedOptions} />
+        <div style={{ ...mainStyle, ...style }} {...rest}>
+            <PillBox style={{ gridArea: "box" }}
+                onRemoved={(newOptions) => { onChanged(path, newOptions); }}
+                selectedOptions={selectedOptions} />
             <select value={key} onChange={(e) => setKey(e.currentTarget.value)} >
                 {options.map((val) => {
                     return (
@@ -53,4 +55,12 @@ export default ({ path, options, selectedOptions = [], onChanged }: IProps) => {
             </button>
         </div>
     );
+};
+
+const mainStyle: React.CSSProperties = {
+    display: "grid",
+    gridTemplateAreas: '"box box box" "select input button"',
+    gridTemplateColumns: "min-content auto 80px",
+    gap: "4px 4px",
+
 };

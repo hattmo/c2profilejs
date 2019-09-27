@@ -1,19 +1,21 @@
 import React from "react";
 import IProfile from "../../../interfaces/profile";
-import CollapsablePanel from "../formElements/CollapsablePanel";
+import CollapsablePanel from "../formElements/panels/CollapsablePanel";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     profiles: IProfile[];
 }
 
-export default ({ profiles }: IProps) => {
+export default ({ profiles, ...rest }: IProps) => {
     return (
-        profiles.map((val) => {
-            return (
-                <CollapsablePanel title={val.name} key={val.name} >
-                    <a href={`/profiles/${val.name}?download=true`}>download</a>
-                </CollapsablePanel>
-            );
-        })
+        <div {...rest}>
+            {profiles.map((val) => {
+                return (
+                    <CollapsablePanel title={val.name} key={val.name} >
+                        <a href={`/api/profiles/${val.name}?download=true`}>download</a>
+                    </CollapsablePanel>
+                );
+            })}
+        </div>
     );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 
-export default () => {
+export default (props: React.HTMLAttributes<HTMLHeadingElement>) => {
     return (
-        <h1>About Me</h1>
+        <h1 {...props}>About Me</h1>
     );
 };

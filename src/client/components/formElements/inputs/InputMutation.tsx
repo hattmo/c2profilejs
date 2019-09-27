@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { IOptionSelectText } from "../../../interfaces/formInterfaces";
-import { IOption } from "../../../interfaces/keystore";
-import { IMutation } from "../../../interfaces/profile";
-import MutationBox from "./MutationBox";
+import { IOptionSelectText } from "../../../../interfaces/formInterfaces";
+import { IOption } from "../../../../interfaces/keystore";
+import { IMutation } from "../../../../interfaces/profile";
+import MutationBox from "../MutationBox";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     path: string;
     transformOptions: IOptionSelectText[];
     terminationOptions: IOptionSelectText[];
     onChanged: (path: string, mutation: IMutation | undefined) => void;
 }
 
-export default ({ path, transformOptions, terminationOptions, onChanged }: IProps) => {
+export default ({ path, transformOptions, terminationOptions, onChanged, style, ...rest }: IProps) => {
     const [transformKey, setTransformKey] = useState(transformOptions[0].text);
     const [transformValue, setTransformValue] = useState("");
     const [terminationKey, setTerminationKey] = useState(terminationOptions[0].text);
@@ -102,8 +102,8 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
     };
 
     return (
-        <div>
-            <select className={"selectTextDropDown"} value={transformKey}
+        <div style={{ ...mainStyle, ...style }} {...rest}>
+            <select value={transformKey}
                 onChange={(e: any) => onTransformSelected(e)}>
                 {transformOptions.map((val) => {
                     return (
@@ -117,7 +117,7 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
                 onChange={(e) => { onTransformTyped(e); }}
                 value={transformValue} />
             <button onClick={onTransformAdd}>Add</button>
-            <select className={"selectTextDropDown"} value={terminationKey}
+            <select value={terminationKey}
                 onChange={(e: any) => onTerminationSelected(e)} >
                 {terminationOptions.map((val) => {
                     return (
@@ -131,7 +131,7 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
                 onChange={(e) => { onTerminationTyped(e); }}
                 value={terminationValue} />
             <button onClick={onTerminationAdd}>Add</button>
-            <MutationBox transform={transform} termination={termination}
+            <MutationBox style={{ gridArea: "box" }} transform={transform} termination={termination}
                 onTerminationChanged={() => {
                     setTermination(undefined);
                     onChanged(path, undefined);
@@ -149,4 +149,11 @@ export default ({ path, transformOptions, terminationOptions, onChanged }: IProp
                 }} />
         </div>
     );
+};
+
+const mainStyle: React.CSSProperties = {
+    display: "grid",
+    gridTemplateAreas: '"select input button" "select input button" "box box box"',
+    gap: "4px 4px",
+    gridTemplateColumns: "min-content auto 80px",
 };
