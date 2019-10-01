@@ -23,7 +23,7 @@ const staticFiles = {
       loader: 'file-loader',
       options: {
         name: '[name].[ext]',
-        publicPath: 'static',
+        publicPath: '/static',
       }
     }
   ]
@@ -33,7 +33,7 @@ const config = {
   entry: './src/client/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist/client'),
-    publicPath: 'static/',
+    publicPath: '/static/',
     filename: 'bundle.js',
   },
   module: {

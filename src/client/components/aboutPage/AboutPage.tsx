@@ -1,7 +1,10 @@
 import React from "react";
 
-export default (props: React.HTMLAttributes<HTMLHeadingElement>) => {
+export default () => {
     return (
-        <h1 {...props}>About Me</h1>
+        <div style={{ padding: "4px" }}>
+            <h1>About</h1>
+            <p>This app is created and maintained by Matthew "Oscar" Howard.</p>
+        </div>
     );
 };

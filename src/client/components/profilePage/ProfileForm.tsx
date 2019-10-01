@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import profileDesc from "../../formDescription/profileDesc";
 import buildData from "../../utility/buildData";
 import FormBuilder from "../formElements/FormBuilder";
+import ErrorModal from "../errors/ErrorModal";
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     onProfileChange: () => Promise<void>;
@@ -12,6 +13,7 @@ export default ({ onProfileChange, style, ...rest }: IProps) => {
 
     const [waitingForPost, setWaitingForPost] = useState(false);
     const [currentProfile, setCurrentProfile] = useState({});
+    const [errorState, setErrorState] = useState("");
 
     const handleData = (path: string, data: any) => {
         setCurrentProfile({
@@ -24,32 +26,33 @@ export default ({ onProfileChange, style, ...rest }: IProps) => {
         setWaitingForPost(true);
         const outObj = buildData(currentProfile);
         try {
-            await fetch("/api/profiles", {
+            const res = await fetch("/api/profiles", {
                 method: "POST",
                 body: JSON.stringify(outObj),
                 headers: new Headers({ "content-type": "application/json" }),
             });
+            if (!res.ok) { setErrorState((await res.json()).errorMessage); }
             onProfileChange();
         } catch (e) {
-            process.stderr.write("Failed to submit new profile\n");
+            setErrorState("Unkown code");
         }
         setWaitingForPost(false);
     };
 
     const profileFormDef = profileDesc();
-
     return (
         <div style={{ ...mainStyle, ...style }} {...rest}>
+            {errorState !== "" ? <ErrorModal onLeave={() => setErrorState("")}>{errorState}</ErrorModal> : null}
             <FormBuilder formDef={profileFormDef} currentData={currentProfile} handleData={handleData} />
-            <button className="submitButton" disabled={waitingForPost} onClick={handleBuild}>Generate</button>
+            <button className="submitButton" disabled={waitingForPost} onClick={handleBuild}>
+                {waitingForPost ? "Generating..." : "Generate"}
+            </button>
         </div>
     );
 };
 const mainStyle: React.CSSProperties = {
     display: "grid",
-    gridTemplateRows: "auto auto",
+    gridTemplateRows: "max-content min-content",
     justifyItems: "fill",
-    alignItems: "center",
-    gap: "4px 4px",
-    padding: "4px",
+    gap: "4px",
 };

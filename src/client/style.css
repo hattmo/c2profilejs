@@ -12,76 +12,9 @@ h2 {
     font-size: 30pt;
     margin: 0px;
 }
+
 body {
     margin: 0;
-}
-
-.main {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-template-areas: 'form server';
-    margin-top: 50px;
-}
-
-.mainSmall {
-    margin-right: 50px;
-}
-
-.navbar {
-    background-color: rgba(100, 100, 255, 0.5);
-    position: fixed;
-    width: 100vw;
-    left: 0px;
-    top: 0px;
-    display: grid;
-    grid-template-columns: 100px 100px 100px;
-    grid-template-rows: 50px;
-    justify-content: center;
-    justify-items: center;
-    align-items: center;
-    border-bottom-style: solid;
-}
-
-.navbar a {
-    text-decoration: none;
-}
-
-.sidebar {
-    background-color: rgba(100, 100, 255, 0.5);
-    position: fixed;
-    height: 100vh;
-    right: 0px;
-    top: 0px;
-    display: grid;
-    grid-template-columns: 50px 0px;
-    border-left-style: solid;
-}
-
-.sidebarOpen {
-    grid-template-columns: 50px 200px;
-}
-
-.sidebarButton {
-    display: grid;
-    place-items: center;
-    height: 100%;
-    width: 100%;
-}
-
-.badInput {
-    background-color: lightcoral
-}
-
-.goodInput {
-    background-color: lightgreen
-}
-
-.badInput:focus {
-    background-color: lightcoral
-}
-
-.goodInput:focus {
-    background-color: lightgreen
 }
 
 button {
@@ -104,4 +37,34 @@ select {
     border-color: black;
     border: 1px;
     border-style: solid;
+}
+
+a.navLink {
+    place-items: center center;
+    display: grid;
+    border: 3px solid black;
+    border-radius: 5px;
+    background-color: black;
+    text-decoration: none;
+    color: white;
+}
+
+a.navLink.active {
+    background-color: grey;
+}
+
+.badInput {
+    background-color: lightcoral
+}
+
+.goodInput {
+    background-color: lightgreen
+}
+
+.badInput:focus {
+    background-color: lightcoral
+}
+
+.goodInput:focus {
+    background-color: lightgreen
 }

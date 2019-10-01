@@ -6,16 +6,22 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     profiles: IProfile[];
 }
 
-export default ({ profiles, ...rest }: IProps) => {
+export default ({ profiles, style, ...rest }: IProps) => {
     return (
-        <div {...rest}>
+        <div style={{ ...mainStyle, ...style }} {...rest}>
             {profiles.map((val) => {
                 return (
-                    <CollapsablePanel title={val.name} key={val.name} >
+                    <CollapsablePanel style={{ backgroundColor: "white"}} title={val.name} key={val.name} >
                         <a href={`/api/profiles/${val.name}?download=true`}>download</a>
                     </CollapsablePanel>
                 );
             })}
         </div>
     );
+};
+
+const mainStyle: React.CSSProperties = {
+    display: "grid",
+    gap: "4px",
+    gridAutoRows: "min-content",
 };

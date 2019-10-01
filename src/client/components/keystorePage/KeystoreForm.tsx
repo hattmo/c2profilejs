@@ -41,7 +41,9 @@ export default ({ onKeyStoreChange, keystoreNames, style, ...rest }: IProps) => 
     return (
         <div style={{ ...mainStyle, ...style }} {...rest}>
             <FormBuilder formDef={keystoreFormDef} currentData={currentKeystore} handleData={handleData} />
-            <button className="submitButton" disabled={waitingForPost} onClick={handleBuild}>Generate</button>
+            <button className="submitButton" disabled={waitingForPost} onClick={handleBuild}>
+                {waitingForPost ? "Generating..." : "Generate"}
+            </button>
         </div>
     );
 };

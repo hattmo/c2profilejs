@@ -19,8 +19,11 @@ app.use((_req, res) => {
 
 app.use((err, _req, res, _next) => {
   if (err instanceof ValidationError) {
-    process.stderr.write(`${err.validationErrors}\n`);
-    res.sendStatus(400);
+    //  process.stderr.write(`${err.validationErrors}\n`);
+    const errorObject = err.validationErrors.body[0];
+    res.status(400).json({
+      errorMessage: errorObject.dataPath + " " + errorObject.message,
+    });
   } else {
     res.sendStatus(500);
     process.stderr.write(`${err}\n`);
