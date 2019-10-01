@@ -23,7 +23,7 @@ export default ({ keystores, style, ...rest }: IProps) => {
                         <div>
                             dname: {buildOptDName(val)}<br />
                             {val.ca ? "Signed" : "Self-Signed"}<br />
-                            <a href={`/api/keystores/${val.keystore.id}?download=true`}>download</a>
+                            <a href={`${window.APP_ROOT}/api/keystores/${val.keystore.id}?download=true`}>download</a>
                         </div>
                     </CollapsablePanel>
                 );

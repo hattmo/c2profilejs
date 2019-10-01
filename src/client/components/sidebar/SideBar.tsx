@@ -15,10 +15,10 @@ export default ({ content, navLinks }: IProps) => {
         }}>
             {collapsed ?
                 <div style={buttonStyle} onClick={() => { setCollapsed(false); }}>
-                    <img src={backButton}></img>
+                    <img src={`${window.APP_ROOT}${backButton}`}></img>
                 </div> :
                 <div style={buttonStyle} onClick={() => { setCollapsed(true); }}>
-                    <img src={forwardButton}></img>
+                    <img src={`${window.APP_ROOT}${forwardButton}`}></img>
                 </div>}
             <div style={{ ...contentStyle, display: collapsed ? "none" : "grid" }}>
                 <div style={navStyle}>

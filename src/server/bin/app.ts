@@ -5,6 +5,7 @@ import path from "path";
 import KeystoreModel from "../models/keyStoreModel";
 import ProfileModel from "../models/profileModel";
 import api from "../routes/api";
+import htmlpage from "../routes/htmlpage";
 
 const keystoreModel = new KeystoreModel();
 const profileModel = new ProfileModel();
@@ -13,9 +14,10 @@ const app = express();
 app.use(logger(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use("/api/", express.json(), api(profileModel, keystoreModel));
 app.use("/static/", express.static(path.join(__dirname, "../../client")));
-app.use((_req, res) => {
-  res.sendFile(path.join(__dirname, "../../client/index.html"));
-});
+// app.use((_req, res) => {
+//   res.sendFile(path.join(__dirname, "../../client/index.html"));
+// });
+app.use(htmlpage);
 
 app.use((err, _req, res, _next) => {
   if (err instanceof ValidationError) {

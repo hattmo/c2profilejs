@@ -26,7 +26,7 @@ export default ({ onProfileChange, style, ...rest }: IProps) => {
         setWaitingForPost(true);
         const outObj = buildData(currentProfile);
         try {
-            const res = await fetch("/api/profiles", {
+            const res = await fetch(`${window.APP_ROOT}/api/profiles`, {
                 method: "POST",
                 body: JSON.stringify(outObj),
                 headers: new Headers({ "content-type": "application/json" }),

@@ -24,7 +24,7 @@ export default ({ onKeyStoreChange, keystoreNames, style, ...rest }: IProps) => 
         setWaitingForPost(true);
         const outObj = buildData(currentKeystore);
         try {
-            await fetch("/api/keystores", {
+            await fetch(`${window.APP_ROOT}/api/keystores`, {
                 method: "POST",
                 body: JSON.stringify(outObj),
                 headers: new Headers({ "content-type": "application/json" }),

@@ -42,6 +42,21 @@ npm start
 Java keytool must be accessable from the path the program is run.
 ___
 
+## Configuration
+
+The environment variable APP_ROOT can be set if the app is hosted on a subdirectory of the domain.
+
+~~~bash
+
+# Must begin with a slash and end without a slash
+APP_ROOT=/c2profilejs
+
+# Or be a FQDN with no trailing slash
+
+APP_ROOT=http://hattmo.com/c2profilejs
+
+~~~
+
 ## Author
 
 Designed and maintained by [Matthew Howard](https://www.linkedin.com/in/matthew-howard-4013ba87/).

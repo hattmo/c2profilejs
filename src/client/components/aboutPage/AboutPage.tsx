@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => {
+export default ({}) => {
     return (
         <div style={{ padding: "4px" }}>
             <h1>About</h1>
