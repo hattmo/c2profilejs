@@ -12,7 +12,7 @@ export default ({ profiles, style, ...rest }: IProps) => {
             {profiles.map((val) => {
                 return (
                     <CollapsablePanel style={{ backgroundColor: "white"}} title={val.name} key={val.name} >
-                        <a href={`/api/profiles/${val.name}?download=true`}>download</a>
+                        <a href={`${window.APP_ROOT}/api/profiles/${val.name}?download=true`}>download</a>
                     </CollapsablePanel>
                 );
             })}

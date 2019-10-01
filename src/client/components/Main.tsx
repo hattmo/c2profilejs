@@ -16,14 +16,14 @@ export default ({}) => {
     const [profiles, setProfiles] = useState<IProfile[]>([]);
     const [keystores, setKeystores] = useState<IKeystore[]>([]);
     const checkForProfiles = async () => {
-        const newProfiles = await (await fetch("/api/profiles", {
+        const newProfiles = await (await fetch(`${window.APP_ROOT}/api/profiles`, {
             method: "GET",
         })).json();
         setProfiles(newProfiles);
     };
 
     const checkForKeystores = async () => {
-        const newKeystores = await (await fetch("/api/keystores", {
+        const newKeystores = await (await fetch(`${window.APP_ROOT}/api/keystores`, {
             method: "GET",
         })).json();
         setKeystores(newKeystores);
@@ -70,9 +70,8 @@ export default ({}) => {
     const keystoreAltContent = (
         <KeystoreData keystores={keystores} />
     );
-
     return (
-        <Router>
+        <Router basename={window.APP_ROOT}>
             <Switch>
                 <Route path="/" exact>
                     <Redirect to="/profile" />
