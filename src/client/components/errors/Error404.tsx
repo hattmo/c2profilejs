@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default () => {
+export default ({}) => {
     return (
         <div style={mainStyle}>
             <p style={{ fontSize: "60pt", margin: "4px" }}>Error</p>

@@ -7,11 +7,11 @@ import ProfileData from "./profilePage/ProfileData";
 import TwoContentWithNav from "./pageLayouts/TwoContentWithNav";
 import KeystoreForm from "./keystorePage/KeystoreForm";
 import KeystoreData from "./keystorePage/KeystoreData";
-import Error404 from "./errors/404";
+import Error404 from "./errors/Error404";
 import OneContentWithNav from "./pageLayouts/OneContentWithNav";
 import AboutPage from "./aboutPage/AboutPage";
 
-export default () => {
+export default ({}) => {
     const [smallScreen, setSmallScreen] = useState(window.innerWidth <= 1000);
     const [profiles, setProfiles] = useState<IProfile[]>([]);
     const [keystores, setKeystores] = useState<IKeystore[]>([]);
