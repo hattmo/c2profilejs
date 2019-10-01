@@ -143,7 +143,7 @@ export default (): IFormInf => {
                         type: InputTypes.FieldText,
                         path: "name",
                         label: "Name",
-                        format: /.*/,
+                        format: /^\w*$/,
                     },
                     {
                         type: InputTypes.FieldSelectText,
@@ -159,13 +159,13 @@ export default (): IFormInf => {
                         type: InputTypes.FieldText,
                         path: "httpget.uri",
                         label: "URI",
-                        format: /.*/,
+                        format: /^(\w|\/)*$/,
                     },
                     {
                         type: InputTypes.FieldText,
                         path: "httpget.verb",
                         label: "Verb",
-                        format: /.*/,
+                        format: /^.*$/,
                     },
                 ],
                 sections: [

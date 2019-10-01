@@ -1,6 +1,5 @@
-import * as express from "express";
+import express from "express";
 import { Validator } from "express-json-validator-middleware";
-import { isUndefined } from "util";
 import postProfileScema from "../helpers/schemas/postProfileSchema";
 import ProfileModel from "../models/profileModel";
 
@@ -13,7 +12,9 @@ export default (profileModel: ProfileModel) => {
       if (profileModel.addProfile(req.body)) {
         res.sendStatus(200);
       } else {
-        res.sendStatus(400);
+        res.status(400).json({
+          errorMessage: "A profile by that name already exists.",
+        });
       }
     } catch (reason) {
       next(reason);
@@ -26,8 +27,8 @@ export default (profileModel: ProfileModel) => {
 
   route.get("/:id", (req, res, next) => {
     const profileData = profileModel.getProfile(req.params.id);
-    if (!isUndefined(profileData)) {
-      if (req.query.download) {
+    if (profileData !== undefined) {
+      if (req.query.download !== undefined) {
         res.append("Content-Disposition", `attachment; filename="${profileData.profile.name}.profile"`);
         res.send(profileData.compiled);
       } else {

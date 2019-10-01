@@ -1,36 +1,62 @@
 import React, { useState } from "react";
 import backButton from "../../../../assets/back.png";
 import forwardButton from "../../../../assets/forward.png";
-import { NavLink } from "react-router-dom";
 
-export default () => {
+interface IProps {
+    content?: React.ReactNode;
+    navLinks: React.ReactNode[];
+}
+export default ({ content, navLinks }: IProps) => {
     const [collapsed, setCollapsed] = useState(true);
-
-    const collapsedContent = () => {
-        return (
-            <div className="sidebarButton" onClick={() => { setCollapsed(false); }}>
-                <img src={backButton}></img>
-            </div>
-        );
-    };
-
-    const expandedContent = () => {
-        return (
-            <React.Fragment>
-                <div className="sidebarButton" onClick={() => { setCollapsed(true); }}>
-                    <img src={forwardButton}></img>
-                </div>
-                <div>
-                    <NavLink to="/profile">Profile</NavLink>
-                    <NavLink to="/keystore">Keystore</NavLink>
-                    <NavLink to="/about">About</NavLink>
-                </div>
-            </React.Fragment>
-        );
-    }
     return (
-        <div className={collapsed ? "sidebar" : "sidebarOpen sidebar"}>
-            {collapsed ? collapsedContent() : expandedContent()}
+        <div style={{
+            ...mainStyle,
+            gridTemplateColumns: collapsed ? "60px 0px" : "60px 300px",
+        }}>
+            {collapsed ?
+                <div style={buttonStyle} onClick={() => { setCollapsed(false); }}>
+                    <img src={backButton}></img>
+                </div> :
+                <div style={buttonStyle} onClick={() => { setCollapsed(true); }}>
+                    <img src={forwardButton}></img>
+                </div>}
+            <div style={{ ...contentStyle, display: collapsed ? "none" : "grid" }}>
+                <div style={navStyle}>
+                    {navLinks}
+                </div>
+                <div style={{ borderStyle: "solid", borderWidth: "2px", width: "100%" }} />
+                {content}
+            </div>
         </div>
     );
+};
+
+const mainStyle: React.CSSProperties = {
+    display: "grid",
+    position: "fixed",
+    backgroundColor: "rgba(100, 100, 255, 0.5)",
+    height: "100vh",
+    right: "0px",
+    top: "0px",
+};
+
+const buttonStyle: React.CSSProperties = {
+    display: "grid",
+    placeItems: "center center",
+    height: "100%",
+    width: "100%",
+};
+
+const contentStyle: React.CSSProperties = {
+    gridTemplateRows: "min-content 4px auto",
+    justifyItems: "stretch",
+    padding: "4px",
+    gap: "4px",
+};
+
+const navStyle: React.CSSProperties = {
+    display: "grid",
+    gridAutoRows: "60px",
+    placeItems: "stretch stretch",
+    gap: "4px",
 };

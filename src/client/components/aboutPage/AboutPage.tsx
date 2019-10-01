@@ -2,6 +2,9 @@ import React from "react";
 
 export default () => {
     return (
-        <h1>About Me</h1>
+        <div style={{ padding: "4px" }}>
+            <h1>About</h1>
+            <p>This app is created and maintained by Matthew "Oscar" Howard.</p>
+        </div>
     );
 };

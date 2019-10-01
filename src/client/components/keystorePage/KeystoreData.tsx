@@ -1,12 +1,12 @@
 import React from "react";
 import IKeystore from "../../../interfaces/keystore";
-import CollapsablePanel from "../formElements/CollapsablePanel";
+import CollapsablePanel from "../formElements/panels/CollapsablePanel";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     keystores: IKeystore[];
 }
 
-export default ({ keystores }: IProps) => {
+export default ({ keystores, style, ...rest }: IProps) => {
     const buildOptDName = (keystore: IKeystore) => {
         let out = "";
         keystore.opt.dname.forEach((val) => {
@@ -16,16 +16,24 @@ export default ({ keystores }: IProps) => {
     };
 
     return (
-        keystores.map((val) => {
-            return (
-                <CollapsablePanel title={val.keystore.id} key={val.keystore.id} >
-                    <div>
-                        dname: {buildOptDName(val)}<br />
-                        {val.ca ? "Signed" : "Self-Signed"}<br />
-                        <a href={`/keystores/${val.keystore.id}?download=true`}>download</a>
-                    </div>
-                </CollapsablePanel>
-            );
-        })
+        <div style={{ ...mainStyle, ...style }} {...rest}>
+            {keystores.map((val) => {
+                return (
+                    <CollapsablePanel style={{backgroundColor: "white"}} title={val.keystore.id} key={val.keystore.id} >
+                        <div>
+                            dname: {buildOptDName(val)}<br />
+                            {val.ca ? "Signed" : "Self-Signed"}<br />
+                            <a href={`/api/keystores/${val.keystore.id}?download=true`}>download</a>
+                        </div>
+                    </CollapsablePanel>
+                );
+            })}
+        </div>
     );
+};
+
+const mainStyle: React.CSSProperties = {
+    display: "grid",
+    gap: "4px",
+    gridAutoRows: "min-content",
 };

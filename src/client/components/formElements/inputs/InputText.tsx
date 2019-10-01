@@ -1,6 +1,6 @@
 import React from "react";
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
     path: string;
     label: string;
     format: RegExp;
@@ -8,7 +8,7 @@ interface IProps {
     onChanged: (path: string, text: string | undefined) => void;
 }
 
-export default ({ path, label, format, text = "", onChanged }: IProps) => {
+export default ({ path, label, format, text = "", onChanged, style, ...rest }: IProps) => {
     const validate = () => {
         if (text === "") {
             return "";
@@ -17,13 +17,19 @@ export default ({ path, label, format, text = "", onChanged }: IProps) => {
         }
     };
     return (
-        <div className="inputText">
+        <div style={{ ...mainStyle, ...style }} {...rest}>
             <div>
                 {label}
             </div>
             <input className={`${validate()}`} type="text" onChange={(e) => {
                 onChanged(path, e.currentTarget.value || undefined);
             }} value={text} />
-        </div>
+        </div >
     );
+};
+
+const mainStyle: React.CSSProperties = {
+    display: "grid",
+    gridTemplateColumns: "80px auto",
+    columnGap: "3px",
 };

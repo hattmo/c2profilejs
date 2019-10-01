@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import Error404 from "./errors/404";
-import SideBar from "./sidebar/SideBar";
-import NavBar from "./navbar/NavBar";
+import { BrowserRouter as Router, Route, Switch, NavLink, Redirect } from "react-router-dom";
 import ProfileForm from "./profilePage/ProfileForm";
-import KeystoreForm from "./keystorePage/KeystoreForm";
-import AboutPage from "./aboutPage/AboutPage";
 import IProfile from "../../interfaces/profile";
 import IKeystore from "../../interfaces/keystore";
+import ProfileData from "./profilePage/ProfileData";
+import TwoContentWithNav from "./pageLayouts/TwoContentWithNav";
+import KeystoreForm from "./keystorePage/KeystoreForm";
+import KeystoreData from "./keystorePage/KeystoreData";
+import Error404 from "./errors/404";
+import OneContentWithNav from "./pageLayouts/OneContentWithNav";
+import AboutPage from "./aboutPage/AboutPage";
 
 export default () => {
     const [smallScreen, setSmallScreen] = useState(window.innerWidth <= 1000);
     const [profiles, setProfiles] = useState<IProfile[]>([]);
     const [keystores, setKeystores] = useState<IKeystore[]>([]);
-    console.log(profiles);
     const checkForProfiles = async () => {
         const newProfiles = await (await fetch("/api/profiles", {
             method: "GET",
@@ -48,26 +49,55 @@ export default () => {
         };
     }, []);
 
+    const navLinks = [
+        <NavLink activeClassName="active" className="navLink" key={0} to="/profile">Profile</NavLink>,
+        <NavLink activeClassName="active" className="navLink" key={1} to="/keystore">Keystore</NavLink>,
+        <NavLink activeClassName="active" className="navLink" key={2} to="/about">About</NavLink>,
+    ];
+
+    const profileMainContent = (
+        <ProfileForm onProfileChange={async () => { await checkForProfiles(); }} />
+    );
+
+    const profileAltContent = (
+        <ProfileData profiles={profiles} />
+    );
+    const keystoreMainContent = (
+        <KeystoreForm keystoreNames={keystores.map((k) => k.keystore.id)}
+            onKeyStoreChange={async () => { await checkForKeystores(); }} />
+    );
+
+    const keystoreAltContent = (
+        <KeystoreData keystores={keystores} />
+    );
+
     return (
         <Router>
-            <div className={smallScreen ? "mainSmall" : "main"}>
-                {smallScreen ? <SideBar /> : <NavBar />}
-                <Switch>
-                    <Route path="/" exact render={() => {
-                        return (
-                            <Redirect to="/profile" />
-                        );
-                    }} />
-                    <Route path="/profile" render={() =>
-                        <ProfileForm onProfileChange={checkForProfiles}
-                            keystoreNames={keystores.map((i) => i.keystore.id)} />
-                    } />
-                    <Route path="/keystore" render={() => <KeystoreForm onKeyStoreChange={checkForKeystores}
-                        keystoreNames={keystores.map((i) => i.keystore.id)} />} />
-                    <Route path="/about" component={AboutPage} />
-                    <Route component={Error404} />
-                </Switch>
-            </div>
+            <Switch>
+                <Route path="/" exact>
+                    <Redirect to="/profile" />
+                </Route>
+                <Route path="/profile" exact>
+                    <TwoContentWithNav small={smallScreen}
+                        altContent={profileAltContent}
+                        mainContent={profileMainContent}
+                        navLinks={navLinks} />
+                </Route>
+                <Route path="/keystore" exact>
+                    <TwoContentWithNav small={smallScreen}
+                        altContent={keystoreAltContent}
+                        mainContent={keystoreMainContent}
+                        navLinks={navLinks} />
+                </Route>
+                <Route path="/about" exact>
+                    <OneContentWithNav small={smallScreen}
+                        mainContent={<AboutPage />}
+                        navLinks={navLinks} />
+                </Route>
+                <Route>
+                    <Error404 />
+                </Route>
+            </Switch>
         </Router>
     );
 };
